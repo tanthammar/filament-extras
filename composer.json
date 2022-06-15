@@ -1,0 +1,32 @@
+{
+    "name": "tanthammar/filament-extras",
+    "description": "Filament macros, pages, fields, columns and other helpers",
+    "license": "MIT",
+    "homepage": "https://github.com/tanthammar/filament-extras",
+    "support": {
+        "issues": "https://github.com/tanthammar/filament-extras/issues",
+        "source": "https://github.com/tanthammar/filament-extras"
+    },
+    "require": {
+        "php": "^8.1",
+        "spatie/laravel-permission": "^5.5.0",
+        "filament/filament": "^2.8.0 | 2.x-dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "Tanthammar\\FilamentExtras\\": "src"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+              "Tanthammar\\FilamentExtras\\FilamentExtrasServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
