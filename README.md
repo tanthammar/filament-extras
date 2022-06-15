@@ -19,7 +19,7 @@ If not, please post a question in the discussions tab.
 
 ## Installation
 ```bash
-composer require TinaHammar/filament-extras
+composer require tanthammar/filament-extras
 ```
 
 ## Macros
