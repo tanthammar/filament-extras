@@ -7,13 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class Email
 {
-    public static function input(): TextInput
+    public static function input(string $column = 'email', bool $unique = true): TextInput
     {
-        return TextInput::make('email')
+        $field = TextInput::make($column)
             ->label(trans('fields.email'))
             ->email()
             ->required()
-            ->unique(ignorable: fn (?Model $record): ?Model => $record)
-            ->rules(['email:strict,dns,spoof']);
+            ->rules(['email:strict,dns,spoof'])
+            ->prefixIcon('heroicon-o-at-symbol');
+
+        if($unique) {
+            return $field->unique(ignorable: fn (?Model $record): ?Model => $record);
+        }
+
+        return $field;
     }
 }

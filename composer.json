@@ -10,7 +10,8 @@
     "require": {
         "php": "^8.1",
         "spatie/laravel-permission": "^5.5.0",
-        "filament/filament": "^2.8.0 | 2.x-dev"
+        "filament/filament": "^2.8.0 | 2.x-dev",
+        "tanthammar/laravel-rules": "dev-main"
     },
     "autoload": {
         "psr-4": {

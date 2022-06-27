@@ -8,9 +8,9 @@ use Illuminate\Validation\Rules\Password as PasswordRule;
 
 class PasswordInput
 {
-    public static function create(string $prop = 'new_password'): TextInput
+    public static function create(string $column = 'new_password'): TextInput
     {
-        return TextInput::make($prop)
+        return TextInput::make($column)
             ->label(trans('fields.new-password'))
             ->required()
             ->minLength(8)
@@ -20,9 +20,9 @@ class PasswordInput
             ->autocomplete('new-password');
     }
 
-    public static function confirmation(string $prop = 'new_password_confirmation', string $same = 'new_password'): TextInput
+    public static function confirmation(string $column = 'new_password_confirmation', string $same = 'new_password'): TextInput
     {
-        return TextInput::make($prop)
+        return TextInput::make($column)
             ->label(trans('fields.password-confirmation'))
             ->password()
             ->ignored()
@@ -32,9 +32,9 @@ class PasswordInput
             ->autocomplete('new-password');
     }
 
-    public static function current(string $prop = 'current_password', bool|string $with = 'new_password'): TextInput
+    public static function current(string $column = 'current_password', bool|string $with = 'new_password'): TextInput
     {
-        return TextInput::make($prop)
+        return TextInput::make($column)
             ->label(trans('fields.current-password'))
             ->password()
             ->rules($with ? ["required_with:$with", 'current_password'] : ['current_password'])
