@@ -1,9 +1,9 @@
 <?php
 
-namespace Tanthammar\FilamentExtras\Forms;
+namespace TantHammar\FilamentExtras\Forms;
 
 use Filament\Forms\Components;
-use Tanthammar\LaravelRules\Rules\PhoneNumber;
+use TantHammar\LaravelRules\Rules\PhoneNumber;
 
 class Mobile
 {

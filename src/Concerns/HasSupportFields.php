@@ -1,6 +1,6 @@
 <?php
 
-namespace Tanthammar\FilamentExtras\Concerns;
+namespace TantHammar\FilamentExtras\Concerns;
 
 trait HasSupportFields
 {

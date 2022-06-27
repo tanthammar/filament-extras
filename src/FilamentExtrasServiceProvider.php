@@ -1,6 +1,6 @@
 <?php
 
-namespace Tanthammar\FilamentExtras;
+namespace TantHammar\FilamentExtras;
 
 use Closure;
 use Filament\Forms\Components;

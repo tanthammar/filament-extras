@@ -1,6 +1,6 @@
 <?php
 
-namespace Tanthammar\FilamentExtras\Forms;
+namespace TantHammar\FilamentExtras\Forms;
 
 use Filament\Forms\Components;
 
@@ -16,7 +16,7 @@ class Phone
                 'bail',
                 'sometimes',
                 'min:10',
-                new \Tanthammar\LaravelRules\Rules\PhoneNumber,
+                new \TantHammar\LaravelRules\Rules\PhoneNumber,
             ])
             ->mask(fn (Components\TextInput\Mask $mask) => $mask->pattern('+00 (0)000 000 000[ 00]')->lazyPlaceholder(false))
             ->prefixIcon('heroicon-o-phone');

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tanthammar\FilamentExtras\Forms;
+namespace TantHammar\FilamentExtras\Forms;
 
 use Filament\Forms\Components\TextInput;
 

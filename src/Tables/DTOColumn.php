@@ -1,6 +1,6 @@
 <?php
 
-namespace Tanthammar\FilamentExtras\Tables;
+namespace TantHammar\FilamentExtras\Tables;
 
 use Filament\Tables\Columns\TextColumn;
 
