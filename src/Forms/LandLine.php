@@ -3,14 +3,14 @@
 namespace TantHammar\FilamentExtras\Forms;
 
 use Filament\Forms\Components;
-use TantHammar\LaravelRules\Rules\MobileNumber;
+use TantHammar\LaravelRules\Rules\FixedLineNumber;
 
 /**
- * validates international mobile numbers
+ * Validates international land line numbers
  */
-class Mobile
+class LandLine
 {
-    public static function input(string $column = 'mobile', int $default = 460, string $label = 'fields.mobile'): Components\TextInput
+    public static function input(string $column = 'phone', int $default = 460, string $label = 'fields.phone'): Components\TextInput
     {
         return Components\TextInput::make($column)
             ->label(trans($label))
@@ -20,9 +20,9 @@ class Mobile
                 'bail',
                 'sometimes',
                 'min:10',
-                new MobileNumber,
+                new FixedLineNumber,
             ])
             ->mask(fn (Components\TextInput\Mask $mask) => $mask->pattern('+00 (0)000 000 000[ 00]')->lazyPlaceholder(false))
-            ->prefixIcon('heroicon-o-device-mobile');
+            ->prefixIcon('heroicon-o-phone');
     }
 }
