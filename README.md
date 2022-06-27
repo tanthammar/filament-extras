@@ -24,6 +24,18 @@ composer require tanthammar/filament-extras
 
 ## Macros
 See `FilamentExtrasServiceProvider`
+Example with json column:
+```php
+Mobile::input(column: "$column.mobile")
+    ->requiredIfBlank(field: "$column.phone")
+    ->nullableIfFilled(field: "$column.phone")
+    ->lazyEntangled(),
+
+LandLine::input(column: "$column.phone")
+    ->requiredIfBlank(field: "$column.mobile")
+    ->nullableIfFilled(field: "$column.mobile")
+    ->lazyEntangled(),
+```
 
 ## Blade component example
 See resources/views/components
@@ -43,6 +55,9 @@ Email::input()
 PasswordInput::current()
 PasswordInput::create()
 PasswordInput::confirmation()
+Mobile::input(column: 'mobile') //validates international mobile numbers
+LandLine::input(column: 'landline')//validates international landline numbers
+Phone::input(column: 'phone') //validates international phone numbers (disregards phone number type)
 ```
 
 ## Table Column examples
@@ -50,6 +65,7 @@ See src/Tables
 ```php
 DTOColumn::make(string $column, string $attribute), //If you cast your json column into DTO's. Retrieved as $column?->attribute ?? ''
 JsonColumn::make(string $column, string $dotNotation) //Cast your json column into 'array'. Retreived as data_get($column, $dotNotation, '')
+PhoneColumn::make(string $column) //Format international phone numbers
 ```
 
 
