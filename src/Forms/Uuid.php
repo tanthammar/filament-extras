@@ -4,6 +4,11 @@ namespace TantHammar\FilamentExtras\Forms;
 
 use Filament\Forms\Components\TextInput;
 
+/**
+ * I use a HasUuid trait that generates a custom UUID when my model is created <br>
+ * This means that the $hiddenOn property would typically be your Filament Resource create page, <br>
+ * as the UUID is automatically generated when the Model created
+ */
 class Uuid
 {
     public static function input(mixed $hiddenOn, string $column = 'uuid'): TextInput
