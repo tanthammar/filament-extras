@@ -4,16 +4,16 @@ namespace TantHammar\FilamentExtras\Forms;
 
 use Filament\Forms\Components\TextInput;
 
-class LastName
+class BusinessName
 {
-    public static function input(string $column = 'last_name'): TextInput
+    public static function input(string $column = 'name'): TextInput
     {
         return TextInput::make($column)
-            ->label(trans('fields.last-name'))
+            ->label(trans('fields.name'))
             ->ucfirst()
             ->required()
             ->minLength(2)
             ->maxLength(125)
-            ->rule('alpha_spaces');
+            ->rule('alpha_dash_spaces');
     }
 }

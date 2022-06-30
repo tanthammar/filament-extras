@@ -10,6 +10,10 @@ class DTOPhoneColumn
 {
     public static function make(string $column, string $attribute): TextColumn
     {
-        return TextColumn::make($column)->formatStateUsing(fn($state): string => $state?->$attribute ? PhoneNumber::parse($state?->$attribute)->format(PhoneNumberFormat::INTERNATIONAL) : '');
+        return TextColumn::make($column)
+            ->formatStateUsing(fn($state): string =>
+            ($nr = data_get($state, $attribute))
+                ? PhoneNumber::parse('+'.$nr)->format(PhoneNumberFormat::INTERNATIONAL)
+                : '');
     }
 }

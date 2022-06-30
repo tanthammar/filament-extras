@@ -12,6 +12,7 @@ class Email
         $field = TextInput::make($column)
             ->label(trans('fields.email'))
             ->email()
+            ->smallcaps()
             ->required()
             ->rules(['email:strict,dns,spoof'])
             ->prefixIcon('heroicon-o-at-symbol');

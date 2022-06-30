@@ -5,7 +5,7 @@ namespace TantHammar\FilamentExtras;
 use Closure;
 use Filament\Forms\Components;
 use Filament\PluginServiceProvider;
-use Hash;
+use Illuminate\Support\Facades\Validator;
 
 class FilamentExtrasServiceProvider extends PluginServiceProvider
 {
@@ -39,5 +39,11 @@ class FilamentExtrasServiceProvider extends PluginServiceProvider
         Components\Field::macro('hiddenIfFilled', fn(string $field): static => $this->hidden(fn(\Closure $get): bool => filled($get($field))));
 
         Components\TextInput::macro('lazyEntangled', fn(): static => $this->extraAlpineAttributes(['x-on:blur' => '$wire.$refresh'])); //fake entangled.lazy on TextInputs with Masks
+
+        Components\Field::macro('ucwords', fn(): static => $this->dehydrateStateUsing(fn ($state) => ucwords($state)));
+        Components\Field::macro('ucfirst', fn(): static => $this->dehydrateStateUsing(fn ($state) => ucfirst($state)));
+        Components\Field::macro('smallcaps', fn(): static => $this->dehydrateStateUsing(fn ($state) => strtolower($state)));
+        Components\Field::macro('uppercase', fn(): static => $this->dehydrateStateUsing(fn ($state) => strtoupper($state)));
+
     }
 }

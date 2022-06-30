@@ -10,9 +10,10 @@ class FirstName
     {
         return TextInput::make($column)
             ->label(trans('fields.first-name'))
+            ->ucfirst()
             ->required()
             ->minLength(2)
             ->maxLength(125)
-            ->rule('alpa_dash');
+            ->rule('alpha_spaces');
     }
 }
