@@ -14,6 +14,6 @@ class LastName
             ->required()
             ->minLength(2)
             ->maxLength(125)
-            ->rule('alpha_spaces');
+            ->rule('alpha_space');
     }
 }
