@@ -6,10 +6,20 @@ use Closure;
 use Filament\Forms\Components;
 use Filament\PluginServiceProvider;
 use Illuminate\Support\Facades\Validator;
+use Spatie\LaravelPackageTools\Package;
 
 class FilamentExtrasServiceProvider extends PluginServiceProvider
 {
-    public static string $name = 'filament-extras';
+    public function configurePackage(Package $package): void
+    {
+        /*
+         * More info: https://github.com/spatie/laravel-package-tools
+         */
+        $package
+            ->name('filament-extras')
+            ->hasTranslations();
+    }
+
 
     protected function registerMacros(): void
     {
@@ -29,14 +39,14 @@ class FilamentExtrasServiceProvider extends PluginServiceProvider
 
         Components\Field::macro('ignored', fn(): static => $this->dehydrated(false));
 
-        Components\Field::macro('requiredIfBlank', fn(string $field): static => $this->required(fn(\Closure $get): bool => blank($get($field))));
-        Components\Field::macro('requiredIfFilled', fn(string $field): static => $this->required(fn(\Closure $get): bool => filled($get($field))));
+        Components\Field::macro('requiredIfBlank', fn(string $field): static => $this->required(fn(Closure $get): bool => blank($get($field))));
+        Components\Field::macro('requiredIfFilled', fn(string $field): static => $this->required(fn(Closure $get): bool => filled($get($field))));
 
-        Components\Field::macro('nullableIfBlank', fn(string $field): static => $this->nullable(fn(\Closure $get): bool => blank($get($field))));
-        Components\Field::macro('nullableIfFilled', fn(string $field): static => $this->nullable(fn(\Closure $get): bool => filled($get($field))));
+        Components\Field::macro('nullableIfBlank', fn(string $field): static => $this->nullable(fn(Closure $get): bool => blank($get($field))));
+        Components\Field::macro('nullableIfFilled', fn(string $field): static => $this->nullable(fn(Closure $get): bool => filled($get($field))));
 
-        Components\Field::macro('hiddenIfBlank', fn(string $field): static => $this->hidden(fn(\Closure $get): bool => blank($get($field))));
-        Components\Field::macro('hiddenIfFilled', fn(string $field): static => $this->hidden(fn(\Closure $get): bool => filled($get($field))));
+        Components\Field::macro('hiddenIfBlank', fn(string $field): static => $this->hidden(fn(Closure $get): bool => blank($get($field))));
+        Components\Field::macro('hiddenIfFilled', fn(string $field): static => $this->hidden(fn(Closure $get): bool => filled($get($field))));
 
         Components\TextInput::macro('lazyEntangled', fn(): static => $this->extraAlpineAttributes(['x-on:blur' => '$wire.$refresh'])); //fake entangled.lazy on TextInputs with Masks
 

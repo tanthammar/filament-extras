@@ -18,7 +18,6 @@ class TranslatableDescription
         return MarkdownEditor::make($column)
             ->label(__($label))->columnSpan(2)->nullable()->rules('string')
             ->requiredIfBlank($autoFillFrom)
-            ->nullableIfFilled($autoFillFrom)
             ->dehydrateStateUsing(fn(Closure $get, $state) => $state ?? $get($autoFillFrom));
     }
 }

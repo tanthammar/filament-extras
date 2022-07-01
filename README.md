@@ -28,12 +28,10 @@ Example with json column:
 ```php
 Mobile::input(column: "$column.mobile")
     ->requiredIfBlank(field: "$column.phone")
-    ->nullableIfFilled(field: "$column.phone")
     ->lazyEntangled(),
 
 LandLine::input(column: "$column.phone")
     ->requiredIfBlank(field: "$column.mobile")
-    ->nullableIfFilled(field: "$column.mobile")
     ->lazyEntangled(),
 ```
 
