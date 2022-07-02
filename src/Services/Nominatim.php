@@ -21,7 +21,7 @@ class Nominatim
     {
         $empty = ['empty' => trans('filament-extras::misc.no-addresses-found')];
 
-        if(empty($address)) return $empty;
+        if(blank($address)) return $empty;
 
         sleep(1); //Nominatim api has a rate limit of 1 second
 
@@ -45,7 +45,7 @@ class Nominatim
      * @param int $osm_id
      * @return array
      */
-    public static function lookup(null|int $osm_id): array
+    public static function lookup(null|int $osm_id, ?array $existingFieldValue = []): array
     {
         if(!$osm_id) return [];
 
@@ -69,7 +69,7 @@ class Nominatim
             $mapped['country_code'] = data_get($address, 'country_code');
             $mapped['latitude'] = data_get($address, 'lat');
             $mapped['longitude'] = data_get($address, 'lon');
-            return $mapped;
+            return array_merge($existingFieldValue, $mapped);
         }
 
         return [];

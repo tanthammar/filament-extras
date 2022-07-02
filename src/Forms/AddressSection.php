@@ -20,7 +20,7 @@ class AddressSection
             ->schema([
                 AddressSearch::make($jsonColumnName),
                 TextInput::make("$jsonColumnName.label")->label(__('fields.adr_dept'))->default(__('field-labels.hq'))->required()->rules('alpha_space'),
-                TextInput::make("$jsonColumnName.box")->label(__('fields.box'))->nullable()->rules('alpha_dash'),
+                TextInput::make("$jsonColumnName.box")->label(__('fields.box'))->nullable()->rules('alpha_dash_space'),
                 TextInput::make("$jsonColumnName.street")->label(__('fields.street'))->required()->rules('alpha_dash_space'),
                 TextInput::make("$jsonColumnName.address_line_2")->label(__('fields.address_line_2'))->nullable()->rules('alpha_dash_space'),
                 TextInput::make("$jsonColumnName.zip")->label(__('fields.zip'))->required()->rules('alpha_dash_space'),
