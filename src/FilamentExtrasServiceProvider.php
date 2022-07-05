@@ -31,22 +31,33 @@ class FilamentExtrasServiceProvider extends PluginServiceProvider
         /**
          * ->dehydrated determines if a field is present in the form's output & validation
          */
-        Components\Field::macro('saveIfFilled', fn(): static => $this->dehydrated(fn($state): bool => filled($state)));
-        Components\Field::macro('saveIfBlank', fn(): static => $this->dehydrated(fn($state): bool => blank($state)));
-        Components\Field::macro('saveIfValue', fn(): static => $this->dehydrated(fn($state): bool => (bool)$state));
-        Components\Field::macro('saveIfNoValue', fn(): static => $this->dehydrated(fn($state): bool => !(bool)$state));
+        Components\Field::macro('saveIfSelfFilled', fn(): static => $this->dehydrated(fn($state): bool => filled($state)));
+        Components\Field::macro('saveIfSelfBlank', fn(): static => $this->dehydrated(fn($state): bool => blank($state)));
+        Components\Field::macro('saveIfSelfValue', fn(): static => $this->dehydrated(fn($state): bool => (bool)$state));
+        Components\Field::macro('saveIfSelfNoValue', fn(): static => $this->dehydrated(fn($state): bool => !(bool)$state));
         Components\Field::macro('saveAs', fn(?Closure $callback): static => $this->dehydrateStateUsing($callback));
 
         Components\Field::macro('ignored', fn(): static => $this->dehydrated(false));
 
         Components\Field::macro('requiredIfBlank', fn(string $field): static => $this->required(fn(Closure $get): bool => blank($get($field))));
         Components\Field::macro('requiredIfFilled', fn(string $field): static => $this->required(fn(Closure $get): bool => filled($get($field))));
-
+        Components\Field::macro('requiredIfChecked', fn(string $field): static => $this->required(fn(Closure $get): bool => $get($field)));
+        Components\Field::macro('requiredIfUnChecked', fn(string $field): static => $this->required(fn(Closure $get): bool => !$get($field)));
+        
         Components\Field::macro('nullableIfBlank', fn(string $field): static => $this->nullable(fn(Closure $get): bool => blank($get($field))));
         Components\Field::macro('nullableIfFilled', fn(string $field): static => $this->nullable(fn(Closure $get): bool => filled($get($field))));
+        Components\Field::macro('nullableIfChecked', fn(string $field): static => $this->nullable(fn(Closure $get): bool => $get($field)));
+        Components\Field::macro('nullableIfUnChecked', fn(string $field): static => $this->nullable(fn(Closure $get): bool => !$get($field)));
 
         Components\Field::macro('hiddenIfBlank', fn(string $field): static => $this->hidden(fn(Closure $get): bool => blank($get($field))));
         Components\Field::macro('hiddenIfFilled', fn(string $field): static => $this->hidden(fn(Closure $get): bool => filled($get($field))));
+        Components\Field::macro('hiddenIfChecked', fn(string $field): static => $this->hidden(fn(Closure $get): bool => $get($field)));
+        Components\Field::macro('hiddenIfUnChecked', fn(string $field): static => $this->hidden(fn(Closure $get): bool => !$get($field)));
+
+        Components\Field::macro('visibleIfBlank', fn(string $field): static => $this->visible(fn(Closure $get): bool => blank($get($field))));
+        Components\Field::macro('visibleIfFilled', fn(string $field): static => $this->visible(fn(Closure $get): bool => filled($get($field))));
+        Components\Field::macro('visibleIfChecked', fn(string $field): static => $this->visible(fn(Closure $get): bool => $get($field)));
+        Components\Field::macro('visibleIfUnChecked', fn(string $field): static => $this->visible(fn(Closure $get): bool => !$get($field)));
 
         Components\TextInput::macro('lazyEntangled', fn(): static => $this->extraAlpineAttributes(['x-on:blur' => '$wire.$refresh'])); //fake entangled.lazy on TextInputs with Masks
 
