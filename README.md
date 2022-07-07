@@ -6,6 +6,16 @@ If they get merged into the main Filament repo, they will be removed here!, but 
 
 Might be best to fork this repo so you're in control of changes, or install the dev branch. It is not my plan to keep release versions.
 
+## Screenshots
+AddressSection
+
+![AddressSection](images/AddressSection.gif)
+
+Disabled field
+
+![](images/Disabled.png) ![](images/Disabled-dark.png)
+
+
 ## Documentation
 There won't be much documentation written, this repository will grow as I add items.
 Hopefully the source code contains enough hints to use the components.
@@ -21,15 +31,6 @@ If not, please post a question in the discussions tab.
 ```bash
 composer require tanthammar/filament-extras
 ```
-
-## Screenshots
-Disabled field
-
-![](images/Disabled.png) ![](images/Disabled-dark.png)
-
-AddressSection
-
-![AddressSection](images/AddressSection.gif)
 
 ## Macros
 See `FilamentExtrasServiceProvider`
