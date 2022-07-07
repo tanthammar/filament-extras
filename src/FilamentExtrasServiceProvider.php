@@ -17,7 +17,8 @@ class FilamentExtrasServiceProvider extends PluginServiceProvider
          */
         $package
             ->name('filament-extras')
-            ->hasTranslations();
+            ->hasTranslations()
+            ->hasViews('filament-extras');
     }
 
 
