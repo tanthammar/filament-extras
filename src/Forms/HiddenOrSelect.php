@@ -5,7 +5,7 @@ namespace TantHammar\FilamentExtras\Forms;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 
-class HiddenOrEnum
+class HiddenOrSelect
 {
 
     public static function make(
@@ -13,11 +13,11 @@ class HiddenOrEnum
         string $column,
         string $label,
         string|array $rule,
-        array $enumValues,
+        array $options,
     ): Hidden|Select
     {
         return $condition
-                    ? Select::make($column)->label(__($label))->rules($rule)->options($enumValues)
+                    ? Select::make($column)->label(__($label))->rules($rule)->options($options)
                     : Hidden::make($column)->rules($rule);
     }
 

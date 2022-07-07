@@ -14,7 +14,7 @@ use TantHammar\FilamentExtras\Forms\HiddenOrText;
 class AddressSection
 {
 
-    public static function make(string $jsonColumnName, string $label = 'Address'): Section
+    public static function make(string $jsonColumnName = 'address', string $label = 'Address'): Section
     {
         return Section::make(__($label))
             ->schema(array_merge(

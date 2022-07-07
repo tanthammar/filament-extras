@@ -34,6 +34,7 @@ AddressSection
 ## Macros
 See `FilamentExtrasServiceProvider`
 
+```bash
 saveIfSelfFilled
 saveIfSelfBlank
 saveIfSelfValue
@@ -60,6 +61,7 @@ ucwords
 ucfirst
 smallcaps
 uppercase
+``` 
 
 ## Blade components
 See resources/views/components
@@ -75,25 +77,41 @@ Example
 ## Form Fields
 See src/Forms
 
-
 ```php
-FirstName::make()
-LastName::make()
-Email::make()
-PasswordInput::current()
-PasswordInput::create()
-PasswordInput::confirmation()
-Mobile::make(column: 'mobile') //validates international mobile numbers
-LandLine::make(column: 'landline')//validates international landline numbers
-Phone::make(column: 'phone') //validates international phone numbers (disregards phone number type)
+AddressSection::make(string $jsonColumnName = 'address', string $label = 'Address'); //Address lookup using free OSM service. Consists of AddressSearch + AddressFields
+AddressSearch::make(string $jsonColumnName = 'address'); //Address search field only, if you want to add your own fields for the Address lookup
+AddressFields::make(?string $jsonColumnName = null); //The fields that Address search tries to fill 
+
+Uuid::make(mixed $hiddenOn, string $column = 'uuid');
+BusinessName::make(string $column = 'name');
+FirstName::make(string $column = 'first_name');
+LastName::make(string $column = 'last_name');
+Email::make(string $column = 'email', bool $unique = true);
+
+Disabled::make(string $name); //Field that carries and displays a value but cannot be edited in frontend, represented with a dashed border
+HiddenOrSelect::make(bool $condition, string $column, string $label, string|array $rule, array $options );
+HiddenOrText::make(bool $condition, string $column, string $label, string|array $rule);
+
+JetstreamAuthorSection::make();
+
+LandLine::make(string $column = 'phone', null|int $default = 460, string $label = 'fields.phone');//validates international landline numbers
+Mobile::make(string $column = 'mobile', null|int $default = 460, string $label = 'fields.mobile'); //validates international mobile numbers
+Phone::make(string $column = 'phone', null|int $default = 460, string $label = 'fields.phone'); //validates international phone numbers (disregards phone number type)
+
+SpatieSlug::make(mixed $hiddenOn, string $column = 'slug');
+TranslatableDescription::make(string $column, string $autoFillFrom, string $label);
+
+PasswordInput::current();
+PasswordInput::create();
+PasswordInput::confirmation();
 ```
 
-## Table Column examples
+## Table Columns
 See src/Tables
 ```php
-DTOColumn::make(string $column, string $attribute), //If you cast your json column into DTO's. Retrieved as $column?->attribute ?? ''
-JsonColumn::make(string $column, string $dotNotation) //Cast your json column into 'array'. Retreived as data_get($column, $dotNotation, '')
-PhoneColumn::make(string $column) //Format international phone numbers
+DTOColumn::make(string $column, string $attribute); //If you cast your json column into DTO's. Retrieved as $column?->attribute ?? ''
+JsonColumn::make(string $column, string $dotNotation); //Cast your json column into 'array'. Retreived as data_get($column, $dotNotation, '')
+PhoneColumn::make(string $column); //Auto-format international phone numbers (slow!, better to format when you save your value)
 ```
 
 
