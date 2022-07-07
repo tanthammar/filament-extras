@@ -33,19 +33,38 @@ AddressSection
 
 ## Macros
 See `FilamentExtrasServiceProvider`
-Example with json column:
-```php
-Mobile::input(column: "$column.mobile")
-    ->requiredIfBlank(field: "$column.phone")
-    ->lazyEntangled(),
 
-LandLine::input(column: "$column.phone")
-    ->requiredIfBlank(field: "$column.mobile")
-    ->lazyEntangled(),
-```
+saveIfSelfFilled
+saveIfSelfBlank
+saveIfSelfValue
+saveIfSelfNoValue
+saveAs
+ignored
+requiredIfBlank
+requiredIfFilled
+requiredIfChecked
+requiredIfUnChecked
+nullableIfBlank
+nullableIfFilled
+nullableIfChecked
+nullableIfUnChecked
+hiddenIfBlank
+hiddenIfFilled
+hiddenIfChecked
+hiddenIfUnChecked
+visibleIfBlank
+visibleIfFilled
+visibleIfChecked
+visibleIfUnChecked
+ucwords
+ucfirst
+smallcaps
+uppercase
 
-## Blade component example
+## Blade components
 See resources/views/components
+
+Example
 ```html
 <x-filament-extras::form submit="submitMethodName" label="Form heading" description="Very nice form component" button="Save">
     {{ $this->form }}
@@ -53,18 +72,20 @@ See resources/views/components
 </x-filament-extras::form>
 ```
 
-## Form Fields examples
+## Form Fields
 See src/Forms
+
+
 ```php
-FirstName::input()
-LastName::input()
-Email::input()
+FirstName::make()
+LastName::make()
+Email::make()
 PasswordInput::current()
 PasswordInput::create()
 PasswordInput::confirmation()
-Mobile::input(column: 'mobile') //validates international mobile numbers
-LandLine::input(column: 'landline')//validates international landline numbers
-Phone::input(column: 'phone') //validates international phone numbers (disregards phone number type)
+Mobile::make(column: 'mobile') //validates international mobile numbers
+LandLine::make(column: 'landline')//validates international landline numbers
+Phone::make(column: 'phone') //validates international phone numbers (disregards phone number type)
 ```
 
 ## Table Column examples

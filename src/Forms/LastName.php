@@ -6,7 +6,7 @@ use Filament\Forms\Components\TextInput;
 
 class LastName
 {
-    public static function input(string $column = 'last_name'): TextInput
+    public static function make(string $column = 'last_name'): TextInput
     {
         return TextInput::make($column)
             ->label(trans('fields.last-name'))

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Email
 {
-    public static function input(string $column = 'email', bool $unique = true): TextInput
+    public static function make(string $column = 'email', bool $unique = true): TextInput
     {
         $field = TextInput::make($column)
             ->label(trans('fields.email'))

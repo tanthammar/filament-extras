@@ -9,7 +9,7 @@ use Filament\Forms\Components\MarkdownEditor;
  */
 class TranslatableDescription
 {
-    public static function input(
+    public static function make(
         string $column,
         string $autoFillFrom,
         string $label): MarkdownEditor

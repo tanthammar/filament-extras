@@ -10,7 +10,7 @@ use TantHammar\LaravelRules\Rules\FixedLineNumber;
  */
 class LandLine
 {
-    public static function input(string $column = 'phone', null|int $default = 460, string $label = 'fields.phone'): Components\TextInput
+    public static function make(string $column = 'phone', null|int $default = 460, string $label = 'fields.phone'): Components\TextInput
     {
         return Components\TextInput::make($column)
             ->label(trans($label))
