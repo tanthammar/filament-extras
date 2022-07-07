@@ -29,7 +29,7 @@ Disabled field
 
 AddressSection
 
-![AddressSection]<img src="images/AddressSection.gif" height="380"  width="639"/>
+![AddressSection](images/AddressSection.gif)
 
 ## Macros
 See `FilamentExtrasServiceProvider`
