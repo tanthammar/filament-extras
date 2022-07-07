@@ -2,7 +2,6 @@
 
 namespace TantHammar\FilamentExtras\Forms;
 
-use Closure;
 use Filament\Forms\Components\MarkdownEditor;
 
 /**
@@ -18,6 +17,6 @@ class TranslatableDescription
         return MarkdownEditor::make($column)
             ->label(__($label))->columnSpan(2)->nullable()->rules('string')
             ->requiredIfBlank($autoFillFrom)
-            ->dehydrateStateUsing(fn(Closure $get, $state) => $state ?? $get($autoFillFrom));
+            ->dehydrateStateUsing(fn($get, $state) => $state ?? $get($autoFillFrom));
     }
 }
