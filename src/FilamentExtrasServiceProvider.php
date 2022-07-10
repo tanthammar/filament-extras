@@ -45,6 +45,11 @@ class FilamentExtrasServiceProvider extends PluginServiceProvider
         Components\Field::macro('requiredIfChecked', fn(string $field): static => $this->required(fn(Closure $get): bool => $get($field)));
         Components\Field::macro('requiredIfUnChecked', fn(string $field): static => $this->required(fn(Closure $get): bool => !$get($field)));
 
+        Components\Field::macro('disabledIfBlank', fn(string $field): static => $this->disabled(fn(Closure $get): bool => blank($get($field))));
+        Components\Field::macro('disabledIfFilled', fn(string $field): static => $this->disabled(fn(Closure $get): bool => filled($get($field))));
+        Components\Field::macro('disabledIfChecked', fn(string $field): static => $this->disabled(fn(Closure $get): bool => $get($field)));
+        Components\Field::macro('disabledIfUnChecked', fn(string $field): static => $this->disabled(fn(Closure $get): bool => !$get($field)));
+
         Components\Field::macro('nullableIfBlank', fn(string $field): static => $this->nullable(fn(Closure $get): bool => blank($get($field))));
         Components\Field::macro('nullableIfFilled', fn(string $field): static => $this->nullable(fn(Closure $get): bool => filled($get($field))));
         Components\Field::macro('nullableIfChecked', fn(string $field): static => $this->nullable(fn(Closure $get): bool => $get($field)));

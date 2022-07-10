@@ -46,6 +46,10 @@ requiredIfBlank
 requiredIfFilled
 requiredIfChecked
 requiredIfUnChecked
+disabledIfBlank
+disabledIfFilled
+disabledIfChecked
+disabledIfUnChecked
 nullableIfBlank
 nullableIfFilled
 nullableIfChecked
