@@ -84,4 +84,27 @@ class Nominatim
         };
         return $city;
     }
+
+    /**
+     * Get first found lat/lon from an address string<br>
+     * returns array with format [string|float|null $lat, string|float|null $lon],
+     */
+    public static function getFirstLatLong(string $address): array
+    {
+        $noResult = [null, null];
+
+        if($address = "") {
+            return $noResult;
+        }
+        sleep(1); //Nominatim api rate limit
+
+        $response = Http::retry(2, 1000)->get("https://nominatim.openstreetmap.org/search?addressdetails=1&q=$address&format=json");
+
+        if($response->ok()) {
+            $c = collect(collect($response->json())->first());
+            return [$c->get('lat'), $c->get('lon')];
+        }
+
+        return $noResult;
+    }
 }

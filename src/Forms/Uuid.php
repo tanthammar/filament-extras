@@ -16,7 +16,7 @@ class Uuid
         return TextInput::make($column)
             ->maxLength(36)
             ->visible(user()?->isSuperAdmin())
-            ->hiddenOn(livewireClass: $hiddenOn);
+            ->hiddenOn(contexts: $hiddenOn);
 
     }
 }

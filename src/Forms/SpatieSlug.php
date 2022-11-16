@@ -16,6 +16,6 @@ class SpatieSlug
         return TextInput::make($column)
             ->maxLength(255)
             ->visible(user()?->isSuperAdmin())
-            ->hiddenOn(livewireClass: $hiddenOn);
+            ->hiddenOn(contexts: $hiddenOn);
     }
 }
