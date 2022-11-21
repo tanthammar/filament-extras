@@ -37,9 +37,9 @@ class FilamentExtrasServiceProvider extends PluginServiceProvider
         Components\Field::macro('saveIfSelfValue', fn(): static => $this->dehydrated(fn($state): bool => (bool)$state));
         Components\Field::macro('saveIfSelfNoValue', fn(): static => $this->dehydrated(fn($state): bool => !(bool)$state));
 
-        Components\Field::macro('loadAs', fn(mixed $callback): static => $this->afterStateHydrated(fn ($state) => dd($callback)));
-        Components\Field::macro('saveAs', fn(mixed $callback): static => $this->dehydrateStateUsing(fn ($state) => $callback));
-        Components\Field::macro('updateAs', fn(mixed $callback): static => $this->afterStateUpdated(fn ($state) => $callback));
+        Components\Field::macro('loadAs', fn(mixed $callback): static => $this->afterStateHydrated(fn ($component) => $component->state($callback)));
+        Components\Field::macro('saveAs', fn(mixed $callback): static => $this->dehydrateStateUsing($callback));
+        Components\Field::macro('updateAs', fn(mixed $callback): static => $this->afterStateUpdated(fn ($component) => $component->state($callback)));
 
         Components\Field::macro('onLoaded', fn(?Closure $callback): static => $this->afterStateHydrated($callback));
         Components\Field::macro('onSave', fn(?Closure $callback): static => $this->dehydrateStateUsing($callback));
