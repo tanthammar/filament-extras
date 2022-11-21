@@ -45,7 +45,12 @@ saveIfSelfFilled
 saveIfSelfBlank
 saveIfSelfValue
 saveIfSelfNoValue
+loadAs
 saveAs
+updateAs
+onLoad
+onUpdate
+onSave
 ignored
 requiredIfBlank
 requiredIfFilled
