@@ -18,7 +18,7 @@ class JetstreamAuthorSection
                     ->onUpdated(fn($set, $state) => $set('team', [
                         $state ? User::find($state)?->current_team_id : null
                     ])),
-                TeamBelongsTo::make()->required()
+                TeamBelongsTo::make()
             ])->columns(2)
             ->collapsible();
     }
