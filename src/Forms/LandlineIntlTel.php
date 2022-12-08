@@ -22,5 +22,4 @@ class LandlineIntlTel
             ])
             ->prefixIcon('heroicon-o-phone');
     }
-
 }

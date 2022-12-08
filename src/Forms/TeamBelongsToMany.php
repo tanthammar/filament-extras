@@ -2,35 +2,32 @@
 
 namespace TantHammar\FilamentExtras\Forms;
 
-use App\Models\Team;
 use App\Models\User;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\Select;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\Rule;
 
 class TeamBelongsToMany
 {
-    public static function make(): Select|CheckboxList
+    /**
+     * Support can search among ALL teams a user belongs to<br>
+     * whereas user only can select between OWNED teams
+     *
+     * @return CheckboxList
+     */
+    public static function make(): CheckboxList
     {
-        $user_id = fn($get) => $get('user_id');
-        return user()->isSupport()
-
-            ? CheckboxList::make('teams')->label(__('fields.team'))
-                ->relationship('teams', 'name')
-                ->default([user()->current_team_id])
-                ->options($allowedTeams = User::find($user_id)?->allTeams()->pluck('name', 'id') ?? collect())
-                ->required()
-                ->rules(['array'])
-                ->rulesForeachItem(['bail', Rule::in($allowedTeams->keys()->toArray())])
-
-            : CheckboxList::make('teams')->label(__('fields.team'))
-                ->relationship('teams', 'name')
-                ->default([user()->current_team_id])
-                ->options($allowedTeams = user()->ownedTeams()->pluck('name', 'id'))
-                ->required()
-                ->rules(['array'])
-                ->rulesForeachItem(['bail', Rule::in($allowedTeams->keys()->toArray())])
-                ->visible(user()->ownedTeams()->count());
+        return CheckboxList::make('teams')->label(__('fields.team'))
+            ->relationship('teams', 'name')
+            ->default([user()->current_team_id])
+            ->options(fn ($get) => user()->isSupport()
+                ? User::find($get('user_id'))?->allTeams()->pluck('name', 'id') ?? collect()
+                : user()->ownedTeams()->pluck('name', 'id') ?? collect()
+            )
+            ->bulkToggleable()
+            ->columns(2)
+            ->required()
+            ->rule('array')
+            ->ruleEachInOptions()
+            ->visible(user()->isSupport() || user()->hasOwnedTeams());
     }
 }

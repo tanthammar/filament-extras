@@ -16,10 +16,10 @@ class Author
         return Select::make('user_id')->label(__('fields.user'))
             ->relationship('author', 'name')
             ->searchable($isSupport)
-            ->getSearchResultsUsing(fn(string $search) => $isSupport
+            ->getSearchResultsUsing(fn (string $search) => $isSupport
                 ? User::where('name', 'like', "%{$search}%")->limit(50)->pluck('name', 'id')
                 : user()->currentTeam->allUsers()->pluck('name', 'id'))
-            ->getOptionLabelUsing(fn($value): ?string => User::find($value)?->name)
+            ->getOptionLabelUsing(fn ($value): ?string => User::find($value)?->name)
             ->disablePlaceholderSelection()
             ->default(Auth::id())
             ->rule($isSupport

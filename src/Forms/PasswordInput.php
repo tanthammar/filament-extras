@@ -16,7 +16,7 @@ class PasswordInput
             ->minLength(8)
             ->maxLength(20)
             ->rules(['string', PasswordRule::min(8)->mixedCase()->numbers(), 'max:20'])
-            ->saveAs(fn($state) => Hash::make($state))
+            ->saveAs(fn ($state) => Hash::make($state))
             ->autocomplete('new-password');
     }
 
@@ -41,5 +41,4 @@ class PasswordInput
             ->autocomplete('off')
             ->columnSpan(1);
     }
-
 }

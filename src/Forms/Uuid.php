@@ -17,6 +17,5 @@ class Uuid
             ->maxLength(36)
             ->visible(user()?->isSuperAdmin())
             ->hiddenOn(contexts: $hiddenOn);
-
     }
 }

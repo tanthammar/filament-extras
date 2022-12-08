@@ -22,5 +22,4 @@ class MobileIntlTel
             ])
             ->prefixIcon('heroicon-o-device-mobile');
     }
-
 }

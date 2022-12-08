@@ -17,7 +17,7 @@ class Email
             ->rules(['email:strict,dns,spoof'])
             ->prefixIcon('heroicon-o-at-symbol');
 
-        if($unique) {
+        if ($unique) {
             return $field->unique(ignorable: fn (?Model $record): ?Model => $record);
         }
 

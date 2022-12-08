@@ -2,18 +2,10 @@
 
 namespace TantHammar\FilamentExtras\Forms;
 
-use App\DTO\Address;
-use Filament\Forms\Components\Hidden;
-use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\Section;
-use Filament\Forms\Components\TextInput;
-use TantHammar\LaravelRules\Rules\Latitude;
-use TantHammar\LaravelRules\Rules\Longitude;
-use TantHammar\FilamentExtras\Forms\HiddenOrText;
 
 class AddressSection
 {
-
     public static function make(string $jsonColumnName = 'address', string $label = 'Address'): Section
     {
         return Section::make(__($label))
@@ -23,5 +15,4 @@ class AddressSection
             ))->columns(2)
             ->collapsible();
     }
-
 }

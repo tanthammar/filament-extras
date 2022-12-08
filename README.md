@@ -76,6 +76,8 @@ ucwords
 ucfirst
 smallcaps
 uppercase
+ruleEachInOptions
+ruleInOptions
 ``` 
 
 ## Blade components

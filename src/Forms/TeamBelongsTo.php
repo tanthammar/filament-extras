@@ -2,32 +2,30 @@
 
 namespace TantHammar\FilamentExtras\Forms;
 
+use App\Models\User;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\Select;
-use Illuminate\Validation\Rule;
-use App\Models\Team;
 
 class TeamBelongsTo
 {
+    /**
+     * Support can search among ALL teams a user belongs to<br>
+     * whereas user only can select between OWNED teams
+     *
+     * @return CheckboxList
+     */
     public static function make(): Select
     {
-        return user()->isSupport()
-            ? Select::make('team_id')->label(__('fields.team'))
-                ->relationship('team', 'name')
-                ->searchable()
-                ->default(user()->current_team_id)
-                ->getSearchResultsUsing(fn(string $search) => Team::where('name', 'like', "%{$search}%")->limit(50)->pluck('name', 'id'))
-                ->getOptionLabelUsing(fn($value): ?string => Team::find($value)?->name)
-                ->disablePlaceholderSelection()
-                ->rule('array')
-                ->rulesForeachItem([Rule::exists('teams', 'id')])
-
-            : Select::make('team_id')->label(__('fields.team'))
-                ->disablePlaceholderSelection()
-                ->relationship('team', 'name')
-                ->options($allowedTeams = user()->ownedTeams()->pluck('name', 'id'))
-                ->default(user()->current_team_id)
-                ->rules([Rule::in($allowedTeams->keys()->toArray())])
-                ->visible(user()->ownedTeams()->count());
+        return Select::make('team_id')->label(__('fields.team'))
+            ->relationship('team', 'name')
+            ->default(user()->current_team_id)
+            ->options(fn ($get) => user()->isSupport()
+                ? User::find($get('user_id'))?->allTeams()->pluck('name', 'id') ?? collect()
+                : user()->ownedTeams()->pluck('name', 'id') ?? collect()
+            )
+            ->disablePlaceholderSelection()
+            ->rule('array')
+            ->ruleInOptions()
+            ->required();
     }
 }

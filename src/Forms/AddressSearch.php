@@ -15,7 +15,7 @@ class AddressSearch
             ->searchable()
             ->ignored()
             ->reactive()
-            ->getSearchResultsUsing(fn(string $search) => Nominatim::search($search))
+            ->getSearchResultsUsing(fn (string $search) => Nominatim::search($search))
             ->afterStateUpdated(function ($set, $get, $state) use ($jsonColumnName) {
                 $set($jsonColumnName, Nominatim::lookup(osm_id: $state, existingFieldValue: $get($jsonColumnName)));
             });

@@ -11,17 +11,19 @@ use Illuminate\Support\Facades\Http;
  */
 class Nominatim
 {
-
     /**
      * https://nominatim.org/release-docs/latest/api/Search/
-     * @param string $address
+     *
+     * @param  string  $address
      * @return array
      */
     public static function search(string $address): array
     {
         $empty = ['empty' => trans('filament-extras::misc.no-addresses-found')];
 
-        if(blank($address)) return $empty;
+        if (blank($address)) {
+            return $empty;
+        }
 
         sleep(1); //Nominatim api has a rate limit of 1 second
 
@@ -35,32 +37,35 @@ class Nominatim
         return $collection
             ->pluck('display_name', 'osm_id')
             ->whenNotEmpty(
-                fn($collection) => $collection->toArray(),
-                fn() => $empty
+                fn ($collection) => $collection->toArray(),
+                fn () => $empty
             );
     }
 
     /**
      * https://nominatim.org/release-docs/latest/api/Lookup/
-     * @param int $osm_id
+     *
+     * @param  int  $osm_id
      * @return array
      */
     public static function lookup(null|int $osm_id, ?array $existingFieldValue = []): array
     {
-        if(!$osm_id) return [];
+        if (! $osm_id) {
+            return [];
+        }
 
         sleep(1); //Nominatim api has a rate limit of 1 second
 
         $response = Http::retry(2, 1000)->get("https://nominatim.openstreetmap.org/lookup?addressdetails=1&osm_ids=W$osm_id,R$osm_id,N$osm_id&limit=1&format=json");
 
-        if($response->ok()) {
+        if ($response->ok()) {
             $c = collect($response->json())->first();
             data_set($c, 'address.lat', data_get($c, 'lat', null));
             data_set($c, 'address.lon', data_get($c, 'lon', null));
             data_set($c, 'address.country_code', strtoupper(data_get($c, 'address.country_code', '')));
             $address = data_get($c, 'address', []);
             $mapped = [];
-            $mapped['street'] = rtrim(data_get($address, 'road') . ' ' . data_get($address, 'house_number'));
+            $mapped['street'] = rtrim(data_get($address, 'road').' '.data_get($address, 'house_number'));
             $mapped['zip'] = data_get($address, 'postcode');
             $mapped['city'] = self::getCity($address);
             $mapped['state'] = data_get($address, 'state') ?? data_get($address, 'municipality');
@@ -69,6 +74,7 @@ class Nominatim
             $mapped['country_code'] = data_get($address, 'country_code');
             $mapped['latitude'] = data_get($address, 'lat');
             $mapped['longitude'] = data_get($address, 'lon');
+
             return array_merge($existingFieldValue, $mapped);
         }
 
@@ -79,9 +85,10 @@ class Nominatim
     {
         $city = data_get($address, 'city') ?? data_get($address, 'village');
         //fix for OSM Swedish city/state mixup
-        if(str_ends_with($city, "s kommun")) {
+        if (str_ends_with($city, 's kommun')) {
             return str_replace('s kommun', '', $city);
-        };
+        }
+
         return $city;
     }
 
@@ -93,15 +100,16 @@ class Nominatim
     {
         $noResult = [null, null];
 
-        if($address = "") {
+        if ($address = '') {
             return $noResult;
         }
         sleep(1); //Nominatim api rate limit
 
         $response = Http::retry(2, 1000)->get("https://nominatim.openstreetmap.org/search?addressdetails=1&q=$address&format=json");
 
-        if($response->ok()) {
+        if ($response->ok()) {
             $c = collect(collect($response->json())->first());
+
             return [$c->get('lat'), $c->get('lon')];
         }
 
