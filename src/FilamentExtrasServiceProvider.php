@@ -71,16 +71,16 @@ class FilamentExtrasServiceProvider extends PluginServiceProvider
         Components\Field::macro('visibleIfChecked', fn (string $field): static => $this->visible(fn (Closure $get): bool => $get($field)));
         Components\Field::macro('visibleIfUnChecked', fn (string $field): static => $this->visible(fn (Closure $get): bool => ! $get($field)));
 
-        Components\Field::macro('ucwords', fn (): static => $this->dehydrateStateUsing(fn ($state) => ucwords($state)));
-        Components\Field::macro('ucfirst', fn (): static => $this->dehydrateStateUsing(fn ($state) => ucfirst($state)));
-        Components\Field::macro('smallcaps', fn (): static => $this->dehydrateStateUsing(fn ($state) => strtolower($state)));
-        Components\Field::macro('uppercase', fn (): static => $this->dehydrateStateUsing(fn ($state) => strtoupper($state)));
+        Components\Field::macro('ucwords', fn (): static => $this->dehydrateStateUsing(fn ($state) => mb_convert_case($state, MB_CASE_TITLE, "UTF-8")));
+        Components\Field::macro('ucfirst', fn (): static => $this->dehydrateStateUsing(fn ($state) => mb_convert_case(mb_substr($state, 0, 1), MB_CASE_TITLE) . mb_substr($state, 1)));
+        Components\Field::macro('smallcaps', fn (): static => $this->dehydrateStateUsing(fn ($state) => mb_strtolower($state)));
+        Components\Field::macro('uppercase', fn (): static => $this->dehydrateStateUsing(fn ($state) => mb_strtoupper($state)));
 
-        Components\TagsInput::macro('ruleEachInOptions', fn (): static => $this->rulesForeachItem(['bail', fn ($component): \Illuminate\Validation\Rules\In => Rule::in(array_keys($component->getOptions()))]));
-        Components\CheckboxList::macro('ruleEachInOptions', fn (): static => $this->rulesForeachItem(['bail', fn ($component): \Illuminate\Validation\Rules\In => Rule::in(array_keys($component->getOptions()))]));
+        Components\TagsInput::macro('ruleEachInOptions', fn (): static => $this->nestedRecursiveRules(['bail', fn ($component): \Illuminate\Validation\Rules\In => Rule::in(array_keys($component->getOptions()))]));
+        Components\CheckboxList::macro('ruleEachInOptions', fn (): static => $this->nestedRecursiveRules(['bail', fn ($component): \Illuminate\Validation\Rules\In => Rule::in(array_keys($component->getOptions()))]));
 
         /** For Select->multiple() */
-        Components\Select::macro('ruleEachInOptions', fn (): static => $this->rulesForeachItem(['bail', fn ($component): \Illuminate\Validation\Rules\In => Rule::in(array_keys($component->getOptions()))]));
+        Components\Select::macro('ruleEachInOptions', fn (): static => $this->nestedRecursiveRules(['bail', fn ($component): \Illuminate\Validation\Rules\In => Rule::in(array_keys($component->getOptions()))]));
 
         /** for single Select */
         Components\Select::macro('ruleInOptions', fn (): static => $this->rule(fn ($component): \Illuminate\Validation\Rules\In => Rule::in(array_keys($component->getOptions()))));

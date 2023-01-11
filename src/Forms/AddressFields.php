@@ -13,7 +13,10 @@ class AddressFields
         $jsonColumnName = $jsonColumnName && ! str_ends_with($jsonColumnName, '.') ? "$jsonColumnName." : $jsonColumnName;
 
         return [
-            TextInput::make($jsonColumnName.'label')->label(__('fields.adr_dept'))->default(__('field-labels.hq'))->required()->rules('alpha_space'),
+            TextInput::make($jsonColumnName.'label')->label(__('fields.adr_dept'))
+                ->default(__('field-labels.postal'))
+                ->hint(__('fields.adr_dept_hint'))
+                ->visible()->required()->rules('alpha_space'),
             TextInput::make($jsonColumnName.'box')->label(__('fields.box'))->nullable()->rules('alpha_dash_space'),
             TextInput::make($jsonColumnName.'street')->label(__('fields.street'))->required()->rules('alpha_dash_space'),
             TextInput::make($jsonColumnName.'address_line_2')->label(__('fields.address_line_2'))->nullable()->rules('alpha_dash_space'),
