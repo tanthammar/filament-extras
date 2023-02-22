@@ -24,7 +24,6 @@ class TeamBelongsTo
                 : user()->ownedTeams()->pluck('name', 'id') ?? collect()
             )
             ->disablePlaceholderSelection()
-            ->rule('array')
             ->ruleInOptions()
             ->required();
     }

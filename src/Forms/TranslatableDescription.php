@@ -9,15 +9,15 @@ use Filament\Forms\Components\MarkdownEditor;
  */
 class TranslatableDescription
 {
-    public static function make(string $column = 'description'): array
+    public static function make(string $column = 'description', int $colspan = 2): array
     {
         return [
             MarkdownEditor::make("$column.sv")
-                ->label(__("fields.$column-swedish"))->columnSpan(2)->nullable()->rules('string')
+                ->label(__("fields.$column").' Svenska')->columnSpan($colspan)->nullable()->rules('string')
                 ->requiredIfBlank("$column.en")
                 ->saveAs(fn ($get, $state) => $state ?? $get("$column.en")),
             MarkdownEditor::make("$column.en")
-                ->label(__("fields.$column-english"))->columnSpan(2)->nullable()->rules('string')
+                ->label(__("fields.$column").' English')->columnSpan($colspan)->nullable()->rules('string')
                 ->requiredIfBlank("$column.sv")
                 ->saveAs(fn ($get, $state) => $state ?? $get("$column.sv")),
         ];

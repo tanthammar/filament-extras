@@ -13,7 +13,7 @@ class TranslatableName
     {
         return [
             TextInput::make("$column.sv")
-                ->label(trans($label))
+                ->label(trans($label) .' Svenska')
                 ->ucfirst()
                 ->minLength(2)
                 ->maxLength(125)
@@ -21,7 +21,7 @@ class TranslatableName
                 ->saveAs(fn ($get, $state) => $state ?: $get("$column.en"))
                 ->rule('alpha_dash_space'),
             TextInput::make("$column.en")
-                ->label(trans($label))
+                ->label(trans($label).' English')
                 ->ucfirst()
                 ->minLength(2)
                 ->maxLength(125)

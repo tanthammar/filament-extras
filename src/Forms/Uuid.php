@@ -15,6 +15,8 @@ class Uuid
     {
         return TextInput::make($column)
             ->maxLength(36)
+            ->disabled()
+            ->ignored()
             ->visible(user()?->isSuperAdmin())
             ->hiddenOn(contexts: $hiddenOn);
     }
