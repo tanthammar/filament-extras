@@ -4,7 +4,10 @@ Regard them as a templates for your own apps...
 
 If they get merged into the main Filament repo, they will be removed here!, but then you'll find them there ;)
 
-Might be best to fork this repo so you're in control of changes, or install the dev branch. It is not my plan to keep release versions.
+Might be best to fork this repo so you're in control of changes, or install the dev branch. 
+
+I am creating these fields, macros etc to be used in my SaaS, they won't be usable out of the box in your app.
+Consider them as templates and make them your own.
 
 ## Screenshots
 AddressSection
