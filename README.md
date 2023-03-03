@@ -81,6 +81,8 @@ smallcaps
 uppercase
 ruleEachInOptions
 ruleInOptions
+
+and many more...
 ``` 
 
 ## Blade components
@@ -126,6 +128,8 @@ PasswordInput::create();
 PasswordInput::confirmation();
 
 TodoField::make('Create a custom positioning field'),
+
+PhoneInput, PhoneParseE164Column, validators and more...
 ```
 
 ## Table Columns
