@@ -129,7 +129,7 @@ PasswordInput::confirmation();
 
 TodoField::make('Create a custom positioning field'),
 
-PhoneInput, PhoneParseE164Column, validators and more...
+PhoneInput, validators and more...
 ```
 
 ## Table Columns
@@ -137,7 +137,8 @@ See src/Tables
 ```php
 DTOColumn::make(string $column, string $attribute); //If you cast your json column into DTO's. Retrieved as $column?->attribute ?? ''
 JsonColumn::make(string $column, string $dotNotation); //Cast your json column into 'array'. Retreived as data_get($column, $dotNotation, '')
-PhoneColumn::make(string $column); //Auto-format international phone numbers (slow!, better to format when you save your value)
+PhoneColumn::make(string $column); //Auto-format phone numbers
+PhoneParseE164Column::make(string $column) //Auto-format E164 phone numbers
 ```
 
 
