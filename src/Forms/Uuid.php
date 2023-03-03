@@ -11,13 +11,13 @@ use Filament\Forms\Components\TextInput;
  */
 class Uuid
 {
-    public static function make(mixed $hiddenOn, string $column = 'uuid'): TextInput
+    public static function make(string|array $visibleOn = 'view', string $column = 'uuid'): TextInput
     {
         return TextInput::make($column)
             ->maxLength(36)
             ->disabled()
             ->ignored()
             ->visible(user()?->isSuperAdmin())
-            ->hiddenOn(contexts: $hiddenOn);
+            ->visibleOn(contexts: $visibleOn);
     }
 }

@@ -11,10 +11,14 @@ class MoneySEK
     {
         return TextInput::make($column)
             ->label(trans($label))
-            ->loadAs(fn ($state) => str_replace('.', ',', $state)) //DB uses dot, SEK uses comma.
-            ->mask(fn (TextInput\Mask $mask) => $mask->patternBlocks(['money' => fn (TextInput\Mask $mask) => $mask->numeric()
+            ->numeric()
+            ->mask(fn (TextInput\Mask $mask) => $mask->patternBlocks(['money' => fn (TextInput\Mask $mask) => $mask
+                ->numeric()
                 ->thousandsSeparator(' ')
+                ->decimalPlaces(2)
                 ->decimalSeparator(',')
+                ->mapToDecimalSeparator(['.']) //DB uses dot, SEK uses comma.
+                ->padFractionalZeros() // Pad zeros at the end of the number to always maintain the maximum number of decimal places.
                 ->signed(), //allows negative numbers
             ])->pattern('kr money'));
 

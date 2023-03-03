@@ -1,0 +1,15 @@
+@import "intl-tel-input/build/css/intlTelInput.css";
+
+.iti {
+    width: 100%;
+}
+
+.iti__flag {
+    background-image: url("/filament-phone-flags.png");
+}
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .iti__flag {
+        background-image: url("/filament-phone-flags@2x.png");
+    }
+}

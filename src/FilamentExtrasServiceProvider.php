@@ -5,20 +5,38 @@ namespace TantHammar\FilamentExtras;
 use Closure;
 use Filament\Forms\Components;
 use Filament\PluginServiceProvider;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rule;
 use Spatie\LaravelPackageTools\Package;
 
 class FilamentExtrasServiceProvider extends PluginServiceProvider
 {
-    public function configurePackage(Package $package): void
+    public static string $name = 'filament-extras';
+
+    protected array $styles = [
+        'filament-phone-input' => __DIR__.'/../dist/css/filament-phone.css',
+        'intl-tel-input' => __DIR__.'/../dist/css/intl-tel-input.css',
+    ];
+
+    protected array $beforeCoreScripts = [
+        'filament-phone-input' => __DIR__.'/../dist/js/filament-phone.js',
+    ];
+
+    protected array $scripts = [
+        'intl-tel-input-utils' => __DIR__.'/../dist/intl-tel-input/utils.js',
+    ];
+
+    public function packageBooted(): void
     {
-        /*
-         * More info: https://github.com/spatie/laravel-package-tools
-         */
-        $package
-            ->name('filament-extras')
-            ->hasTranslations()
-            ->hasViews('filament-extras');
+        parent::packageBooted();
+
+        Route::get('/filament-phone-flags.png', static function () {
+            return response()->file(__DIR__.'/../images/vendor/intl-tel-input/build/flags.png');
+        });
+
+        Route::get('/filament-phone-flags@2x.png', static function () {
+            return response()->file(__DIR__.'/../images/vendor/intl-tel-input/build/flags@2x.png');
+        });
     }
 
     protected function registerMacros(): void

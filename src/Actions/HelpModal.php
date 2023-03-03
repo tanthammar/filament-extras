@@ -18,8 +18,7 @@ class HelpModal extends Action
         $this->name = Str::slug($this->name, '-');
         $this->modalHeading('Info');
 
-        $this->action(static function (): void {
-        });
+        $this->action(static function (): void {});
         $this->modalActions(fn ($action): array => [$action->getModalCancelAction()->label('OK')->color('primary')]);
         $this->color('primary');
         $this->requiresConfirmation(false);
