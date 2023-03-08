@@ -5,37 +5,40 @@ namespace TantHammar\FilamentExtras;
 use Closure;
 use Filament\Forms\Components;
 use Filament\PluginServiceProvider;
+use Filament\Support\Assets\AlpineComponent;
+use Filament\Support\Assets\AssetManager;
+use Filament\Support\Assets\Css;
+use Filament\Support\Assets\Js;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rule;
 use Spatie\LaravelPackageTools\Package;
+use Spatie\LaravelPackageTools\PackageServiceProvider;
 
-class FilamentExtrasServiceProvider extends PluginServiceProvider
+class FilamentExtrasServiceProvider extends PackageServiceProvider
 {
-    public static string $name = 'filament-extras';
 
-    protected array $styles = [
-        'filament-phone-input' => __DIR__.'/../dist/css/filament-phone.css',
-        'intl-tel-input' => __DIR__.'/../dist/css/intl-tel-input.css',
-    ];
-
-    protected array $beforeCoreScripts = [
-        'filament-phone-input' => __DIR__.'/../dist/js/filament-phone.js',
-    ];
-
-    protected array $scripts = [
-        'intl-tel-input-utils' => __DIR__.'/../dist/intl-tel-input/utils.js',
-    ];
-
-    public function packageBooted(): void
+    public function configurePackage(Package $package): void
     {
-        parent::packageBooted();
+        $package
+            ->name('filament-extras')
+            ->hasViews()
+            ->hasTranslations()
+            ->hasRoute('web');
+    }
 
-        Route::get('/filament-phone-flags.png', static function () {
-            return response()->file(__DIR__.'/../images/vendor/intl-tel-input/build/flags.png');
-        });
 
-        Route::get('/filament-phone-flags@2x.png', static function () {
-            return response()->file(__DIR__.'/../images/vendor/intl-tel-input/build/flags@2x.png');
+    public function packageRegistered(): void
+    {
+        $this->registerMacros();
+
+        $this->app->resolving(AssetManager::class, function () {
+           \Filament\Support\Facades\FilamentAsset::register([
+               Css::make('filament-phone-input', __DIR__.'/../dist/css/filament-phone.css'),
+               Css::make('intl-tel-input', __DIR__.'/../dist/css/intl-tel-input.css'),
+               AlpineComponent::make('filament-phone-input', __DIR__.'/../dist/js/filament-phone.js'),
+               Js::make('intl-tel-input-utils', __DIR__.'/../dist/intl-tel-input/utils.js')
+           ], 'tanthammar/filament-extras');
+
         });
     }
 
@@ -64,30 +67,30 @@ class FilamentExtrasServiceProvider extends PluginServiceProvider
 
         Components\Field::macro('ignored', fn (): static => $this->dehydrated(false));
 
-        Components\Field::macro('requiredIfBlank', fn (string $field): static => $this->required(fn (Closure $get): bool => blank($get($field))));
-        Components\Field::macro('requiredIfFilled', fn (string $field): static => $this->required(fn (Closure $get): bool => filled($get($field))));
-        Components\Field::macro('requiredIfChecked', fn (string $field): static => $this->required(fn (Closure $get): bool => $get($field)));
-        Components\Field::macro('requiredIfUnChecked', fn (string $field): static => $this->required(fn (Closure $get): bool => ! $get($field)));
+        Components\Field::macro('requiredIfBlank', fn (string $field): static => $this->required(fn (\Filament\Forms\Get $get): bool => blank($get($field))));
+        Components\Field::macro('requiredIfFilled', fn (string $field): static => $this->required(fn (\Filament\Forms\Get $get): bool => filled($get($field))));
+        Components\Field::macro('requiredIfChecked', fn (string $field): static => $this->required(fn (\Filament\Forms\Get $get): bool => $get($field)));
+        Components\Field::macro('requiredIfUnChecked', fn (string $field): static => $this->required(fn (\Filament\Forms\Get $get): bool => ! $get($field)));
 
-        Components\Field::macro('disabledIfBlank', fn (string $field): static => $this->disabled(fn (Closure $get): bool => blank($get($field))));
-        Components\Field::macro('disabledIfFilled', fn (string $field): static => $this->disabled(fn (Closure $get): bool => filled($get($field))));
-        Components\Field::macro('disabledIfChecked', fn (string $field): static => $this->disabled(fn (Closure $get): bool => $get($field)));
-        Components\Field::macro('disabledIfUnChecked', fn (string $field): static => $this->disabled(fn (Closure $get): bool => ! $get($field)));
+        Components\Field::macro('disabledIfBlank', fn (string $field): static => $this->disabled(fn (\Filament\Forms\Get $get): bool => blank($get($field))));
+        Components\Field::macro('disabledIfFilled', fn (string $field): static => $this->disabled(fn (\Filament\Forms\Get $get): bool => filled($get($field))));
+        Components\Field::macro('disabledIfChecked', fn (string $field): static => $this->disabled(fn (\Filament\Forms\Get $get): bool => $get($field)));
+        Components\Field::macro('disabledIfUnChecked', fn (string $field): static => $this->disabled(fn (\Filament\Forms\Get $get): bool => ! $get($field)));
 
-        Components\Field::macro('nullableIfBlank', fn (string $field): static => $this->nullable(fn (Closure $get): bool => blank($get($field))));
-        Components\Field::macro('nullableIfFilled', fn (string $field): static => $this->nullable(fn (Closure $get): bool => filled($get($field))));
-        Components\Field::macro('nullableIfChecked', fn (string $field): static => $this->nullable(fn (Closure $get): bool => $get($field)));
-        Components\Field::macro('nullableIfUnChecked', fn (string $field): static => $this->nullable(fn (Closure $get): bool => ! $get($field)));
+        Components\Field::macro('nullableIfBlank', fn (string $field): static => $this->nullable(fn (\Filament\Forms\Get $get): bool => blank($get($field))));
+        Components\Field::macro('nullableIfFilled', fn (string $field): static => $this->nullable(fn (\Filament\Forms\Get $get): bool => filled($get($field))));
+        Components\Field::macro('nullableIfChecked', fn (string $field): static => $this->nullable(fn (\Filament\Forms\Get $get): bool => $get($field)));
+        Components\Field::macro('nullableIfUnChecked', fn (string $field): static => $this->nullable(fn (\Filament\Forms\Get $get): bool => ! $get($field)));
 
-        Components\Field::macro('hiddenIfBlank', fn (string $field): static => $this->hidden(fn (Closure $get): bool => blank($get($field))));
-        Components\Field::macro('hiddenIfFilled', fn (string $field): static => $this->hidden(fn (Closure $get): bool => filled($get($field))));
-        Components\Field::macro('hiddenIfChecked', fn (string $field): static => $this->hidden(fn (Closure $get): bool => $get($field)));
-        Components\Field::macro('hiddenIfUnChecked', fn (string $field): static => $this->hidden(fn (Closure $get): bool => ! $get($field)));
+        Components\Field::macro('hiddenIfBlank', fn (string $field): static => $this->hidden(fn (\Filament\Forms\Get $get): bool => blank($get($field))));
+        Components\Field::macro('hiddenIfFilled', fn (string $field): static => $this->hidden(fn (\Filament\Forms\Get $get): bool => filled($get($field))));
+        Components\Field::macro('hiddenIfChecked', fn (string $field): static => $this->hidden(fn (\Filament\Forms\Get $get): bool => $get($field)));
+        Components\Field::macro('hiddenIfUnChecked', fn (string $field): static => $this->hidden(fn (\Filament\Forms\Get $get): bool => ! $get($field)));
 
-        Components\Field::macro('visibleIfBlank', fn (string $field): static => $this->visible(fn (Closure $get): bool => blank($get($field))));
-        Components\Field::macro('visibleIfFilled', fn (string $field): static => $this->visible(fn (Closure $get): bool => filled($get($field))));
-        Components\Field::macro('visibleIfChecked', fn (string $field): static => $this->visible(fn (Closure $get): bool => $get($field)));
-        Components\Field::macro('visibleIfUnChecked', fn (string $field): static => $this->visible(fn (Closure $get): bool => ! $get($field)));
+        Components\Field::macro('visibleIfBlank', fn (string $field): static => $this->visible(fn (\Filament\Forms\Get $get): bool => blank($get($field))));
+        Components\Field::macro('visibleIfFilled', fn (string $field): static => $this->visible(fn (\Filament\Forms\Get $get): bool => filled($get($field))));
+        Components\Field::macro('visibleIfChecked', fn (string $field): static => $this->visible(fn (\Filament\Forms\Get $get): bool => $get($field)));
+        Components\Field::macro('visibleIfUnChecked', fn (string $field): static => $this->visible(fn (\Filament\Forms\Get $get): bool => ! $get($field)));
 
         Components\Field::macro('ucwords', fn (): static => $this->dehydrateStateUsing(fn ($state) => mb_convert_case($state, MB_CASE_TITLE, "UTF-8")));
         Components\Field::macro('ucfirst', fn (): static => $this->dehydrateStateUsing(fn ($state) => mb_convert_case(mb_substr($state, 0, 1), MB_CASE_TITLE) . mb_substr($state, 1)));

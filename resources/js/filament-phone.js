@@ -51,106 +51,101 @@ function removeCookie(cookieName, path = null, domain = null) {
     document.cookie = cookieString;
 }
 
-document.addEventListener("alpine:init", () => {
-    Alpine.data(
-        "phoneInputFormComponent",
-        ({options, state}) => {
-            return {
-                state,
+export default function phoneInputFormComponent({options, state}) {
+    return {
+        state,
 
-                instance: null,
+        instance: null,
 
-                options, // intlTelInput options
+        options, // intlTelInput options
 
-                init() {
+        init() {
 
-                    this.applyGeoIpLookup()
+            this.applyGeoIpLookup()
 
-                    this.instance = intlTelInput(this.$el, this.options)
+            this.instance = intlTelInput(this.$el, this.options)
 
-                    if (this.state) {
-                        this.instance.setNumber(this.state?.valueOf())
-                    }
+            if (this.state) {
+                this.instance.setNumber(this.state?.valueOf())
+            }
 
-                    this.listenCountryChange()
+            this.listenCountryChange()
 
-                    this.$el.addEventListener("change", this.updateState.bind(this));
+            this.$el.addEventListener("change", this.updateState.bind(this));
 
-                    if(this.options.focusNumberFormat) {
-                        this.$el.addEventListener("focus", () => {
-                            this.$el.value = this.instance.getNumber(
-                                intlTelInputUtils.numberFormat[this.options.focusNumberFormat]
-                            )
-                        })
-                    }
-
-                    this.$watch("state", (value) => {
-                        this.$nextTick(() => {
-                            if(this.state !== this.getInputFormattedValue()) {
-                                this.instance.setNumber(value)
-                            }
-                        });
-                    });
-                },
-
-                listenCountryChange() {
-                    this.$el.addEventListener("countrychange", () => {
-                        let countryData =
-                            this.instance.getSelectedCountryData()
-
-                        if (countryData.iso2) {
-                            setCookie(
-                                this.IntlTelInputSelectedCountryCookie,
-                                countryData.iso2?.toUpperCase()
-                            );
-
-                            this.updateState()
-                        }
-                    });
-                },
-
-                getInputFormattedValue() {
-                    return this.instance.getNumber(
-                        intlTelInputUtils.numberFormat[this.options.inputNumberFormat]
-                    )
-                },
-
-                updateState() {
+            if (this.options.focusNumberFormat) {
+                this.$el.addEventListener("focus", () => {
                     this.$el.value = this.instance.getNumber(
-                        intlTelInputUtils.numberFormat[this.options.displayNumberFormat]
+                        intlTelInputUtils.numberFormat[this.options.focusNumberFormat]
                     )
+                })
+            }
 
-                    if(this.state !== this.getInputFormattedValue()) {
-                        this.state = this.getInputFormattedValue()
+            this.$watch("state", (value) => {
+                this.$nextTick(() => {
+                    if (this.state !== this.getInputFormattedValue()) {
+                        this.instance.setNumber(value)
                     }
-                },
+                });
+            });
+        },
 
-                applyGeoIpLookup() {
-                    if(!this.options.geoIPLookup) {
-                        this.options.initialCountry = this.options.initialCountry === 'auto' ? this.options.preferredCountries[0]?.toUpperCase() : this.options.initialCountry.toUpperCase()
-                        this.options.geoIPLookup = null
-                    }
-                    this.options.geoIPLookup =
-                        function (success, failure) {
-                            let country = getCookie(this.IntlTelInputSelectedCountryCookie)
-                            if (country) {
-                                success(country)
-                            } else {
-                                fetch("https://ipinfo.io/json")
-                                    .then((res) => res.json())
-                                    .then((data) => data)
-                                    .then((data) => {
-                                        let country = data.country?.toUpperCase()
-                                        success(country)
-                                        setCookie(this.IntlTelInputSelectedCountryCookie, country)
-                                    })
-                                    .catch((error) => success(this.options.preferredCountries[0]?.toUpperCase()))
-                            }
+        listenCountryChange() {
+            this.$el.addEventListener("countrychange", () => {
+                let countryData =
+                    this.instance.getSelectedCountryData()
 
-                        }
+                if (countryData.iso2) {
+                    setCookie(
+                        this.IntlTelInputSelectedCountryCookie,
+                        countryData.iso2?.toUpperCase()
+                    );
+
+                    this.updateState()
                 }
-            };
-        }
-    );
-})
-;
+            });
+        },
+
+        getInputFormattedValue() {
+            return this.instance.getNumber(
+                intlTelInputUtils.numberFormat[this.options.inputNumberFormat]
+            )
+        },
+
+        updateState() {
+            this.$el.value = this.instance.getNumber(
+                intlTelInputUtils.numberFormat[this.options.displayNumberFormat]
+            )
+
+            if (this.state !== this.getInputFormattedValue()) {
+                this.state = this.getInputFormattedValue()
+            }
+        },
+
+        applyGeoIpLookup() {
+            if (!this.options.geoIPLookup) {
+                this.options.initialCountry = this.options.initialCountry === 'auto' ? this.options.preferredCountries[0]?.toUpperCase() : this.options.initialCountry.toUpperCase()
+                this.options.geoIPLookup = null
+            }
+            this.options.geoIPLookup =
+                function (success, failure) {
+                    let country = getCookie(this.IntlTelInputSelectedCountryCookie)
+                    if (country) {
+                        success(country)
+                    } else {
+                        fetch("https://ipinfo.io/json")
+                            .then((res) => res.json())
+                            .then((data) => data)
+                            .then((data) => {
+                                let country = data.country?.toUpperCase()
+                                success(country)
+                                setCookie(this.IntlTelInputSelectedCountryCookie, country)
+                            })
+                            .catch((error) => success(this.options.preferredCountries[0]?.toUpperCase()))
+                    }
+
+                }
+        },
+    }
+};
+

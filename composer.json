@@ -11,9 +11,8 @@
         "php": "^8.1|^8.2",
         "brick/phonenumber": "^0.4.0",
         "spatie/laravel-permission": "^5.5.0",
-        "filament/filament": "^2.8.0 | 2.x-dev",
-        "tanthammar/laravel-rules": "dev-main",
-        "ysfkaya/filament-phone-input": "dev-main"
+        "filament/filament": "*",
+        "tanthammar/laravel-rules": "dev-main"
     },
     "autoload": {
         "psr-4": {
