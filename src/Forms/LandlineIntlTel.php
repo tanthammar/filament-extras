@@ -10,7 +10,7 @@ use TantHammar\LaravelRules\Rules\FixedLineNumber;
 
 class LandlineIntlTel
 {
-    public static function make(string $column = 'mobile', string $label = 'fields.phone'): PhoneInput
+    public static function make(string $column = 'phone', string $label = 'fields.phone'): PhoneInput
     {
         return PhoneInput::make($column)
             ->label(trans($label))

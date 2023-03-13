@@ -10,19 +10,29 @@ use Illuminate\Support\Str;
  */
 class HelpModal extends Action
 {
-    protected function setUp(): void
+    protected string $modalContentView = '';
+
+    public function getModalContentView()
     {
-        parent::setUp();
+        return $this->modalContentView;
+    }
 
-        $this->modalContent(view($this->name));
-        $this->name = Str::slug($this->name, '-');
-        $this->modalHeading('Info');
-
-        $this->action(static function (): void {});
-        $this->modalActions(fn ($action): array => [$action->getModalCancelAction()->label('OK')->color('primary')]);
-        $this->color('primary');
-        $this->requiresConfirmation(false);
-        $this->icon('heroicon-o-question-mark-circle');
-        $this->iconButton();
+    public static function makeView(
+        string $key,
+        string $view,
+        string $heading = 'Info',
+        string $iconColor = 'primary',
+        string $icon = 'heroicon-o-question-mark-circle',
+    ): static
+    {
+        return static::make($key)
+            ->modalContent(view($view))
+            ->modalHeading($heading)
+            ->action(static function (): void {})
+            ->modalActions(fn($action): array => [$action->getModalCancelAction()->label('OK')->color('primary')])
+            ->color($iconColor)
+            ->requiresConfirmation(false)
+            ->icon($icon)
+            ->iconButton();
     }
 }
