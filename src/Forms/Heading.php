@@ -61,6 +61,7 @@ class Heading extends Component
         return false;
     }
 
+    /** string or new HtmlString('') */
     public function content($content): static
     {
         $this->content = $content;
@@ -81,6 +82,7 @@ class Heading extends Component
                 ->ucfirst();
     }
 
+    /** blade icon name */
     public function icon(string $icon): static
     {
         $this->icon = $icon;
@@ -99,6 +101,7 @@ class Heading extends Component
         };
     }
 
+    /** blade icon name */
     public function hintIcon(string $icon): static
     {
         $this->icon = $icon;
@@ -111,6 +114,11 @@ class Heading extends Component
         return $this->hintIcon;
     }
 
+    /**
+     * open a modal when clicking on the icon <br>
+     * blade view, not component. <br>
+     * overrides hintModalView
+     */
     public function iconModalView(string $view): static
     {
         $this->iconModal = true;
@@ -119,6 +127,11 @@ class Heading extends Component
         return $this;
     }
 
+    /**
+     * open a modal when clicking on the hintIcon <br>
+     * blade view, not component <br>
+     * overrides iconModalView
+     */
     public function hintModalView(string $view): static
     {
         $this->hintModal = true;
@@ -132,6 +145,7 @@ class Heading extends Component
         return $this->modalView;
     }
 
+    /** default: Info */
     public function modalTitle(string $title): static
     {
         $this->modalTitle = $title;
@@ -213,21 +227,21 @@ class Heading extends Component
     public function getStyling(): ?string
     {
         $color = match ($this->color) {
-            'danger' => 'text-danger-800 bg-danger-50 dark:bg-gray-800 dark:text-danger-400',
-            'success' => 'text-success-800 bg-success-50 dark:bg-gray-800 dark:text-success-400',
-            'warning' => 'text-warning-800 bg-warning-50 dark:bg-gray-800 dark:text-warning-400',
-            'info' => 'text-info-800 bg-info-50 dark:bg-gray-800 dark:text-info-400',
-            'primary' => 'text-primary-800 bg-primary-50 dark:bg-gray-800 dark:text-primary-400',
-            'blue' => 'text-blue-800 bg-blue-50 dark:bg-gray-800 dark:text-blue-400',
-            'green' => 'text-green-800 bg-green-50 dark:bg-gray-800 dark:text-green-400',
-            'indigo' => 'text-indigo-800 bg-indigo-50 dark:bg-gray-800 dark:text-indigo-400',
-            'orange' => 'text-orange-800 bg-orange-50 dark:bg-gray-800 dark:text-orange-400',
-            'pink' => 'text-pink-800 bg-pink-50 dark:bg-gray-800 dark:text-pink-400',
-            'purple' => 'text-purple-800 bg-purple-50 dark:bg-gray-800 dark:text-purple-400',
-            'red' => 'text-red-800 bg-red-50 dark:bg-gray-800 dark:text-red-400',
-            'teal' => 'text-teal-800 bg-teal-50 dark:bg-gray-800 dark:text-teal-400',
-            'yellow' => 'text-yellow-800 bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300',
-            'gray' => 'text-gray-800 bg-gray-50 dark:bg-gray-800 dark:text-gray-400',
+            'danger' => 'text-danger-700 bg-danger-100 dark:bg-gray-800 dark:text-danger-400',
+            'success' => 'text-success-700 bg-success-100 dark:bg-gray-800 dark:text-success-400',
+            'warning' => 'text-warning-700 bg-warning-100 dark:bg-gray-800 dark:text-warning-400',
+            'info' => 'text-info-700 bg-info-100 dark:bg-gray-800 dark:text-info-400',
+            'primary' => 'text-primary-700 bg-primary-100 dark:bg-gray-800 dark:text-primary-400',
+            'blue' => 'text-blue-700 bg-blue-100 dark:bg-gray-800 dark:text-blue-400',
+            'green' => 'text-green-700 bg-green-100 dark:bg-gray-800 dark:text-green-400',
+            'indigo' => 'text-indigo-700 bg-indigo-100 dark:bg-gray-800 dark:text-indigo-400',
+            'orange' => 'text-orange-700 bg-orange-100 dark:bg-gray-800 dark:text-orange-400',
+            'pink' => 'text-pink-700 bg-pink-100 dark:bg-gray-800 dark:text-pink-400',
+            'purple' => 'text-purple-700 bg-purple-100 dark:bg-gray-800 dark:text-purple-400',
+            'red' => 'text-red-700 bg-red-100 dark:bg-gray-800 dark:text-red-400',
+            'teal' => 'text-teal-700 bg-teal-100 dark:bg-gray-800 dark:text-teal-400',
+            'yellow' => 'text-yellow-700 bg-yellow-100 dark:bg-gray-800 dark:text-yellow-300',
+            'gray' => 'text-gray-700 bg-gray-100 dark:bg-gray-800 dark:text-gray-400',
             default => $this->color,
         };
         return $color . $this->getDesign();

@@ -31,7 +31,7 @@
             @endif
 
             <!-- Label/Content -->
-            <div @class(['grow', 'space-y-2' => (bool) $content])>
+            <div @class(['grow', 'space-y-1' => (bool) $content])>
                 <h3 wire:key="{{ $statePath . '.label' }}" class="font-bold">
                     {{ $getLabel() }}
                 </h3>
@@ -65,14 +65,20 @@
             <div x-show="open" x-transition.opacity class="fixed inset-0 bg-black bg-opacity-50"></div>
 
             <!-- Panel -->
-            <div x-show="open" x-transition x-on:click.stop="open = false" class="relative flex min-h-screen items-center justify-center p-4">
-                <div x-on:click.stop x-trap.noscroll.inert="open" class="relative w-full max-w-2xl overflow-y-auto rounded-xl bg-white dark:bg-gray-800 p-12 shadow-lg">
-                    <h2 class="'filament-modal-heading text-xl font-bold tracking-tight'" wire:key="{{ $statePath . '.modal.title' }}">{{ $getModalTitle() }}</h2>
-                    <div wire:key="{{ $statePath . '.modal.content' }}">
+            <div x-show="open" x-transition x-on:click.stop="open = false" class="relative z-50 flex min-h-screen items-center justify-center p-4">
+                <div x-on:click.stop x-trap.noscroll.inert="open" class="relative w-full max-w-2xl overflow-y-auto rounded-xl bg-white dark:bg-gray-700 shadow-lg">
+                    <div class="flex items-start justify-between px-6 py-4 border-b rounded-t dark:border-gray-600">
+                        <h2 class="text-xl font-bold text-gray-900 dark:text-white" wire:key="{{ $statePath . '.modal.title' }}">{{ $getModalTitle() }}</h2>
+                        <button type="button" x-on:click.prevent.stop="open = false" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                            @svg('heroicon-o-x', 'w-5 h-5')
+                            <span class="sr-only">Close modal</span>
+                        </button>
+                    </div>
+                    <div wire:key="{{ $statePath . '.modal.content' }}" class="p-6">
                         @include($modalView)
                     </div>
-                    <div class="mt-8 flex space-x-2">
-                        <button type="button" x-on:click.prevent.stop="open = false" class="rounded-md border border-gray-200 bg-white px-5 py-2.5">
+                    <div class="px-6 py-4 border-t border-gray-200 rounded-b dark:border-gray-600">
+                        <button type="button" x-on:click.prevent.stop="open = false" class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-md text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
                             OK
                         </button>
                     </div>

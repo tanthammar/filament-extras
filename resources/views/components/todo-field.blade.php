@@ -8,7 +8,7 @@
         </div>
         <div class="ml-3">
             <h3 class="text-sm font-bold text-orange-800">TODO field …</h3>
-            <div class="mt-2 text-sm text-orange-700">
+            <div class="mt-1 text-sm text-orange-700">
                 <p>{{ $task }}</p>
             </div>
         </div>
