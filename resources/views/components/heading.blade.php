@@ -8,25 +8,14 @@
     $statePath = $getStatePath();
 @endphp
 
-<div wire:key="{{ $statePath }}" x-data="{ open: false }">
-
-    <div class="flex p-4 space-x-3">
-        <div class="shrink-0">icon</div>
-        <div class="grow space-y-2">
-            <h3>label</h3>
-            <div>content</div>
-        </div>
-        <div class="ml-auto shrink-0">hintIcon</div>
-
-    </div>
+<div wire:key="{{ $statePath }}" x-data="{ open: false }" class="w-full">
 
     <!-- Heading -->
     <div {{ $attributes->merge($getExtraAttributes())->class([
-                'p-4 flex flex-col text-sm',
-                'space-y-4' => (bool) ($content),
+                'w-full flex items-start p-4 text-sm',
+                'space-x-3' => $icon || $hintModal,
                 $getStyling(),
             ]) }} x-cloak>
-        <div class="flex items-center">
 
             <!-- Icon -->
             @if ($icon || $iconModal)
@@ -34,31 +23,29 @@
                             'wire:key' => "$statePath.icon",
                             'x-on:click.stop' => $iconModal ? 'open = true' : null
                         ])->class([
-                            'flex-shrink-0',
+                            'shrink-0',
                             'cursor-pointer' => $iconModal
                         ]) }}>
                     @svg($icon, 'w-5 h-5')
                 </div>
             @endif
 
-            <!-- Label -->
-            <div wire:key="{{ $statePath . '.label' }}" @class([
-                'ml-3' => (bool) $icon,
-                'font-bold'
-            ])>
-                {{ $getLabel() }}
+            <!-- Label/Content -->
+            <div @class(['grow', 'space-y-2' => (bool) $content])>
+                <h3 wire:key="{{ $statePath . '.label' }}" class="font-bold">
+                    {{ $getLabel() }}
+                </h3>
+                <div class="text-sm">
+                    {{ $content }}
+                </div>
             </div>
 
             <!-- Hint -->
             @if ($hintIcon || $hintModal)
-                <button type="button" wire:key="{{ $statePath . '.hint' }}" @if($hintModal) x-on:click.stop="open = true" @endif class="ml-auto -mx-1.5 -my-1.5">
+                <button type="button" wire:key="{{ $statePath . '.hint' }}" @if($hintModal) x-on:click.stop="open = true" @endif class="ml-auto shrink-0">
                     @svg($hintIcon, 'w-5 h-5')
                 </button>
             @endif
-        </div>
-        <div>
-            {{ $content }}
-        </div>
     </div>
 
     <!-- Modal -->
@@ -79,9 +66,9 @@
 
             <!-- Panel -->
             <div x-show="open" x-transition x-on:click.stop="open = false" class="relative flex min-h-screen items-center justify-center p-4">
-                <div x-on:click.stop x-trap.noscroll.inert="open" class="relative w-full max-w-2xl overflow-y-auto rounded-xl bg-white p-12 shadow-lg">
-                    <h2 class="text-3xl font-bold" :id="$id('modal-title')">{{ $getModalTitle() }}</h2>
-                    <div>
+                <div x-on:click.stop x-trap.noscroll.inert="open" class="relative w-full max-w-2xl overflow-y-auto rounded-xl bg-white dark:bg-gray-800 p-12 shadow-lg">
+                    <h2 class="'filament-modal-heading text-xl font-bold tracking-tight'" wire:key="{{ $statePath . '.modal.title' }}">{{ $getModalTitle() }}</h2>
+                    <div wire:key="{{ $statePath . '.modal.content' }}">
                         @include($modalView)
                     </div>
                     <div class="mt-8 flex space-x-2">
