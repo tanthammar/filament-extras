@@ -17,7 +17,7 @@ class Uuid
             ->maxLength(36)
             ->disabled()
             ->ignored()
-            ->visible(user()?->isSuperAdmin())
-            ->visibleOn(contexts: $visibleOn);
+            ->visibleOn(contexts: $visibleOn)//order matters, must be before visible()
+            ->visible(user()?->isSuperAdmin());
     }
 }

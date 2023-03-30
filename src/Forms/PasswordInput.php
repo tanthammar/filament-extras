@@ -15,7 +15,7 @@ class PasswordInput
             ->required()
             ->minLength(8)
             ->maxLength(20)
-            ->rules(['string', PasswordRule::min(8)->mixedCase()->numbers(), 'max:20'])
+            ->rules(['string', PasswordRule::min(8)->mixedCase()->numbers()->uncompromised(), 'max:20'])
             ->saveAs(fn ($state) => Hash::make($state))
             ->autocomplete('new-password');
     }
