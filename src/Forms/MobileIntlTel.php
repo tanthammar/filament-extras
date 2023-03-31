@@ -26,6 +26,6 @@ class MobileIntlTel
                 'min:10',
                 new MobileNumber,
             ])
-            ->prefixIcon('heroicon-o-device-mobile');
+            ->prefixIcon('heroicon-o-device-phone-mobile');
     }
 }

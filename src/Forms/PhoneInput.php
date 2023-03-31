@@ -2,6 +2,8 @@
 
 namespace TantHammar\FilamentExtras\Forms;
 
+use Filament\Forms\Components\Concerns\CanBeAutocompleted;
+use Filament\Forms\Components\Concerns\CanBeReadOnly;
 use Filament\Forms\Components\Concerns\HasAffixes;
 use Filament\Forms\Components\Concerns\HasExtraInputAttributes;
 use Filament\Forms\Components\Concerns\HasPlaceholder;
@@ -17,7 +19,9 @@ class PhoneInput extends Field
 {
     use HasPlaceholder,
         HasAffixes,
-        HasExtraInputAttributes;
+        HasExtraInputAttributes,
+        CanBeAutocompleted,
+        CanBeReadOnly;
 
     protected string $view = 'filament-extras::components.phone-input';
 
@@ -256,7 +260,7 @@ class PhoneInput extends Field
 
             'focusNumberFormat' => $this->focusNumberFormat,
 
-            'utilsScript' => '/filament/assets/intl-tel-input-utils.js',
+            'utilsScript' => __DIR__.'/../dist/intl-tel-input/utils.js',
         ];
     }
 }

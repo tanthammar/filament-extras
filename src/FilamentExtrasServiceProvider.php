@@ -9,6 +9,7 @@ use Filament\Support\Assets\AlpineComponent;
 use Filament\Support\Assets\AssetManager;
 use Filament\Support\Assets\Css;
 use Filament\Support\Assets\Js;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rule;
 use Spatie\LaravelPackageTools\Package;
@@ -26,6 +27,13 @@ class FilamentExtrasServiceProvider extends PackageServiceProvider
             ->hasRoute('web');
     }
 
+    public function packageBooted(): void
+    {
+        Blade::directive('FilamentAlpineComponent', static function (...$expression) {
+            return "<?php echo \Filament\Support\Facades\FilamentAsset::getAlpineComponentSrc(...$expression); ?>";
+        });
+    }
+
 
     public function packageRegistered(): void
     {
@@ -33,10 +41,10 @@ class FilamentExtrasServiceProvider extends PackageServiceProvider
 
         $this->app->resolving(AssetManager::class, function () {
            \Filament\Support\Facades\FilamentAsset::register([
-               Css::make('filament-phone-input', __DIR__.'/../dist/css/filament-phone.css'),
-               Css::make('intl-tel-input', __DIR__.'/../dist/css/intl-tel-input.css'),
+               //Css::make('filament-phone-input', __DIR__.'/../dist/css/filament-phone.css'), //DAN HARRIN can I tag this to be loaded only when filament-phone-input is used?
+               //Css::make('intl-tel-input', __DIR__.'/../dist/css/intl-tel-input.css'),
                AlpineComponent::make('filament-phone-input', __DIR__.'/../dist/js/filament-phone.js'),
-               Js::make('intl-tel-input-utils', __DIR__.'/../dist/intl-tel-input/utils.js')
+               //Js::make('intl-tel-input-utils', __DIR__.'/../dist/intl-tel-input/utils.js')
            ], 'tanthammar/filament-extras');
 
         });

@@ -1,5 +1,11 @@
 const mix = require("laravel-mix");
 
+mix.options({
+    terser: {
+        extractComments: false, //remove comments
+    },
+})
+
 mix.js("resources/js/filament-phone.js", "dist/js")
 .postCss("resources/css/intl-tel-input.css","dist/css")
 .postCss('resources/css/filament-phone.css', 'dist/css', [

@@ -70,7 +70,7 @@
                     <div class="flex items-start justify-between px-6 py-4 border-b rounded-t dark:border-gray-600">
                         <h2 class="text-xl font-bold text-gray-900 dark:text-white" wire:key="{{ $statePath . '.modal.title' }}">{{ $getModalTitle() }}</h2>
                         <button type="button" x-on:click.prevent.stop="open = false" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
-                            @svg('heroicon-o-x', 'w-5 h-5')
+                            @svg('heroicon-o-x-mark', 'w-5 h-5')
                             <span class="sr-only">Close modal</span>
                         </button>
                     </div>

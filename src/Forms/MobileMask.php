@@ -23,6 +23,6 @@ class MobileMask
                 new MobileNumber,
             ])
             ->mask(fn (Components\TextInput\Mask $mask) => $mask->pattern('+00 (0)000 000 000[ 00]')->lazyPlaceholder(false))
-            ->prefixIcon('heroicon-o-device-mobile');
+            ->prefixIcon('heroicon-o-device-phone-mobile');
     }
 }

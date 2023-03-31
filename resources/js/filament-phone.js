@@ -1,4 +1,6 @@
-import intlTelInput from "intl-tel-input";
+import "../css/intl-tel-input.css"
+import "../css/filament-phone.css"
+import intlTelInput from "intl-tel-input"
 
 function setCookie(
     cookieName,

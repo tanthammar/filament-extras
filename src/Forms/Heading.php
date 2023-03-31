@@ -95,7 +95,7 @@ class Heading extends Component
         return $this->icon ?: match ($this->color) {
             'danger', 'red' => 'heroicon-o-shield-exclamation',
             'success', 'green' => 'heroicon-o-check-circle',
-            'warning', 'orange' => 'heroicon-o-exclamation',
+            'warning', 'orange' => 'heroicon-o-exclamation-triangle',
             'yellow' => 'heroicon-o-exclamation-circle',
             default => 'heroicon-o-information-circle',
         };
