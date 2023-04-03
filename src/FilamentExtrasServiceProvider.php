@@ -41,11 +41,11 @@ class FilamentExtrasServiceProvider extends PackageServiceProvider
 
         $this->app->resolving(AssetManager::class, function () {
            \Filament\Support\Facades\FilamentAsset::register([
-               //Css::make('filament-phone-input', __DIR__.'/../dist/css/filament-phone.css'),
-               //Css::make('intl-tel-input', __DIR__.'/../dist/css/intl-tel-input.css'),
+               //Css::make('filament-phone-input', __DIR__.'/../dist/css/filament-phone.css'), //imported into filament-phone.js
+               //Css::make('intl-tel-input', __DIR__.'/../dist/css/intl-tel-input.css'), //imported into filament-phone.js
                //DAN HARRIN The Alpine component is loaded, but I get  Alpine Expression Error: callback.bind is not a function
                AlpineComponent::make('filament-phone-input', __DIR__.'/../dist/js/filament-phone.js'),
-               //Js::make('intl-tel-input-utils', __DIR__.'/../dist/intl-tel-input/utils.js')
+               //Js::make('intl-tel-input-utils', __DIR__.'/../dist/intl-tel-input/utils.js') //path set in PhoneInput.php, field options
            ], 'tanthammar/filament-extras');
 
         });
