@@ -30,7 +30,7 @@ class FilamentExtrasServiceProvider extends PackageServiceProvider
     public function packageBooted(): void
     {
         Blade::directive('FilamentAlpineComponent', static function (...$expression) {
-            return "<?php echo \Filament\Support\Facades\FilamentAsset::getAlpineComponentSrc(...$expression); ?>";
+            return "<?php echo \Filament\Support\Facades\FilamentAsset::getAlpineComponentSrc($expression[0]); ?>";
         });
     }
 
@@ -41,8 +41,9 @@ class FilamentExtrasServiceProvider extends PackageServiceProvider
 
         $this->app->resolving(AssetManager::class, function () {
            \Filament\Support\Facades\FilamentAsset::register([
-               //Css::make('filament-phone-input', __DIR__.'/../dist/css/filament-phone.css'), //DAN HARRIN can I tag this to be loaded only when filament-phone-input is used?
+               //Css::make('filament-phone-input', __DIR__.'/../dist/css/filament-phone.css'),
                //Css::make('intl-tel-input', __DIR__.'/../dist/css/intl-tel-input.css'),
+               //DAN HARRIN The Alpine component is loaded, but I get  Alpine Expression Error: callback.bind is not a function
                AlpineComponent::make('filament-phone-input', __DIR__.'/../dist/js/filament-phone.js'),
                //Js::make('intl-tel-input-utils', __DIR__.'/../dist/intl-tel-input/utils.js')
            ], 'tanthammar/filament-extras');
