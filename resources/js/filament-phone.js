@@ -2,56 +2,6 @@ import "../css/intl-tel-input.css"
 import "../css/filament-phone.css"
 import intlTelInput from "intl-tel-input"
 
-function setCookie(
-    cookieName,
-    cookieValue,
-    expiryDays = null,
-    path = null,
-    domain = null
-) {
-    let cookieString = `${cookieName}=${cookieValue};`;
-    if (expiryDays) {
-        const d = new Date();
-        d.setTime(d.getTime() + expiryDays * 24 * 60 * 60 * 1000);
-        cookieString += `expires=${d.toUTCString()};`;
-    }
-    if (path) {
-        cookieString += `path=${path};`;
-    }
-    if (domain) {
-        cookieString += `domain=${domain};`;
-    }
-    document.cookie = cookieString;
-}
-
-function getCookie(cookieName) {
-    let name = cookieName + "=";
-    let ca = document.cookie.split(";");
-    for (let i = 0; i < ca.length; i++) {
-        let c = ca[i];
-        while (c.charAt(0) == " ") {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
-}
-
-function removeCookie(cookieName, path = null, domain = null) {
-    let cookieString = `${cookieName}=;`;
-    const d = new Date();
-    d.setTime(d.getTime() - 30 * 24 * 60 * 60 * 1000);
-    cookieString += `expires=${d.toUTCString()};`;
-    if (path) {
-        cookieString += `path=${path};`;
-    }
-    if (domain) {
-        cookieString += `domain=${domain};`;
-    }
-    document.cookie = cookieString;
-}
 
 export default function phoneInputFormComponent({options, state}) {
     return {
@@ -60,6 +10,38 @@ export default function phoneInputFormComponent({options, state}) {
         instance: null,
 
         options, // intlTelInput options
+
+        cookieUtils: {
+            setCookie(cookieName, cookieValue, expiryDays = null, path = null, domain = null) {
+                let cookieString = `${cookieName}=${cookieValue};`;
+                if (expiryDays) {
+                    const expiryDate = new Date();
+                    expiryDate.setTime(expiryDate.getTime() + expiryDays * 24 * 60 * 60 * 1000);
+                    cookieString += `expires=${expiryDate.toUTCString()};`;
+                }
+                if (path) cookieString += `path=${path};`;
+                if (domain) cookieString += `domain=${domain};`;
+                document.cookie = cookieString;
+            },
+            getCookie(cookieName) {
+                const name = `${cookieName}=`;
+                const cookies = document.cookie.split(';');
+                for (const cookie of cookies) {
+                    let c = cookie.trim();
+                    if (c?.startsWith(name)) return c.slice(name.length);
+                }
+                return '';
+            },
+            removeCookie(cookieName, path = null, domain = null) {
+                let cookieString = `${cookieName}=;`;
+                const expiryDate = new Date();
+                expiryDate.setTime(expiryDate.getTime() - 30 * 24 * 60 * 60 * 1000);
+                cookieString += `expires=${expiryDate.toUTCString()};`;
+                if (path) cookieString += `path=${path};`;
+                if (domain) cookieString += `domain=${domain};`;
+                document.cookie = cookieString;
+            },
+        },
 
         init() {
 
@@ -98,7 +80,7 @@ export default function phoneInputFormComponent({options, state}) {
                     this.instance.getSelectedCountryData()
 
                 if (countryData.iso2) {
-                    setCookie(
+                    this.cookieUtils.setCookie(
                         this.IntlTelInputSelectedCountryCookie,
                         countryData.iso2?.toUpperCase()
                     );
@@ -131,7 +113,7 @@ export default function phoneInputFormComponent({options, state}) {
             }
             this.options.geoIPLookup =
                 function (success, failure) {
-                    let country = getCookie(this.IntlTelInputSelectedCountryCookie)
+                    let country = this.cookieUtils.getCookie(this.IntlTelInputSelectedCountryCookie)
                     if (country) {
                         success(country)
                     } else {
@@ -139,11 +121,11 @@ export default function phoneInputFormComponent({options, state}) {
                             .then((res) => res.json())
                             .then((data) => data)
                             .then((data) => {
-                                let country = data.country?.toUpperCase()
-                                success(country)
-                                setCookie(this.IntlTelInputSelectedCountryCookie, country)
+                                let countryCode = data.country?.toUpperCase() || ''
+                                success(countryCode)
+                                this.cookieUtils.setCookie(this.IntlTelInputSelectedCountryCookie, countryCode)
                             })
-                            .catch((error) => success(this.options.preferredCountries[0]?.toUpperCase()))
+                            .catch((error) => success((this.options.preferredCountries[0] || '').toUpperCase()))
                     }
 
                 }
