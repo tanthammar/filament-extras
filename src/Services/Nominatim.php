@@ -69,13 +69,13 @@ class Nominatim
             $mapped['latitude'] = data_get($address, 'lat');
             $mapped['longitude'] = data_get($address, 'lon');
 
-            return array_merge($existingFieldValue, $mapped);
+            return array_merge($existingFieldValue ?? [], $mapped);
         }
 
         return [];
     }
 
-    protected static function getCity($address): string
+    protected static function getCity($address): ?string
     {
         $city = data_get($address, 'city') ?? data_get($address, 'village');
         //fix for OSM Swedish city/state mixup
