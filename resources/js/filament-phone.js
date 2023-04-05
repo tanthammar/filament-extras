@@ -50,7 +50,7 @@ export default function phoneInputFormComponent({options, state}) {
             this.instance = intlTelInput(this.$el, this.options)
 
             if (this.state) {
-                this.instance.setNumber(this.state?.valueOf())
+                this.instance.setNumber(this.state?.valueOf()?.trim() ?? "")
             }
 
             this.listenCountryChange()
@@ -68,7 +68,7 @@ export default function phoneInputFormComponent({options, state}) {
             this.$watch("state", (value) => {
                 this.$nextTick(() => {
                     if (this.state !== this.getInputFormattedValue()) {
-                        this.instance.setNumber(value)
+                       this.instance.setNumber(value.trim() ?? "")
                     }
                 });
             });
