@@ -4,13 +4,9 @@ namespace TantHammar\FilamentExtras;
 
 use Closure;
 use Filament\Forms\Components;
-use Filament\PluginServiceProvider;
 use Filament\Support\Assets\AlpineComponent;
 use Filament\Support\Assets\AssetManager;
-use Filament\Support\Assets\Css;
-use Filament\Support\Assets\Js;
 use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rule;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
