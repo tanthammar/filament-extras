@@ -4,6 +4,7 @@ namespace TantHammar\FilamentExtras;
 
 use Closure;
 use Filament\Forms\Components;
+use Filament\Tables\Table;
 use Filament\Support\Assets\AlpineComponent;
 use Filament\Support\Assets\AssetManager;
 use Illuminate\Support\Facades\Blade;

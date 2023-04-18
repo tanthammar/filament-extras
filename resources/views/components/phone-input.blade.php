@@ -29,7 +29,7 @@
             ]) wire:ignore>
                 <input
                     x-ignore
-                    ax-load
+                    ax-load="visible"
                     ax-load-src="@FilamentAlpineComponent('filament-phone-input', 'tanthammar/filament-extras')"
                     x-data="phoneInputFormComponent({
                         options: @js($getJsonPhoneInputConfiguration()),
