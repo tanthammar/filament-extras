@@ -116,5 +116,54 @@ class FilamentExtrasServiceProvider extends PackageServiceProvider
          * @deprecated accepted to core
          */
         Components\TextInput::macro('lazyEntangled', fn (): static => $this->extraAlpineAttributes(['x-on:blur' => '$wire.$refresh'])); //fake entangled.lazy on TextInputs with Masks
+
+        /** Table features removed from Filament v3 */
+        Table::macro('prependActions', function (array $actions): static {
+            $existing = $this->actions;
+            $this->actions = [];
+            $this->actions($actions);
+            $this->actions = array_merge($this->actions, $existing);
+            return $this;
+        });
+
+        Table::macro('appendActions', function (array $actions): static {
+            $existing = $this->actions;
+            $this->actions = [];
+            $this->actions($actions);
+            $this->actions = array_merge($existing, $this->actions);
+            return $this;
+        });
+
+        Table::macro('prependBulkActions', function (array $actions): static {
+            $existing = $this->groupedBulkActions;
+            $this->groupedBulkActions = [];
+            $this->bulkActions($actions);
+            $this->groupedBulkActions = array_merge($this->groupedBulkActions, $existing);
+            return $this;
+        });
+
+        Table::macro('appendBulkActions', function (array $actions): static {
+            $existing = $this->groupedBulkActions;
+            $this->groupedBulkActions = [];
+            $this->bulkActions($actions);
+            $this->groupedBulkActions = array_merge($existing, $this->groupedBulkActions);
+            return $this;
+        });
+
+        Table::macro('prependHeaderActions', function (array $actions): static {
+            $existing = $this->headerActions;
+            $this->headerActions = [];
+            $this->headerActions($actions);
+            $this->headerActions = array_merge($this->headerActions, $existing);
+            return $this;
+        });
+
+        Table::macro('appendHeaderActions', function (array $actions): static {
+            $existing = $this->headerActions;
+            $this->headerActions = [];
+            $this->headerActions($actions);
+            $this->headerActions = array_merge($existing, $this->headerActions);
+            return $this;
+        });
     }
 }

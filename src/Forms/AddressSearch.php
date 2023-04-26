@@ -18,13 +18,19 @@ class AddressSearch
             ->getSearchResultsUsing(fn(string $search) => Nominatim::search($search));
 
         return $replaceFormData
-            ? $field->afterStateUpdated(function ($livewire, $state) {
+            ? $field->afterStateUpdated(function ($get, $set, $state) {
                 if ($state) {
-                    //DAN HARRIN 'data' does not exist in a relation manager
-                    $livewire->data = Nominatim::lookup(osm_id: $state, existingFieldValue: $livewire->data);
+
+                    $existingFieldValue = collect([
+                        'street', 'zip', 'city', 'state', 'county', 'country', 'country_code', 'latitude', 'longitude',
+                    ])->mapWithKeys(fn($field) => [$field => $get($field)])->all();
+
+                    foreach (Nominatim::lookup(osm_id: $state, existingFieldValue: $existingFieldValue) as $field => $value) {
+                        $set($field, $value);
+                    }
                 }
             })
-            : $field->afterStateUpdated(function ($get, $set, $state, $livewire, $component) use ($jsonColumnName) {
+            : $field->afterStateUpdated(function ($state, $livewire) use ($jsonColumnName) {
                 if ($state) {
                     //this worked when 'address' was a json column and not a relation
                     //$set($jsonColumnName, Nominatim::lookup(osm_id: $state, existingFieldValue: $get($jsonColumnName)));
