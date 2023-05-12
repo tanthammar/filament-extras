@@ -22,8 +22,7 @@ class FilamentExtrasServiceProvider extends PackageServiceProvider
         $package
             ->name('filament-extras')
             ->hasViews()
-            ->hasTranslations()
-            ->hasRoute('web');
+            ->hasTranslations();
     }
 
     public function packageBooted(): void
@@ -36,13 +35,19 @@ class FilamentExtrasServiceProvider extends PackageServiceProvider
 
     public function packageRegistered(): void
     {
+        /** commands
+         * first compile the js and css, then publish the assets with Filament uppgrade cmd
+         * npm run prod:js && npm run prod:mix
+         * php artisan filament:upgrade
+         */
+
         $this->registerMacros();
 
         if($this->app->runningInConsole()) {
             $this->app->resolving(AssetManager::class, function () {
                 \Filament\Support\Facades\FilamentAsset::register([
+                    Css::make('filament-phone-input', __DIR__ . '/../dist/css/filament-phone.css'),
                     Js::make('filament-phone-input', __DIR__ . '/../dist/js/filament-phone.js'),
-                    Css::make('filament-phone-input', __DIR__ . '/../dist/js/filament-phone.js'),
                 ], 'tanthammar/filament-extras');
             });
         }
@@ -50,12 +55,6 @@ class FilamentExtrasServiceProvider extends PackageServiceProvider
 
 
     }
-
-    /** commands
-     * first compile the js and css, then publish the assets with Spatie's package tools
-     * npx esbuild resources/js/filament-phone.js --outfile=dist/js/filament-phone.js --loader:.png=dataurl --bundle --minify --platform=neutral --main-fields=module,main
-     * php artisan vendor:publish --tag=filament-phone-assets --force
-     */
 
     protected function registerMacros(): void
     {

@@ -260,7 +260,7 @@ class PhoneInput extends Field
 
             'focusNumberFormat' => $this->focusNumberFormat,
 
-            'utilsScript' => __DIR__.'/../dist/intl-tel-input/utils.js',
+            'utilsScript' => 'https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.5/build/js/utils.js',
         ];
     }
 }

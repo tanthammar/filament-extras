@@ -1,15 +1,11 @@
-import "../css/intl-tel-input.css"
-import "../css/filament-phone.css"
-import intlTelInput from "intl-tel-input"
-
-
-export default function phoneInputFormComponent({options, state}) {
+import intlTelInput from 'intl-tel-input'
+export default function phoneInputFormComponent({options, state, inputEl}) {
     return {
         state,
 
         instance: null,
 
-        options, // intlTelInput options
+        options,
 
         cookieUtils: {
             setCookie(cookieName, cookieValue, expiryDays = null, path = null, domain = null) {
@@ -44,10 +40,9 @@ export default function phoneInputFormComponent({options, state}) {
         },
 
         init() {
-
             this.applyGeoIpLookup()
 
-            this.instance = intlTelInput(this.$el, this.options)
+            this.instance = intlTelInput(inputEl, this.options)
 
             if (this.state) {
                 this.instance.setNumber(this.state?.valueOf())
@@ -55,11 +50,11 @@ export default function phoneInputFormComponent({options, state}) {
 
             this.listenCountryChange()
 
-            this.$el.addEventListener("change", this.updateState.bind(this));
+            inputEl.addEventListener("change", this.updateState.bind(this));
 
             if (this.options.focusNumberFormat) {
-                this.$el.addEventListener("focus", () => {
-                    this.$el.value = this.instance.getNumber(
+               inputEl.addEventListener("focus", () => {
+                    inputEl.value = this.instance.getNumber(
                         intlTelInputUtils.numberFormat[this.options.focusNumberFormat]
                     )
                 })
@@ -75,7 +70,7 @@ export default function phoneInputFormComponent({options, state}) {
         },
 
         listenCountryChange() {
-            this.$el.addEventListener("countrychange", () => {
+            inputEl.addEventListener("countrychange", () => {
                 let countryData =
                     this.instance.getSelectedCountryData()
 
@@ -97,7 +92,7 @@ export default function phoneInputFormComponent({options, state}) {
         },
 
         updateState() {
-            this.$el.value = this.instance.getNumber(
+            inputEl.value = this.instance.getNumber(
                 intlTelInputUtils.numberFormat[this.options.displayNumberFormat]
             )
 

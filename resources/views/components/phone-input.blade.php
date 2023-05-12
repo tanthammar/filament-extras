@@ -26,24 +26,25 @@
         <div @class([
             'flex-1 filament-phone-input-field',
             'rtl' => $isRtl(),
-            ]) wire:ignore>
-                <input
-                    x-load-css="['{{ asset('css/tanthammar/filament-extras/filament-phone-input.css') }}']"
-                    x-ignore
-                    ax-load="visible"
-                    ax-load-src="{{ asset('js/tanthammar/filament-extras/components/filament-phone-input.js') }}"
-                    x-data="phoneInputFormComponent({
+            ])
+             wire:ignore
+             x-load-css="[
+                'https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.5/build/css/intlTelInput.css',
+                '{{ asset('css/tanthammar/filament-extras/filament-phone-input.css') }}'
+            ]"
+             x-ignore
+             ax-load="visible"
+             ax-load-src="{{ asset('js/tanthammar/filament-extras/filament-phone-input.js') }}"
+             x-data="phoneInputFormComponent({
                         options: @js($getJsonPhoneInputConfiguration()),
                         state: $wire.{{ $applyStateBindingModifiers('entangle(\'' . $statePath . '\')', lazilyEntangledModifiers: ['defer']) }},
+                        inputEl: $refs.phoneInput,
                     })"
-                    wire:ignore
-                    x-bind:class="{
-                        'border-gray-300 dark:border-gray-600': ! (@js($statePath) in $wire.__instance.serverMemo.errors),
-                        'border-danger-600 ring-danger-600': (@js($statePath) in $wire.__instance.serverMemo.errors),
-                    }"
-                    {{
-                        $getExtraInputAttributeBag()
+
+        >
+                <input {{ $getExtraInputAttributeBag()
                             ->merge([
+                                'x-ref' => 'phoneInput',
                                 'autocomplete' => $getAutocomplete(),
                                 'autofocus' => $isAutofocused(),
                                 'disabled' => $isDisabled(),
@@ -62,7 +63,11 @@
                                 'rounded-r-lg' => ! ($suffixLabel || $suffixIcon),
                             ])
                     }}
-                />
+                    x-bind:class="{
+                        'border-gray-300 dark:border-gray-600': ! (@js($statePath) in $wire.__instance.serverMemo.errors),
+                        'border-danger-600 ring-danger-600': (@js($statePath) in $wire.__instance.serverMemo.errors),
+                    }"
+                >
         </div>
     </x-filament::input.affixes>
 </x-dynamic-component>
