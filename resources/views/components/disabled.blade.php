@@ -1,13 +1,6 @@
-<x-forms::field-wrapper
-    :id="$getId()"
-    :label="$getLabel()"
-    :label-sr-only="$isLabelHidden()"
-    :helper-text="$getHelperText()"
-    :hint="$getHint()"
-    :hint-icon="$getHintIcon()"
-    :hint-action="$getHintAction()"
-    :required="$isRequired()"
-    :state-path="$getStatePath()"
+<x-dynamic-component
+    :component="$getFieldWrapperView()"
+    :field="$field"
 >
     <div x-data="{ state: $wire.entangle('{{ $getStatePath() }}') }"
          x-text="state"
@@ -21,4 +14,4 @@
        ])>
     </div>
 
-</x-forms::field-wrapper>
+</x-dynamic-component>

@@ -21,16 +21,17 @@
         :suffix-actions="$getSuffixActions()"
         :suffix-icon="$suffixIcon"
         class="filament-forms-text-input-component"
-        :attributes="$getExtraAttributeBag()"
+        :attributes="\Filament\Support\prepare_inherited_attributes($getExtraAttributeBag())"
     >
         <div @class([
             'flex-1 filament-phone-input-field',
             'rtl' => $isRtl(),
             ]) wire:ignore>
                 <input
+                    x-load-css="['{{ asset('css/tanthammar/filament-extras/filament-phone-input.css') }}']"
                     x-ignore
                     ax-load="visible"
-                    ax-load-src="@FilamentAlpineComponent('filament-phone-input', 'tanthammar/filament-extras')"
+                    ax-load-src="{{ asset('js/tanthammar/filament-extras/components/filament-phone-input.js') }}"
                     x-data="phoneInputFormComponent({
                         options: @js($getJsonPhoneInputConfiguration()),
                         state: $wire.{{ $applyStateBindingModifiers('entangle(\'' . $statePath . '\')', lazilyEntangledModifiers: ['defer']) }},

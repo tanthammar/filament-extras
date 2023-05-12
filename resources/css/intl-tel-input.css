@@ -5,11 +5,11 @@
 }
 
 .iti__flag {
-    background-image: url("/filament-phone-flags.png");
+    background-image: url("flags.png");
 }
 
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
     .iti__flag {
-        background-image: url("/filament-phone-flags@2x.png");
+        background-image: url("flags@2x.png");
     }
 }

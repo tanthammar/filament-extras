@@ -4,6 +4,8 @@ namespace TantHammar\FilamentExtras;
 
 use Closure;
 use Filament\Forms\Components;
+use Filament\Support\Assets\Css;
+use Filament\Support\Assets\Js;
 use Filament\Tables\Table;
 use Filament\Support\Assets\AlpineComponent;
 use Filament\Support\Assets\AssetManager;
@@ -36,17 +38,24 @@ class FilamentExtrasServiceProvider extends PackageServiceProvider
     {
         $this->registerMacros();
 
-        $this->app->resolving(AssetManager::class, function () {
-           \Filament\Support\Facades\FilamentAsset::register([
-               //Css::make('filament-phone-input', __DIR__.'/../dist/css/filament-phone.css'), //imported into filament-phone.js
-               //Css::make('intl-tel-input', __DIR__.'/../dist/css/intl-tel-input.css'), //imported into filament-phone.js
-               //DAN HARRIN The Alpine component is loaded, but I get  Alpine Expression Error: callback.bind is not a function
-               AlpineComponent::make('filament-phone-input', __DIR__.'/../dist/js/filament-phone.js'),
-               //Js::make('intl-tel-input-utils', __DIR__.'/../dist/intl-tel-input/utils.js') //path set in PhoneInput.php, field options
-           ], 'tanthammar/filament-extras');
+        if($this->app->runningInConsole()) {
+            $this->app->resolving(AssetManager::class, function () {
+                \Filament\Support\Facades\FilamentAsset::register([
+                    Js::make('filament-phone-input', __DIR__ . '/../dist/js/filament-phone.js'),
+                    Css::make('filament-phone-input', __DIR__ . '/../dist/js/filament-phone.js'),
+                ], 'tanthammar/filament-extras');
+            });
+        }
 
-        });
+
+
     }
+
+    /** commands
+     * first compile the js and css, then publish the assets with Spatie's package tools
+     * npx esbuild resources/js/filament-phone.js --outfile=dist/js/filament-phone.js --loader:.png=dataurl --bundle --minify --platform=neutral --main-fields=module,main
+     * php artisan vendor:publish --tag=filament-phone-assets --force
+     */
 
     protected function registerMacros(): void
     {
@@ -166,4 +175,5 @@ class FilamentExtrasServiceProvider extends PackageServiceProvider
             return $this;
         });
     }
+
 }
