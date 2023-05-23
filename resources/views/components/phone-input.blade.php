@@ -12,7 +12,7 @@
     :component="$getFieldWrapperView()"
     :field="$field"
 >
-    <x-filament::input.affixes
+    <x-filament-forms::affixes
         :state-path="$statePath"
         :prefix="$prefixLabel"
         :prefix-actions="$getPrefixActions()"
@@ -69,5 +69,5 @@
                     }"
                 >
         </div>
-    </x-filament::input.affixes>
+    </x-filament-forms::affixes>
 </x-dynamic-component>
