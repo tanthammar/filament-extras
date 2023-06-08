@@ -44,12 +44,12 @@ class FilamentExtrasServiceProvider extends PackageServiceProvider
         $this->registerMacros();
 
         if($this->app->runningInConsole()) {
-            $this->app->resolving(AssetManager::class, function () {
+
                 \Filament\Support\Facades\FilamentAsset::register([
                     Css::make('filament-phone-input', __DIR__ . '/../dist/css/filament-phone.css'),
                     Js::make('filament-phone-input', __DIR__ . '/../dist/js/filament-phone.js'),
                 ], 'tanthammar/filament-extras');
-            });
+
         }
 
 
