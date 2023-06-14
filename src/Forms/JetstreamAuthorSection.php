@@ -12,13 +12,14 @@ class JetstreamAuthorSection
         return Section::make(__('fields.authors'))
             ->schema([
                 Author::make()
-                    ->disabled(! user()->isSupport())
                     ->lazy()
                     ->onUpdated(fn ($set, $state) => $set('team', [
                         $state ? User::find($state)?->current_team_id : null,
-                    ])),
+                    ]))
+                ->required(),
                 TeamBelongsTo::make(),
             ])->columns(2)
-            ->collapsible();
+            ->collapsible()
+            ->visible(user()?->isSupport());
     }
 }
