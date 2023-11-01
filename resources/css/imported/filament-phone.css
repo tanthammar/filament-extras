@@ -1,6 +1,7 @@
 .iti {
     @apply !w-full;
 }
+
 .filament-phone-input-field .iti__country-list {
     @apply dark:bg-gray-700 dark:text-white;
 }

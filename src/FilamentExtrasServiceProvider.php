@@ -22,7 +22,8 @@ class FilamentExtrasServiceProvider extends PackageServiceProvider
         $package
             ->name('filament-extras')
             ->hasViews()
-            ->hasTranslations();
+            ->hasTranslations()
+            ->hasRoute('api');
     }
 
     public function packageBooted(): void
@@ -37,7 +38,7 @@ class FilamentExtrasServiceProvider extends PackageServiceProvider
     {
         /** commands
          * first compile the js and css, then publish the assets with Filament uppgrade cmd
-         * npm run prod:js && npm run prod:mix
+         * npm run prod:js
          * php artisan filament:upgrade
          */
 
@@ -46,8 +47,8 @@ class FilamentExtrasServiceProvider extends PackageServiceProvider
         if($this->app->runningInConsole()) {
 
                 \Filament\Support\Facades\FilamentAsset::register([
-                    Css::make('filament-phone-input', __DIR__ . '/../dist/css/filament-phone.css'),
-                    Js::make('filament-phone-input', __DIR__ . '/../dist/js/filament-phone.js'),
+                    Css::make('filament-phone-input', __DIR__ . '/../dist/filament-phone/filament-phone.css'),
+                    Js::make('filament-phone-input', __DIR__ . '/../dist/filament-phone/filament-phone.js'),
                 ], 'tanthammar/filament-extras');
 
         }
@@ -110,6 +111,8 @@ class FilamentExtrasServiceProvider extends PackageServiceProvider
         Components\Field::macro('ucfirst', fn (): static => $this->dehydrateStateUsing(fn ($state) => mb_convert_case(mb_substr($state, 0, 1), MB_CASE_TITLE) . mb_substr($state, 1)));
         Components\Field::macro('smallcaps', fn (): static => $this->dehydrateStateUsing(fn ($state) => mb_strtolower($state)));
         Components\Field::macro('uppercase', fn (): static => $this->dehydrateStateUsing(fn ($state) => mb_strtoupper($state)));
+
+        Components\Field::macro('ruleEach', fn (array|string $rules, bool|Closure $condition = true): static => $this->nestedRecursiveRules($rules, $condition));
 
         Components\TagsInput::macro('ruleEachInOptions', fn (): static => $this->nestedRecursiveRules(['bail', fn ($component): \Illuminate\Validation\Rules\In => Rule::in(array_keys($component->getOptions()))]));
         Components\CheckboxList::macro('ruleEachInOptions', fn (): static => $this->nestedRecursiveRules(['bail', fn ($component): \Illuminate\Validation\Rules\In => Rule::in(array_keys($component->getOptions()))]));

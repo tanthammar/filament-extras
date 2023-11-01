@@ -29,7 +29,6 @@
             ])
              wire:ignore
              x-load-css="[
-                'https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.5/build/css/intlTelInput.css',
                 '{{ asset('css/tanthammar/filament-extras/filament-phone-input.css') }}'
             ]"
              x-ignore
@@ -56,6 +55,9 @@
                                 'type' =>   'tel',
                                 'x-on:blur' => $isLazy() ? '$wire.$refresh' : null,
                                 'x-on:input.debounce.'.$getDebounce() => $isDebounced() ? '$wire.$refresh' : null,
+                                'x-on:change' => 'updateState()',
+                                'x-on:countrychange' => 'countryChange()',
+                                'x-on:focus' => 'focusInput()',
                             ], escape: false)
                             ->class([
                                 'block w-full transition duration-75 shadow-sm outline-none sm:text-sm focus:border-primary-500 focus:relative focus:z-[1] focus:ring-1 focus:ring-inset focus:ring-primary-500 disabled:opacity-70 dark:bg-gray-700 dark:text-white dark:focus:border-primary-500',
