@@ -25,7 +25,7 @@ class PhoneInput extends Field
 
     protected string $view = 'filament-extras::components.phone-input';
 
-    protected string $displayNumberFormat = 'NATIONAL';
+    protected string $displayNumberFormat = "NATIONAL";
 
     protected string $inputNumberFormat = 'E164';
 
@@ -53,7 +53,7 @@ class PhoneInput extends Field
 
     protected array $onlyCountries = [];
 
-    protected string $placeholderNumberType = 'MOBILE';
+    protected string $placeholderNumberType = "MOBILE";
 
     protected array $preferredCountries = ['us', 'gb'];
 
