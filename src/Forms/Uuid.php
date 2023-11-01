@@ -17,7 +17,7 @@ class Uuid
             ->maxLength(36)
             ->disabled()
             ->ignored()
-            ->visibleOn(operations: $visibleOn)//order matters, must be before visible()
-            ->visible(user()?->isSuperAdmin());
+            ->visible(fn ($operation): bool => $operation === 'view' && user()?->isSupport());
+            //->visibleOn(operations: $visibleOn); //DAN HARRIN unable to combine w visible()
     }
 }

@@ -9,7 +9,7 @@ use Filament\Forms\Components\TextInput;
  */
 class TranslatableName
 {
-    public static function make(string $column = 'name', string $label = 'fields.name', array $rules = ['alpha_dash_space']): array
+    public static function make(string $column = 'name', string $label = 'fields.name'): array
     {
         return [
             TextInput::make("$column.sv")
@@ -19,7 +19,8 @@ class TranslatableName
                 ->maxLength(125)
                 ->requiredIfBlank("$column.en")
                 ->saveAs(fn ($get, $state) => $state ?: $get("$column.en"))
-                ->rules($rules),
+                ->rules(['bail', 'alpha_dash_space'])
+                ->unique(column: $column."->en", ignoreRecord: true),
             TextInput::make("$column.en")
                 ->label(trans($label).' English')
                 ->ucfirst()
@@ -27,7 +28,8 @@ class TranslatableName
                 ->maxLength(125)
                 ->requiredIfBlank("$column.sv")
                 ->saveAs(fn ($get, $state) => $state ?: $get("$column.sv"))
-                ->rules($rules),
+                ->rules(['bail', 'alpha_dash_space'])
+                ->unique(column: $column."->sv", ignoreRecord: true),
         ];
     }
 }

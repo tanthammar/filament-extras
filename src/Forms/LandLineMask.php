@@ -22,7 +22,7 @@ class LandLineMask
                 'min:9',
                 new FixedLineNumber,
             ])
-            ->mask(fn (Components\TextInput\Mask $mask) => $mask->pattern('+00 (0)000 000 00[0 00]')->lazyPlaceholder(false))
+            ->mask('+99 (9)999 999 99[9 99]')
             ->prefixIcon('heroicon-o-phone');
     }
 }

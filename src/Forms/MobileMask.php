@@ -22,7 +22,7 @@ class MobileMask
                 'min:10',
                 new MobileNumber,
             ])
-            ->mask(fn (Components\TextInput\Mask $mask) => $mask->pattern('+00 (0)000 000 000[ 00]')->lazyPlaceholder(false))
+            ->mask('+99 (9)999 999 99[ 99]')
             ->prefixIcon('heroicon-o-device-phone-mobile');
     }
 }

@@ -41,7 +41,7 @@
             </div>
 
             <!-- Hint -->
-            @if ($hintIcon || $hintModal)
+            @if ($hintModal)
                 <button type="button" wire:key="{{ $statePath . '.hint' }}" @if($hintModal) x-on:click.stop="open = true" @endif class="ml-auto shrink-0">
                     @svg($hintIcon, 'w-5 h-5')
                 </button>
