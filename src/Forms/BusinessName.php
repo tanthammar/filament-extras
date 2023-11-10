@@ -14,6 +14,6 @@ class BusinessName
             ->required()
             ->minLength(2)
             ->maxLength(125)
-            ->rule('alpha_dash_space');
+            ->rule('alpha_dash_space_and');
     }
 }

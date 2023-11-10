@@ -19,7 +19,7 @@ class TranslatableName
                 ->maxLength(125)
                 ->requiredIfBlank("$column.en")
                 ->saveAs(fn ($get, $state) => $state ?: $get("$column.en"))
-                ->rules(['bail', 'alpha_dash_space'])
+                ->rules(['bail', 'alpha_dash_space_and'])
                 ->unique(column: $column."->en", ignoreRecord: true),
             TextInput::make("$column.en")
                 ->label(trans($label).' English')
@@ -28,7 +28,7 @@ class TranslatableName
                 ->maxLength(125)
                 ->requiredIfBlank("$column.sv")
                 ->saveAs(fn ($get, $state) => $state ?: $get("$column.sv"))
-                ->rules(['bail', 'alpha_dash_space'])
+                ->rules(['bail', 'alpha_dash_space_and'])
                 ->unique(column: $column."->sv", ignoreRecord: true),
         ];
     }
