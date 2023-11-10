@@ -17,18 +17,14 @@ class TranslatableDescription
             MarkdownEditor::make("$column.sv")
                 ->label(__("fields.$column").' Svenska')->columnSpan($colspan)->nullable()
                 ->requiredIfBlank("$column.en")
-                ->saveAs(fn ($get, $state) => $support
-                    ? ($state ?: $get("$column.en"))
-                    : strip_tags($state ?? $get("$column.en")))
+                ->saveAs(fn ($get, $state) => strip_tags($state ?: $get("$column.en")))
                 ->disableToolbarButtons($support ? [] : [
                     'codeBlock',
                 ]),
             MarkdownEditor::make("$column.en")
                 ->label(__("fields.$column").' English')->columnSpan($colspan)->nullable()
                 ->requiredIfBlank("$column.sv")
-                ->saveAs(fn ($get, $state) => $support
-                    ? ($state ?: $get("$column.sv"))
-                    : strip_tags($state ?? $get("$column.sv")))
+                ->saveAs(fn ($get, $state) => strip_tags($state ?: $get("$column.sv"))) //or if we want to allow html str($state ?: $get("$column.sv"))->sanitizeHtml() //Filament helper, removes malicious html
                 ->disableToolbarButtons($support ? [] : [
                     'codeBlock',
                 ]),
