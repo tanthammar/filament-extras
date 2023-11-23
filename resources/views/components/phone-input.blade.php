@@ -12,16 +12,19 @@
     :component="$getFieldWrapperView()"
     :field="$field"
 >
-    <x-filament-forms::affixes
-        :state-path="$statePath"
+    <x-filament::input.wrapper
         :prefix="$prefixLabel"
         :prefix-actions="$getPrefixActions()"
         :prefix-icon="$prefixIcon"
         :suffix="$suffixLabel"
         :suffix-actions="$getSuffixActions()"
         :suffix-icon="$suffixIcon"
-        class="filament-forms-text-input-component"
-        :attributes="\Filament\Support\prepare_inherited_attributes($getExtraAttributeBag())"
+        :valid="! $errors->has($statePath)"
+        class="fi-fo-text-input"
+        :attributes="
+            \Filament\Support\prepare_inherited_attributes($getExtraAttributeBag())
+                ->class(['overflow-hidden'])
+        "
     >
         <div @class([
             'flex-1 filament-phone-input-field',
@@ -36,7 +39,7 @@
              ax-load-src="{{ asset('js/tanthammar/filament-extras/filament-phone-input.js') }}"
              x-data="phoneInputFormComponent({
                         options: @js($getJsonPhoneInputConfiguration()),
-                        state: $wire.{{ $applyStateBindingModifiers('entangle(\'' . $statePath . '\')', lazilyEntangledModifiers: ['defer']) }},
+                        state: $wire.{{ $applyStateBindingModifiers("\$entangle('{$statePath}')") }},
                         inputEl: $refs.phoneInput,
                     })"
 
@@ -54,22 +57,22 @@
                                 'required' => $isRequired() && (! $isConcealed),
                                 'type' =>   'tel',
                                 'x-on:blur' => $isLazy() ? '$wire.$refresh' : null,
-                                'x-on:input.debounce.'.$getDebounce() => $isDebounced() ? '$wire.$refresh' : null,
+                                'x-on:input.debounce.'.$getLiveDebounce() => $isLiveDebounced() ? '$wire.$refresh' : null,
                                 'x-on:change' => 'updateState()',
                                 'x-on:countrychange' => 'countryChange()',
                                 'x-on:focus' => 'focusInput()',
                             ], escape: false)
                             ->class([
-                                'block w-full transition duration-75 shadow-sm outline-none sm:text-sm focus:border-primary-500 focus:relative focus:z-[1] focus:ring-1 focus:ring-inset focus:ring-primary-500 disabled:opacity-70 dark:bg-gray-700 dark:text-white dark:focus:border-primary-500',
+                                'block w-full outline-none border-0 sm:text-sm appearance-none focus:relative focus:z-[1] focus:ring-0 disabled:opacity-70 dark:bg-gray-700 dark:text-white',
                                 'rounded-l-lg' => ! ($prefixLabel || $prefixIcon),
                                 'rounded-r-lg' => ! ($suffixLabel || $suffixIcon),
                             ])
                     }}
-                    x-bind:class="{
+                    {{--x-bind:class="{
                         'border-gray-300 dark:border-gray-600': ! (@js($statePath) in $wire.__instance.serverMemo.errors),
                         'border-danger-600 ring-danger-600': (@js($statePath) in $wire.__instance.serverMemo.errors),
-                    }"
+                    }"--}}
                 >
         </div>
-    </x-filament-forms::affixes>
+    </x-filament::input.wrapper>
 </x-dynamic-component>

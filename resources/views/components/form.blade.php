@@ -4,7 +4,7 @@
     'description' => null,
     'button' => trans('filament::resources/pages/edit-record.form.actions.save.label')
 ])
-<form wire:submit.prevent="{{$submit}}"
+<form wire:submit="{{$submit}}"
       class="p-6 space-y-6 rounded shadow-sm border border-gray-300 filament-forms-section-component" {{ $attributes }}>
     @if($label || $description)
         <div class="flex flex-col space-y-1">

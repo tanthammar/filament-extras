@@ -2,7 +2,7 @@
     :component="$getFieldWrapperView()"
     :field="$field"
 >
-    <div x-data="{ state: $wire.entangle('{{ $getStatePath() }}') }"
+    <div x-data="{ state: $wire.$entangle('{{ $getStatePath() }}', true) }"
          x-text="state"
          style="min-height: 42px"
         @class([
