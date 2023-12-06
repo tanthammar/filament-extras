@@ -19,7 +19,8 @@ class TeamBelongsTo
         return Select::make('team_id')->label(__('fields.team'))
             ->relationship('team', 'name')
             ->default(user()->current_team_id)
-            ->options(fn ($get) => user()?->isSupport()
+            ->options(
+                fn ($get) => user()?->isSupport()
                 ? User::find($get('user_id'))?->allTeams()->pluck('name', 'id') ?? collect()
                 : user()?->ownedTeams()->pluck('name', 'id') ?? collect()
             )

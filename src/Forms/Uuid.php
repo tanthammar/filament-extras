@@ -11,13 +11,13 @@ use Filament\Forms\Components\TextInput;
  */
 class Uuid
 {
-    public static function make(string|array $visibleOn = 'view', string $column = 'uuid'): TextInput
+    public static function make(string | array $visibleOn = 'view', string $column = 'uuid'): TextInput
     {
         return TextInput::make($column)
             ->maxLength(36)
             ->disabled()
             ->ignored()
             ->visible(fn ($operation): bool => $operation === 'view' && user()?->isSupport());
-            //->visibleOn(operations: $visibleOn); //DAN HARRIN unable to combine w visible()
+        //->visibleOn(operations: $visibleOn); //DAN HARRIN unable to combine w visible()
     }
 }

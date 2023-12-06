@@ -12,8 +12,8 @@ class TranslatableMarkdown
     public static function make(
         string $column,
         string $autoFillFrom,
-        string $label): MarkdownEditor
-    {
+        string $label
+    ): MarkdownEditor {
         return MarkdownEditor::make($column)
             ->label(__($label))->columnSpan(2)->nullable()->rules('string')
             ->requiredIfBlank($autoFillFrom)

@@ -10,7 +10,7 @@ use TantHammar\LaravelRules\Rules\MobileNumber;
  */
 class MobileMask
 {
-    public static function make(string $column = 'mobile', null|int $default = 460, string $label = 'fields.mobile'): Components\TextInput
+    public static function make(string $column = 'mobile', ?int $default = 460, string $label = 'fields.mobile'): Components\TextInput
     {
         return Components\TextInput::make($column)
             ->label(trans($label))

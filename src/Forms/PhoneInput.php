@@ -17,15 +17,15 @@ use TantHammar\FilamentExtras\Enums\PlaceholderMethod;
  */
 class PhoneInput extends Field
 {
-    use HasPlaceholder,
-        HasAffixes,
-        HasExtraInputAttributes,
-        CanBeAutocompleted,
-        CanBeReadOnly;
+    use CanBeAutocompleted;
+    use CanBeReadOnly;
+    use HasAffixes;
+    use HasExtraInputAttributes;
+    use HasPlaceholder;
 
     protected string $view = 'filament-extras::components.phone-input';
 
-    protected string $displayNumberFormat = "NATIONAL";
+    protected string $displayNumberFormat = 'NATIONAL';
 
     protected string $inputNumberFormat = 'E164';
 
@@ -53,7 +53,7 @@ class PhoneInput extends Field
 
     protected array $onlyCountries = [];
 
-    protected string $placeholderNumberType = "MOBILE";
+    protected string $placeholderNumberType = 'MOBILE';
 
     protected array $preferredCountries = ['us', 'gb'];
 
@@ -79,7 +79,6 @@ class PhoneInput extends Field
         return $this;
     }
 
-
     /** formatted value returned to backend */
     public function inputNumberFormat(PhoneInputNumberFormat $format): self
     {
@@ -101,6 +100,7 @@ class PhoneInput extends Field
     /**
      * Default: 'aggressive' <br>
      * Placeholder autoformatting method. <br>
+     *
      * @see PlaceholderMethod enum, for explanation.
      * @see placeholderNumberType() for formatting options.
      */
@@ -129,7 +129,6 @@ class PhoneInput extends Field
 
         return $this;
     }
-
 
     public function excludeCountries(array $value): static
     {
@@ -161,7 +160,6 @@ class PhoneInput extends Field
 
         return $this;
     }
-
 
     /**  Default: 'auto' <br> $value must eq 'auto' or a valid country code, like 'us' */
     public function initialCountry(string $value): static
@@ -200,7 +198,6 @@ class PhoneInput extends Field
 
         return $this;
     }
-
 
     /** fallback if geoIPLookup fails, @see geoIpLookup()   */
     public function preferredCountries(array $value): static

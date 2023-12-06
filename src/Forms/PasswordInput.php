@@ -32,7 +32,7 @@ class PasswordInput
             ->autocomplete('new-password');
     }
 
-    public static function current(string $column = 'current_password', bool|string $with = 'new_password'): TextInput
+    public static function current(string $column = 'current_password', bool | string $with = 'new_password'): TextInput
     {
         return TextInput::make($column)
             ->label(trans('fields.current-password'))

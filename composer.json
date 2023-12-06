@@ -9,7 +9,7 @@
     },
     "require": {
         "php": "^8.1|^8.2",
-        "brick/phonenumber": "^0.4.0",
+        "brick/phonenumber": "^0.6.0",
         "spatie/laravel-permission": "^5.5.0",
         "filament/filament": "*",
         "tanthammar/laravel-rules": "dev-main"

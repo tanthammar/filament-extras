@@ -14,8 +14,8 @@ class AddressSearch
             ->placeholder(trans('filament-extras::misc.nominatim-search-placeholder'))
             ->searchable()
             ->ignored()
-            ->reactive()
-            ->getSearchResultsUsing(fn(string $search) => Nominatim::search($search));
+            ->live()
+            ->getSearchResultsUsing(fn (string $search) => Nominatim::search($search));
 
         return $replaceFormData
             ? $field->afterStateUpdated(function ($get, $set, $state) {
@@ -23,7 +23,7 @@ class AddressSearch
 
                     $existingFieldValue = collect([
                         'street', 'zip', 'city', 'state', 'county', 'country', 'country_code', 'latitude', 'longitude',
-                    ])->mapWithKeys(fn($field) => [$field => $get($field)])->all();
+                    ])->mapWithKeys(fn ($field) => [$field => $get($field)])->all();
 
                     foreach (Nominatim::lookup(osm_id: $state, existingFieldValue: $existingFieldValue) as $field => $value) {
                         $set($field, $value);

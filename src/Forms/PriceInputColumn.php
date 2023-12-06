@@ -14,5 +14,4 @@ class PriceInputColumn
             ->type('number')
             ->rules(['nullable', 'numeric']);
     }
-
 }

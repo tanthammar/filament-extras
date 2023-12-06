@@ -12,5 +12,4 @@ class Longitude
             ->label(__('fields.longitude'))
             ->rules(['sometimes', new \TantHammar\LaravelRules\Rules\Longitude]);
     }
-
 }

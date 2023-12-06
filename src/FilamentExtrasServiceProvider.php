@@ -7,8 +7,6 @@ use Filament\Forms\Components;
 use Filament\Support\Assets\Css;
 use Filament\Support\Assets\Js;
 use Filament\Tables\Table;
-use Filament\Support\Assets\AlpineComponent;
-use Filament\Support\Assets\AssetManager;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Validation\Rule;
 use Spatie\LaravelPackageTools\Package;
@@ -16,7 +14,6 @@ use Spatie\LaravelPackageTools\PackageServiceProvider;
 
 class FilamentExtrasServiceProvider extends PackageServiceProvider
 {
-
     public function configurePackage(Package $package): void
     {
         $package
@@ -33,7 +30,6 @@ class FilamentExtrasServiceProvider extends PackageServiceProvider
         });
     }
 
-
     public function packageRegistered(): void
     {
         /** commands
@@ -41,19 +37,16 @@ class FilamentExtrasServiceProvider extends PackageServiceProvider
          * npm run prod:js
          * php artisan filament:upgrade
          */
-
         $this->registerMacros();
 
-        if($this->app->runningInConsole()) {
+        if ($this->app->runningInConsole()) {
 
-                \Filament\Support\Facades\FilamentAsset::register([
-                    Css::make('filament-phone-input', __DIR__ . '/../dist/filament-phone/filament-phone.css'),
-                    Js::make('filament-phone-input', __DIR__ . '/../dist/filament-phone/filament-phone.js'),
-                ], 'tanthammar/filament-extras');
+            \Filament\Support\Facades\FilamentAsset::register([
+                Css::make('filament-phone-input', __DIR__ . '/../dist/filament-phone/filament-phone.css'),
+                Js::make('filament-phone-input', __DIR__ . '/../dist/filament-phone/filament-phone.js'),
+            ], 'tanthammar/filament-extras');
 
         }
-
-
 
     }
 
@@ -107,12 +100,12 @@ class FilamentExtrasServiceProvider extends PackageServiceProvider
         Components\Field::macro('visibleIfChecked', fn (string $field): static => $this->visible(fn (\Filament\Forms\Get $get): bool => $get($field)));
         Components\Field::macro('visibleIfUnChecked', fn (string $field): static => $this->visible(fn (\Filament\Forms\Get $get): bool => ! $get($field)));
 
-        Components\Field::macro('ucwords', fn (): static => $this->dehydrateStateUsing(fn ($state) => mb_convert_case($state, MB_CASE_TITLE, "UTF-8")));
+        Components\Field::macro('ucwords', fn (): static => $this->dehydrateStateUsing(fn ($state) => mb_convert_case($state, MB_CASE_TITLE, 'UTF-8')));
         Components\Field::macro('ucfirst', fn (): static => $this->dehydrateStateUsing(fn ($state) => mb_convert_case(mb_substr($state, 0, 1), MB_CASE_TITLE) . mb_substr($state, 1)));
         Components\Field::macro('smallcaps', fn (): static => $this->dehydrateStateUsing(fn ($state) => mb_strtolower($state)));
         Components\Field::macro('uppercase', fn (): static => $this->dehydrateStateUsing(fn ($state) => mb_strtoupper($state)));
 
-        Components\Field::macro('ruleEach', fn (array|string $rules, bool|Closure $condition = true): static => $this->nestedRecursiveRules($rules, $condition));
+        Components\Field::macro('ruleEach', fn (array | string $rules, bool | Closure $condition = true): static => $this->nestedRecursiveRules($rules, $condition));
 
         Components\TagsInput::macro('ruleEachInOptions', fn (): static => $this->nestedRecursiveRules(['bail', fn ($component): \Illuminate\Validation\Rules\In => Rule::in(array_keys($component->getOptions()))]));
         Components\CheckboxList::macro('ruleEachInOptions', fn (): static => $this->nestedRecursiveRules(['bail', fn ($component): \Illuminate\Validation\Rules\In => Rule::in(array_keys($component->getOptions()))]));
@@ -126,7 +119,7 @@ class FilamentExtrasServiceProvider extends PackageServiceProvider
         /**
          * @deprecated accepted to core
          */
-        Components\TextInput::macro('lazyEntangled', fn (): static => $this->extraAlpineAttributes(['x-on:blur' => '$wire.$refresh'])); //fake entangled.lazy on TextInputs with Masks
+        //Components\TextInput::macro('lazyEntangled', fn (): static => $this->extraAlpineAttributes(['x-on:blur' => '$wire.$refresh'])); //fake entangled.lazy on TextInputs with Masks
 
         /** Table features removed from Filament v3 */
         Table::macro('prependActions', function (array $actions): static {
@@ -134,6 +127,7 @@ class FilamentExtrasServiceProvider extends PackageServiceProvider
             $this->actions = [];
             $this->actions($actions);
             $this->actions = array_merge($this->actions, $existing);
+
             return $this;
         });
 
@@ -142,6 +136,7 @@ class FilamentExtrasServiceProvider extends PackageServiceProvider
             $this->actions = [];
             $this->actions($actions);
             $this->actions = array_merge($existing, $this->actions);
+
             return $this;
         });
 
@@ -150,6 +145,7 @@ class FilamentExtrasServiceProvider extends PackageServiceProvider
             $this->groupedBulkActions = [];
             $this->bulkActions($actions);
             $this->groupedBulkActions = array_merge($this->groupedBulkActions, $existing);
+
             return $this;
         });
 
@@ -158,6 +154,7 @@ class FilamentExtrasServiceProvider extends PackageServiceProvider
             $this->groupedBulkActions = [];
             $this->bulkActions($actions);
             $this->groupedBulkActions = array_merge($existing, $this->groupedBulkActions);
+
             return $this;
         });
 
@@ -166,6 +163,7 @@ class FilamentExtrasServiceProvider extends PackageServiceProvider
             $this->headerActions = [];
             $this->headerActions($actions);
             $this->headerActions = array_merge($this->headerActions, $existing);
+
             return $this;
         });
 
@@ -174,8 +172,8 @@ class FilamentExtrasServiceProvider extends PackageServiceProvider
             $this->headerActions = [];
             $this->headerActions($actions);
             $this->headerActions = array_merge($existing, $this->headerActions);
+
             return $this;
         });
     }
-
 }

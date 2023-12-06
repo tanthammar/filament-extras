@@ -13,9 +13,6 @@ class Nominatim
 {
     /**
      * https://nominatim.org/release-docs/latest/api/Search/
-     *
-     * @param  string  $address
-     * @return array
      */
     public static function search(string $address): array
     {
@@ -44,11 +41,8 @@ class Nominatim
 
     /**
      * https://nominatim.org/release-docs/latest/api/Lookup/
-     *
-     * @param  int  $osm_id
-     * @return array
      */
-    public static function lookup(null|int $osm_id, ?array $existingFieldValue = []): array
+    public static function lookup(?int $osm_id, ?array $existingFieldValue = []): array
     {
         if (! $osm_id) {
             return [];
@@ -65,7 +59,7 @@ class Nominatim
             data_set($c, 'address.country_code', strtoupper(data_get($c, 'address.country_code', '')));
             $address = data_get($c, 'address', []);
             $mapped = [];
-            $mapped['street'] = rtrim(data_get($address, 'road').' '.data_get($address, 'house_number'));
+            $mapped['street'] = rtrim(data_get($address, 'road') . ' ' . data_get($address, 'house_number'));
             $mapped['zip'] = data_get($address, 'postcode');
             $mapped['city'] = self::getCity($address);
             $mapped['state'] = data_get($address, 'state') ?? data_get($address, 'municipality');

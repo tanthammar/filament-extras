@@ -4,7 +4,6 @@ namespace TantHammar\FilamentExtras\Forms;
 
 use Filament\Forms\Components\TextInput;
 use Filament\Support\RawJs;
-use Illuminate\Database\Eloquent\Model;
 
 class MoneySEK
 {

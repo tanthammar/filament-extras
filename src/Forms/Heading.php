@@ -2,13 +2,10 @@
 
 namespace TantHammar\FilamentExtras\Forms;
 
-use Closure;
-use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Component;
 use Filament\Forms\Components\Concerns\HasName;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Str;
-use JetBrains\PhpStorm\Pure;
 
 /** @see https://filamentphp.com/docs/2.x/forms/layout#placeholder */
 class Heading extends Component
@@ -77,9 +74,9 @@ class Heading extends Component
     public function getLabel(): string | Htmlable | null
     {
         return parent::getLabel() ?? (string) Str::of($this->getName())
-                ->kebab()
-                ->replace(['-', '_'], ' ')
-                ->ucfirst();
+            ->kebab()
+            ->replace(['-', '_'], ' ')
+            ->ucfirst();
     }
 
     /** blade icon name */
@@ -178,7 +175,7 @@ class Heading extends Component
 
     public function getDesign(): ?string
     {
-        if($this->design === 'plain') {
+        if ($this->design === 'plain') {
             return ' rounded-lg';
         }
 
@@ -202,11 +199,11 @@ class Heading extends Component
         };
 
         if ($this->design === 'border-top') {
-            return ' border-t-4'. ' '. $borderColor;
+            return ' border-t-4' . ' ' . $borderColor;
         }
 
         if ($this->design === 'border-left') {
-            return ' border-l-4' . ' '. $borderColor;
+            return ' border-l-4' . ' ' . $borderColor;
         }
 
         return null;
@@ -244,8 +241,7 @@ class Heading extends Component
             'gray' => 'text-gray-700 bg-gray-100 dark:bg-gray-800 dark:text-gray-400',
             default => $this->color,
         };
+
         return $color . $this->getDesign();
     }
-
-
 }

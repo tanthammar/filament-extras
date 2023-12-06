@@ -12,7 +12,7 @@ class DTOPhoneColumn
     {
         return TextColumn::make($column)
             ->formatStateUsing(fn ($state): string => ($nr = data_get($state, $attribute))
-                ? PhoneNumber::parse('+'.$nr)->format(PhoneNumberFormat::INTERNATIONAL)
+                ? PhoneNumber::parse('+' . $nr)->format(PhoneNumberFormat::INTERNATIONAL)
                 : '');
     }
 }

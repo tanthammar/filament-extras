@@ -3,7 +3,6 @@
 namespace TantHammar\FilamentExtras\Actions;
 
 use Filament\Forms\Components\Actions\Action;
-use Illuminate\Support\Str;
 
 /**
  * Pass a view path as $name in make()
@@ -23,12 +22,11 @@ class HelpModal extends Action
         string $heading = 'Info',
         string $iconColor = 'primary',
         string $icon = 'heroicon-o-question-mark-circle',
-    ): static
-    {
+    ): static {
         return static::make($key)
             ->modalContent(view($view))
             ->modalHeading($heading)
-            ->modalFooterActions(fn($action): array => [$action->getModalCancelAction()->label('OK')->color('primary')])
+            ->modalFooterActions(fn ($action): array => [$action->getModalCancelAction()->label('OK')->color('primary')])
             ->color($iconColor)
             ->requiresConfirmation(false)
             ->icon($icon)

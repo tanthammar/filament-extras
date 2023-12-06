@@ -12,7 +12,7 @@ class JsonPhoneColumn
     {
         return TextColumn::make($column)
             ->formatStateUsing(fn ($state): string => ($nr = data_get($state, $dotNotation))
-                ? PhoneNumber::parse('+'.$nr)->format(PhoneNumberFormat::INTERNATIONAL)
+                ? PhoneNumber::parse('+' . $nr)->format(PhoneNumberFormat::INTERNATIONAL)
                 : '');
     }
 }

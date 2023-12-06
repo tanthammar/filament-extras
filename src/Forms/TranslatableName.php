@@ -13,23 +13,23 @@ class TranslatableName
     {
         return [
             TextInput::make("$column.sv")
-                ->label(trans($label) .' Svenska')
+                ->label(trans($label) . ' Svenska')
                 ->ucfirst()
                 ->minLength(2)
                 ->maxLength(125)
                 ->requiredIfBlank("$column.en")
                 ->saveAs(fn ($get, $state) => $state ?: $get("$column.en"))
                 ->rules(['bail', 'alpha_dash_space_and'])
-                ->unique(column: $column."->en", ignoreRecord: true),
+                ->unique(column: $column . '->en', ignoreRecord: true),
             TextInput::make("$column.en")
-                ->label(trans($label).' English')
+                ->label(trans($label) . ' English')
                 ->ucfirst()
                 ->minLength(2)
                 ->maxLength(125)
                 ->requiredIfBlank("$column.sv")
                 ->saveAs(fn ($get, $state) => $state ?: $get("$column.sv"))
                 ->rules(['bail', 'alpha_dash_space_and'])
-                ->unique(column: $column."->sv", ignoreRecord: true),
+                ->unique(column: $column . '->sv', ignoreRecord: true),
         ];
     }
 }
