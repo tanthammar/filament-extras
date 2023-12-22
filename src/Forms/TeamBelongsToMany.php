@@ -5,10 +5,13 @@ namespace TantHammar\FilamentExtras\Forms;
 use App\Models\User;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\Select;
+use Closure;
 
 class TeamBelongsToMany
 {
     /**
+     * Visible to support and user who owns the current team.
+     *
      * Support can search among ALL teams a user belongs to<br>
      * whereas user only can select between OWNED teams
      */
@@ -26,8 +29,8 @@ class TeamBelongsToMany
             ->relationship('teams', 'name')
             ->options(
                 fn ($get) => user()?->isSupport()
-                    ? User::find($get('user_id'))?->allTeams()->pluck('name', 'id') ?? collect()
-                    : user()?->ownedTeams()->pluck('name', 'id') ?? collect()
+                    ? User::find($get('user_id'))?->allTeams()->pluck('name', 'id') ?? collect() //support can see all user related teams
+                    : user()?->ownedTeams()->pluck('name', 'id') ?? collect() //current team owner can only see other owned teams
             )
             ->bulkToggleable()
             ->columns(2)

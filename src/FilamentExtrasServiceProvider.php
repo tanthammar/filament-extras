@@ -107,6 +107,8 @@ class FilamentExtrasServiceProvider extends PackageServiceProvider
 
         Components\Field::macro('ruleEach', fn (array | string $rules, bool | Closure $condition = true): static => $this->nestedRecursiveRules($rules, $condition));
 
+        Components\Field::macro('isReactive', fn (bool $live): static => $live ? $this->live() : $this);
+
         Components\TagsInput::macro('ruleEachInOptions', fn (): static => $this->nestedRecursiveRules(['bail', fn ($component): \Illuminate\Validation\Rules\In => Rule::in(array_keys($component->getOptions()))]));
         Components\CheckboxList::macro('ruleEachInOptions', fn (): static => $this->nestedRecursiveRules(['bail', fn ($component): \Illuminate\Validation\Rules\In => Rule::in(array_keys($component->getOptions()))]));
 
