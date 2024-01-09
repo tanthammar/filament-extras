@@ -14,7 +14,6 @@ class Author
     {
         $field = Select::make('user_id')->label(__('fields.user'))
             ->relationship('author', 'name')
-            ->getOptionLabelUsing(fn ($value): ?string => User::find($value)?->name)
             ->default(Auth::id())
             ->required();
 
@@ -25,7 +24,7 @@ class Author
                 ->rules('exists:users,id')
             : $field
                 ->selectablePlaceholder(false)
-                ->getSearchResultsUsing(fn (string $search): Collection => user()->currentTeam->allUsers()->where('name', 'like', "%{$search}%")->pluck('name', 'id'))
+                ->options(fn (): Collection => user()->currentTeam->allUsers()->pluck('name', 'id'))
                 ->rules([Rule::in([Auth::id()])]);
     }
 }

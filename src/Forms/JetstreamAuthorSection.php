@@ -9,14 +9,16 @@ use Closure;
 
 class JetstreamAuthorSection
 {
-    public static function make(bool $teamLive = false): Section
+    public static function make(bool $teamLive = false, ?Closure $onUpdatedTeams = null): Section
     {
         return Section::make(__('fields.authors'))
             ->schema([
 
                 self::author('team'),
 
-                TeamBelongsTo::make()->isReactive($teamLive),
+                TeamBelongsTo::make()
+                    ->isReactive($teamLive)
+                    ->onUpdated($onUpdatedTeams),
 
             ])->columns(2)
             ->collapsible()
@@ -24,6 +26,9 @@ class JetstreamAuthorSection
             ->visible(user()?->isSupport());
     }
 
+    /**
+     * Team belongs to many checklist.
+     */
     public static function manyTeams(bool $teamLive = false, ?Closure $onUpdatedTeams = null): Section
     {
         return Section::make(__('fields.authors'))
@@ -34,7 +39,7 @@ class JetstreamAuthorSection
 
                 TeamBelongsToMany::make()
                     ->isReactive($teamLive)
-                    ->onUpdated($onUpdated),
+                    ->onUpdated($onUpdatedTeams),
             ])
             ->columns(2)
             ->collapsible()
@@ -46,7 +51,7 @@ class JetstreamAuthorSection
         return Author::make()
             ->lazy()
             ->required()
-            ->onUpdated(fn ($set, $state) => $set($field, [
+            ->onUpdated(fn ($set, $state) => $set($updatesField, [
                 $state ? User::find($state)?->current_team_id : null,
             ]));
     }

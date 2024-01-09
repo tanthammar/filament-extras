@@ -4,8 +4,7 @@ namespace TantHammar\FilamentExtras\Forms;
 
 use App\Models\User;
 use Filament\Forms\Components\CheckboxList;
-use Filament\Forms\Components\Select;
-use Closure;
+use Illuminate\Support\Facades\Cache;
 
 class TeamBelongsToMany
 {
@@ -23,19 +22,19 @@ class TeamBelongsToMany
          * This ensures that the dehydrated() call from within relationship()
          * is not overridden by the call from disabled()
          */
-        return CheckboxList::make('teams')->label(__('fields.team'))
-            ->disabled( ! (user()?->isSupport() || user()?->ownsCurrentTeam()) ) //before relationship()
-            ->default([user()->current_team_id]) //non-team owners can only select their own team
-            ->relationship('teams', 'name')
-            ->options(
-                fn ($get) => user()?->isSupport()
-                    ? User::find($get('user_id'))?->allTeams()->pluck('name', 'id') ?? collect() //support can see all user related teams
-                    : user()?->ownedTeams()->pluck('name', 'id') ?? collect() //current team owner can only see other owned teams
+        return CheckboxList::make('teams')->label(__('models.Team.plural'))
+            ->disabled(!(user()?->isSupport() || user()?->ownsCurrentTeam())) //before relationship(), see Filament docs
+            ->default([userTeamId()])
+            ->relationship(
+                name: 'teams',
+                titleAttribute: 'name',
+                modifyQueryUsing: fn($get, $query) => TeamBelongsTo::teamQuery($get, $query)
             )
             ->bulkToggleable()
             ->columns(2)
             ->required()
             ->rule('array')
+            ->ruleEach('exists:teams,id')
             ->ruleEachInOptions();
     }
 }

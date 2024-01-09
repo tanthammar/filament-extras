@@ -36,7 +36,7 @@
                     {{ $getLabel() }}
                 </h3>
                 <div class="text-sm">
-                    {{ $content }}
+                    {!! $content !!}
                 </div>
             </div>
 
