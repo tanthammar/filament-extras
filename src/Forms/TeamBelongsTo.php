@@ -6,6 +6,7 @@ use App\Models\User;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\Select;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Cache;
 
 class TeamBelongsTo
@@ -18,15 +19,20 @@ class TeamBelongsTo
      */
     public static function make(): Select
     {
+        $modifyQueryUsing = fn($get, $query) => self::teamQuery($get, $query);
+
         return Select::make('team_id')->label(__('fields.team'))
             ->disabled(!(user()?->isSupport() || user()?->ownsCurrentTeam())) //before relationship(), see Filament docs
             ->relationship(
                 name: 'team',
                 titleAttribute: 'name',
-                modifyQueryUsing: fn($get, $query) => self::teamQuery($get, $query)
+                modifyQueryUsing: $modifyQueryUsing
             )
             ->default(userTeamId()) //non-team owners can only select their current team
-            ->selectablePlaceholder(false)
+            ->default(fn (Select $component): ?int => Relation::noConstraints(static fn () => $component->getRelationship())
+                ->tap($modifyQueryUsing)
+                ->first() //default value is the first item returned from the query
+                ?->getKey())
             ->exists('teams', 'id')
             ->ruleInOptions()
             ->required();
