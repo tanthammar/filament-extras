@@ -12,8 +12,6 @@ class Author
 {
     public static function make(): Select
     {
-        $modifyQueryUsing = fn ($query) => $query->orderByTranslation('name');
-
         $field = Select::make('user_id')->label(__('fields.user'))
             ->relationship('author', 'name')
             ->default(Auth::id())

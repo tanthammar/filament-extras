@@ -14,23 +14,18 @@ class TeamBelongsTo
     /**
      * Support can search among ALL teams a user belongs to<br>
      * whereas user only can select between OWNED teams
-     *
-     * @return CheckboxList
      */
     public static function make(): Select
     {
-        $modifyQueryUsing = fn($get, $query) => self::teamQuery($get, $query);
-
         return Select::make('team_id')->label(__('fields.team'))
             ->disabled(!(user()?->isSupport() || user()?->ownsCurrentTeam())) //before relationship(), see Filament docs
             ->relationship(
                 name: 'team',
                 titleAttribute: 'name',
-                modifyQueryUsing: $modifyQueryUsing
+                modifyQueryUsing: fn(Builder $query, \Filament\Forms\Get $get) => self::teamQuery($get, $query)
             )
             ->default(userTeamId()) //non-team owners can only select their current team
             ->default(fn (Select $component): ?int => Relation::noConstraints(static fn () => $component->getRelationship())
-                ->tap($modifyQueryUsing)
                 ->first() //default value is the first item returned from the query
                 ?->getKey())
             ->exists('teams', 'id')
