@@ -13,6 +13,6 @@ class MoneySEK
             ->label(trans($label))
             ->numeric()
             ->mask(RawJs::make("\$money(\$input, ',', ' ')"))
-            ->dehydrateStateUsing(fn ($state) => str_replace($state, ',', '.'));
+            ->dehydrateStateUsing(fn ($state) => str_replace(',', '.', $state ));
     }
 }
