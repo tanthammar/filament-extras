@@ -4,7 +4,8 @@ namespace TantHammar\FilamentExtras\Forms;
 
 use App\Models\User;
 use Filament\Forms\Components\CheckboxList;
-use Illuminate\Support\Facades\Cache;
+use Filament\Forms\Get;
+use Illuminate\Database\Eloquent\Builder;
 
 class TeamBelongsToMany
 {
@@ -28,7 +29,7 @@ class TeamBelongsToMany
             ->relationship(
                 name: 'teams',
                 titleAttribute: 'name',
-                modifyQueryUsing: fn($get, $query) => TeamBelongsTo::teamQuery($get, $query)
+                modifyQueryUsing: fn(Get $get, Builder $query) => TeamBelongsTo::teamQuery($get, $query)
             )
             ->bulkToggleable()
             ->columns(2)
