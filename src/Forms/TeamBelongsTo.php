@@ -23,7 +23,7 @@ class TeamBelongsTo
             ->relationship(
                 name: 'team',
                 titleAttribute: 'name',
-                modifyQueryUsing: fn(Builder $query, \Filament\Forms\Get $get) => self::teamQuery($query, $get)
+                modifyQueryUsing: fn(Builder $query, \Filament\Forms\Get $get) => self::teamQuery($get, $query)
             )
             ->default(userTeamId()) //non-team owners can only select their current team
             ->default(fn (Select $component, Get $get): ?int => Relation::noConstraints(static fn () => $component->getRelationship())
@@ -38,7 +38,7 @@ class TeamBelongsTo
     /**
      * All teams selected user belongs to
      */
-    public static function teamQuery($query, $get): Builder
+    public static function teamQuery($get, $query): Builder
     {
         $userId = user()?->isSupport() ? $get('user_id') : user()->id;
 
