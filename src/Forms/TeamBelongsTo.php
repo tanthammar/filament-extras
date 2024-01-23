@@ -5,6 +5,7 @@ namespace TantHammar\FilamentExtras\Forms;
 use App\Models\User;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Get;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Cache;
@@ -22,10 +23,11 @@ class TeamBelongsTo
             ->relationship(
                 name: 'team',
                 titleAttribute: 'name',
-                modifyQueryUsing: fn(Builder $query, \Filament\Forms\Get $get) => self::teamQuery($get, $query)
+                modifyQueryUsing: fn(Builder $query, \Filament\Forms\Get $get) => self::teamQuery($query, $get)
             )
             ->default(userTeamId()) //non-team owners can only select their current team
-            ->default(fn (Select $component): ?int => Relation::noConstraints(static fn () => $component->getRelationship())
+            ->default(fn (Select $component, Get $get): ?int => Relation::noConstraints(static fn () => $component->getRelationship())
+                ->tap(fn ($query, $get) => self::teamQuery($get, $query))
                 ->first() //default value is the first item returned from the query
                 ?->getKey())
             ->exists('teams', 'id')
@@ -36,7 +38,7 @@ class TeamBelongsTo
     /**
      * All teams selected user belongs to
      */
-    public static function teamQuery($get, $query): Builder
+    public static function teamQuery($query, $get): Builder
     {
         $userId = user()?->isSupport() ? $get('user_id') : user()->id;
 
