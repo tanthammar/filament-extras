@@ -5,31 +5,28 @@ namespace TantHammar\FilamentExtras\Forms;
 use App\Models\User;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
-use Closure;
 
 class JetstreamAuthorSection
 {
-    public static function make(bool $teamLive = false, ?Closure $onUpdatedTeams = null): Section
+    public static function make(): Section
     {
         return Section::make(__('fields.authors'))
             ->schema([
 
-                self::author('team'),
+                self::author('team')
+                    ->disabled(! user()?->isSupport()),
 
-                TeamBelongsTo::make()
-                    ->isReactive($teamLive)
-                    ->onUpdated($onUpdatedTeams),
+                TeamBelongsTo::make(),
 
             ])->columns(2)
             ->collapsible()
-            ->collapsed()
-            ->visible(user()?->isSupport());
+            ->collapsed();
     }
 
     /**
      * Team belongs to many checklist.
      */
-    public static function manyTeams(bool $teamLive = false, ?Closure $onUpdatedTeams = null): Section
+    public static function manyTeams(): Section
     {
         return Section::make(__('fields.authors'))
             ->schema([
@@ -37,9 +34,7 @@ class JetstreamAuthorSection
                 self::author('teams')
                     ->disabled(! user()?->isSupport()),
 
-                TeamBelongsToMany::make()
-                    ->isReactive($teamLive)
-                    ->onUpdated($onUpdatedTeams),
+                TeamBelongsToMany::make(),
             ])
             ->columns(2)
             ->collapsible()

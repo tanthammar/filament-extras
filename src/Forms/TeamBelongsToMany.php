@@ -25,11 +25,11 @@ class TeamBelongsToMany
          */
         return CheckboxList::make('teams')->label(__('models.Team.plural'))
             ->disabled(!(user()?->isSupport() || user()?->ownsCurrentTeam())) //before relationship(), see Filament docs
-            ->default([userTeamId()])
+            ->default([userTeamId()])//set to current team because the field is disabled for non-team owners
             ->relationship(
                 name: 'teams',
                 titleAttribute: 'name',
-                modifyQueryUsing: fn(Get $get, Builder $query) => TeamBelongsTo::teamQuery($get, $query)
+                modifyQueryUsing: fn(Get $get, Builder $query) => TeamBelongsTo::ownedTeams($get, $query)
             )
             ->bulkToggleable()
             ->columns(2)

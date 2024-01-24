@@ -2,6 +2,7 @@
 
 namespace TantHammar\FilamentExtras\Forms;
 
+use App\Models\Team;
 use App\Models\User;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Get;
@@ -16,30 +17,36 @@ class TeamBelongsTo
      */
     public static function make(): Select
     {
+        // The user must own the current team, to be allowed to move items to another team
+        // the user must also own the team they try to move items to.
+        // The ownedTeams query returns current team and owned teams
+        // The field is disabled if the user doesn't own the current team
+
         return Select::make('team_id')->label(__('fields.team'))
-            ->disabled(!(user()?->isSupport() || user()?->ownsCurrentTeam())) //before relationship(), see Filament docs
+            ->disabled(!(user()?->isSupport() || user()?->ownsCurrentTeam())) //disabled() must come before relationship(), see Filament docs,
+            ->default(userTeamId()) //set to current team because the field is disabled for non-team owners
             ->relationship(
                 name: 'team',
                 titleAttribute: 'name',
-                modifyQueryUsing: fn(Builder $query, \Filament\Forms\Get $get) => self::teamQuery($get, $query)
+                modifyQueryUsing: fn(Builder $query, \Filament\Forms\Get $get) => self::ownedTeams($get, $query)
             )
-            ->default(userTeamId()) //non-team owners can only select their current team
-            ->default(fn (Select $component, Get $get): ?int => Relation::noConstraints(static fn () => $component->getRelationship())
-                ->tap(fn ($query, $get) => self::teamQuery($get, $query))
-                ->first() //default value is the first item returned from the query
-                ?->getKey())
             ->exists('teams', 'id')
             ->ruleInOptions()
             ->required();
     }
 
-    /**
-     * All teams selected user belongs to
-     */
-    public static function teamQuery($get, $query): Builder
-    {
-        $userId = user()?->isSupport() ? $get('user_id') : user()->id;
 
-        return $query->whereRelation('users', 'user_id', $userId)->orWhere('user_id', $userId);
+    /** OBSERVE used by TeamBelongsToMany */
+    public static function ownedTeams(Get $get, Builder $query): Builder
+    {
+        //Support can move items to any team the selected user is related to, no matter if it's owned or not
+        if(user()->isSupport() && $userId = $get('user_id')) {
+            return $query->where('user_id', $userId)->orWhereRelation('users', 'user_id', $userId);
+        }
+
+        //users can only select between their current team or owned teams
+        //but if they don't own any team the current team is selected by default, and the field is disabled
+        return  $query->where('user_id', user()->id)
+            ->orWhere('id', userTeamId()); //keep current team in options for non-team owners
     }
 }
