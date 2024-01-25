@@ -46,7 +46,7 @@ class TeamBelongsTo
 
         //users can only select between their current team or owned teams
         //but if they don't own any team the current team is selected by default, and the field is disabled
-        return  $query->where('user_id', user()->id)
-            ->orWhere('id', userTeamId()); //keep current team in options for non-team owners
+        return  $query->where('id', userTeamId())
+            ->orWhere('user_id', user()->id);
     }
 }
