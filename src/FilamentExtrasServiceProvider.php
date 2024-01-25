@@ -4,9 +4,12 @@ namespace TantHammar\FilamentExtras;
 
 use Closure;
 use Filament\Forms\Components;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Get;
 use Filament\Support\Assets\Css;
 use Filament\Support\Assets\Js;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Validation\Rule;
 use Spatie\LaravelPackageTools\Package;
@@ -113,10 +116,31 @@ class FilamentExtrasServiceProvider extends PackageServiceProvider
         Components\CheckboxList::macro('ruleEachInOptions', fn (): static => $this->nestedRecursiveRules(['bail', fn ($component): \Illuminate\Validation\Rules\In => Rule::in(array_keys($component->getOptions()))]));
 
         /** For Select->multiple() */
-        Components\Select::macro('ruleEachInOptions', fn (): static => $this->nestedRecursiveRules(['bail', fn ($component): \Illuminate\Validation\Rules\In => Rule::in(array_keys($component->getOptions()))]));
+        Components\Select::macro('ruleEachInOptions', fn (): static => $this->nestedRecursiveRules(['bail', fn (Select $component): \Illuminate\Validation\Rules\In => Rule::in(array_keys($component->getOptions()))]));
 
         /** for single Select */
         Components\Select::macro('ruleInOptions', fn (): static => $this->rule(fn ($component): \Illuminate\Validation\Rules\In => Rule::in(array_keys($component->getOptions()))));
+
+        /**
+         * Macro for a 'Select' form component that auto-selects the first item based on the component's relationship definition.
+         * Note:
+         * - The relationship query associated with the component is executed twice during this process.
+         * - Provide an optional callable `$tap` parameter to modify the relationship query.
+         * - OBSERVE! The component's `$modifyQueryUsing` will **NOT** be applied.
+         *
+         * Example: If a 'teams' relationship is defined in the component, 'Teams::query()' would be executed.
+         */
+        Components\Select::macro('autoSelectFirstRelated', fn (?callable $tap = null): static => $this->default(fn (Select $component, Get $get): null|int|string => Relation::noConstraints(static fn () => $component->getRelationship())->tap($tap)->first()?->getKey()));
+
+        /**
+         * Macro for a 'Select' form component that auto-selects the first item in a 'Create' form.
+         * Note:
+         * - The query to retrieve the component's options is executed twice during this process.
+         * - If a relationship query exists, it will be executed in its entirety.
+         *
+         * In other words, this macro selects the first option from the list derived from the component's options or relationship query (if defined).
+         */
+        Components\Select::macro('autoSelectFirstOption', fn (): static => $this->default(fn (Select $component): null|int|string => collect(array_keys($component->getOptions()))?->first()));
 
         /**
          * @deprecated accepted to core
