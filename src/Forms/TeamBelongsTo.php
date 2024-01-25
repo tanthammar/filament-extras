@@ -37,7 +37,7 @@ class TeamBelongsTo
 
 
     /** OBSERVE used by TeamBelongsToMany */
-    public static function ownedTeams(Get $get, Builder $query): Builder
+    public static function ownedTeams(Get $get, Builder $query, bool $belongsToMany = false): Builder
     {
         //Support can move items to any team the selected user is related to, no matter if it's owned or not
         if(user()->isSupport() && $userId = $get('user_id')) {
@@ -46,7 +46,7 @@ class TeamBelongsTo
 
         //users can only select between their current team or owned teams
         //but if they don't own any team the current team is selected by default, and the field is disabled
-        return  $query->where('id', userTeamId())
+        return  $query->where(($belongsToMany ? 'team_id' : 'id'), userTeamId())
             ->orWhere('user_id', user()->id);
     }
 }

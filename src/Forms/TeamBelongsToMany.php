@@ -29,7 +29,7 @@ class TeamBelongsToMany
             ->relationship(
                 name: 'teams',
                 titleAttribute: 'name',
-                modifyQueryUsing: fn(Get $get, Builder $query) => TeamBelongsTo::ownedTeams($get, $query)
+                modifyQueryUsing: fn(Get $get, Builder $query) => TeamBelongsTo::ownedTeams($get, $query, true)
             )
             ->bulkToggleable()
             ->columns(2)
