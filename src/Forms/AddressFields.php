@@ -27,26 +27,23 @@ class AddressFields
             TextInput::make($jsonColumnName . 'county')->label(__('fields.county'))->requiredIfBlank($jsonColumnName . 'state'),
             TextInput::make($jsonColumnName . 'state')->label(__('fields.state'))->requiredIfBlank($jsonColumnName . 'county'),
             TextInput::make($jsonColumnName . 'country')->label(__('fields.country'))->required()->rules([new CountryRule]),
-            HiddenOrText::make(
-                condition: user()->isSuperadmin(),
-                column: $jsonColumnName . 'country_code',
-                label: 'fields.cc',
-                rule: ['bail', 'sometimes', 'min:2', 'max:3', new CountryCodeRule]
-            )
+            TextInput::make($jsonColumnName . 'country_code')
+                ->hidden(fn() => user()->isSuperadmin())
+                ->dehydratedWhenHidden()
+                ->label(__('fields.cc'))
+                ->rules(['bail', 'sometimes', 'min:2', 'max:3', new CountryCodeRule])
                 ->nullable(),
-            HiddenOrText::make(
-                condition: user()->isSuperadmin(),
-                column: $jsonColumnName . 'latitude',
-                label: 'fields.latitude',
-                rule: ['sometimes', new Latitude]
-            )
+            TextInput::make($jsonColumnName . 'latitude')
+                ->hidden(fn() => user()->isSuperadmin())
+                ->dehydratedWhenHidden()
+                ->label(__('fields.latitude'))
+                ->rules(['bail', 'sometimes', new Latitude])
                 ->nullable(),
-            HiddenOrText::make(
-                condition: user()->isSuperadmin(),
-                column: $jsonColumnName . 'longitude',
-                label: 'fields.longitude',
-                rule: ['sometimes', new Longitude]
-            )
+            TextInput::make($jsonColumnName . 'longitude')
+                ->hidden(fn() => user()->isSuperadmin())
+                ->dehydratedWhenHidden()
+                ->label(__('fields.longitude'))
+                ->rules(['bail', 'sometimes', new Longitude])
                 ->nullable(),
         ];
     }

@@ -5,6 +5,7 @@ namespace TantHammar\FilamentExtras\Forms;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 
+/** @deprecated use Select->dehydratedWhenHidden() */
 class HiddenOrSelect
 {
     public static function make(
