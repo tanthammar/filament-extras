@@ -13,8 +13,7 @@ class LegalName
             ->nullable()
             ->rules('bail|sometimes|alpha_dash_space_and')
             ->nullable()
-            ->helperText(__('fields.legal-name-hint'))
-            ->columnSpan('full');
+            ->helperText(__('fields.legal-name-hint'));
     }
 
 }

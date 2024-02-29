@@ -4,7 +4,7 @@ namespace TantHammar\FilamentExtras\Forms;
 
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\TextInput;
-/** @deprecated use TextInput->dehydratedWhenHidden() */
+/** @deprecated use TextInput->saveIfHidden() */
 class HiddenOrText
 {
     public static function make(bool $condition, string $column, string $label, string | array $rule): Hidden | TextInput

@@ -28,20 +28,20 @@ class AddressFields
             TextInput::make($jsonColumnName . 'state')->label(__('fields.state'))->requiredIfBlank($jsonColumnName . 'county'),
             TextInput::make($jsonColumnName . 'country')->label(__('fields.country'))->required()->rules([new CountryRule]),
             TextInput::make($jsonColumnName . 'country_code')
-                ->hidden(fn() => user()->isSuperadmin())
-                ->dehydratedWhenHidden()
+                ->hidden(fn() => ! user()?->isSuperadmin())
+                ->saveIfHidden()
                 ->label(__('fields.cc'))
                 ->rules(['bail', 'sometimes', 'min:2', 'max:3', new CountryCodeRule])
                 ->nullable(),
             TextInput::make($jsonColumnName . 'latitude')
-                ->hidden(fn() => user()->isSuperadmin())
-                ->dehydratedWhenHidden()
+                ->hidden(fn() => ! user()?->isSuperadmin())
+                ->saveIfHidden()
                 ->label(__('fields.latitude'))
                 ->rules(['bail', 'sometimes', new Latitude])
                 ->nullable(),
             TextInput::make($jsonColumnName . 'longitude')
-                ->hidden(fn() => user()->isSuperadmin())
-                ->dehydratedWhenHidden()
+                ->hidden(fn() => ! user()?->isSuperadmin())
+                ->saveIfHidden()
                 ->label(__('fields.longitude'))
                 ->rules(['bail', 'sometimes', new Longitude])
                 ->nullable(),

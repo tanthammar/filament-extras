@@ -67,6 +67,7 @@ class FilamentExtrasServiceProvider extends PackageServiceProvider
         Components\Field::macro('saveIfSelfBlank', fn (): static => $this->dehydrated(fn ($state): bool => blank($state)));
         Components\Field::macro('saveIfSelfValue', fn (): static => $this->dehydrated(fn ($state): bool => (bool) $state));
         Components\Field::macro('saveIfSelfNoValue', fn (): static => $this->dehydrated(fn ($state): bool => ! (bool) $state));
+        Components\Field::macro('saveIfHidden', fn (bool|Closure $condition = true): static => $this->dehydratedWhenHidden($condition));
 
         Components\Field::macro('loadAs', fn (mixed $callback): static => $this->afterStateHydrated(fn ($component) => $component->state($callback)));
         Components\Field::macro('saveAs', fn (mixed $callback): static => $this->dehydrateStateUsing($callback));
