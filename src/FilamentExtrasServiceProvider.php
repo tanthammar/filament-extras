@@ -118,6 +118,7 @@ class FilamentExtrasServiceProvider extends PackageServiceProvider
 
         /** For Select->multiple() */
         Components\Select::macro('ruleEachInOptions', fn (): static => $this->nestedRecursiveRules(['bail', fn (Select $component): \Illuminate\Validation\Rules\In => Rule::in(array_keys($component->getOptions()))]));
+        Components\Select::macro('ruleEachInRelatedIds', fn (): static => $this->nestedRecursiveRules(['bail', fn (Select $component): \Illuminate\Validation\Rules\In => Rule::in(Relation::noConstraints(static fn () => $component->getRelationship())?->pluck('id')->toArray() ?? [])]));
 
         /** for single Select */
         Components\Select::macro('ruleInOptions', fn (): static => $this->rule(fn ($component): \Illuminate\Validation\Rules\In => Rule::in(array_keys($component->getOptions()))));
