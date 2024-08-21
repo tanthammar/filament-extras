@@ -2,6 +2,8 @@
 
 namespace TantHammar\FilamentExtras\Services;
 
+use Illuminate\Http\Client\RequestException;
+use Illuminate\Http\Client\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 
@@ -13,6 +15,7 @@ class Nominatim
 {
     /**
      * https://nominatim.org/release-docs/latest/api/Search/
+     * @throws RequestException
      */
     public static function search(string $address): array
     {
@@ -24,7 +27,15 @@ class Nominatim
 
         sleep(1); //Nominatim api has a rate limit of 1 second
 
-        $response = Http::retry(2, 1000)->get("https://nominatim.openstreetmap.org/search?addressdetails=1&q=$address&format=json");
+        $response = Http::retry(2, 1500)
+            ->withHeaders([
+                'User-Agent' => user()?->email ?: config('app.name'), //might be used in a job, where there is no user
+                'Referer' => config('app.url'),
+            ])
+            ->get("https://nominatim.openstreetmap.org/search?addressdetails=1&q=$address&format=json")
+            ->throw(function (Response $response, RequestException $e) {
+                ray($e);
+            });
 
         return $response->ok() ? self::format(collect($response->json()), $empty) : $empty;
     }
@@ -50,7 +61,12 @@ class Nominatim
 
         sleep(1); //Nominatim api has a rate limit of 1 second
 
-        $response = Http::retry(2, 1000)->get("https://nominatim.openstreetmap.org/lookup?addressdetails=1&osm_ids=W$osm_id,R$osm_id,N$osm_id&limit=1&format=json");
+        $response = Http::retry(2, 1500)
+            ->withHeaders([
+                'User-Agent' => user()?->email ?: config('app.name'), //might be used in a job, where there is no user
+                'Referer' => config('app.url'),
+            ])
+            ->get("https://nominatim.openstreetmap.org/lookup?addressdetails=1&osm_ids=W$osm_id,R$osm_id,N$osm_id&limit=1&format=json");
 
         if ($response->ok()) {
             $c = collect($response->json())->first();
@@ -99,7 +115,12 @@ class Nominatim
         }
         sleep(1); //Nominatim api rate limit
 
-        $response = Http::retry(2, 1000)->get("https://nominatim.openstreetmap.org/search?addressdetails=1&q=$address&format=json");
+        $response = Http::retry(2, 1500)
+            ->withHeaders([
+                'User-Agent' => user()?->email ?? config('app.name'), //might be used in a job, where there is no user
+                'Referer' => config('app.url'),
+            ])
+            ->get("https://nominatim.openstreetmap.org/search?addressdetails=1&q=$address&format=json");
 
         if ($response->ok()) {
             $c = collect(collect($response->json())->first());
