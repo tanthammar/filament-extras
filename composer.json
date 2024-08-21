@@ -12,7 +12,7 @@
         "brick/phonenumber": "^0.6.0",
         "laravel/framework": "^10.6 | ^11.0",
         "spatie/laravel-permission": "^5.5.0",
-        "filament/filament": "^3.0-stable | 3.x-dev",
+        "filament/filament": "^3.2.106",
         "tanthammar/laravel-rules": "dev-main"
     },
     "autoload": {
