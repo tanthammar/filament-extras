@@ -14,7 +14,7 @@ class AddressSearch
             ->placeholder(trans('filament-extras::misc.nominatim-search-placeholder'))
             ->searchable()
             ->ignored()
-            ->live()
+            ->live(debounce: 1000)
             ->getSearchResultsUsing(fn (string $search) => Nominatim::search($search));
 
         return $replaceFormData
