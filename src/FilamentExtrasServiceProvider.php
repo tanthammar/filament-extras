@@ -109,7 +109,9 @@ class FilamentExtrasServiceProvider extends PackageServiceProvider
         Components\Field::macro('smallcaps', fn (): static => $this->dehydrateStateUsing(fn ($state) => mb_strtolower($state)));
         Components\Field::macro('uppercase', fn (): static => $this->dehydrateStateUsing(fn ($state) => mb_strtoupper($state)));
 
+        /** Only works on fields that uses nestedRecursiveRules */
         Components\Field::macro('ruleEach', fn (array | string $rules, bool | Closure $condition = true): static => $this->nestedRecursiveRules($rules, $condition));
+        Components\Field::macro('ruleEachIn', fn (array | string $arrayValues, bool | Closure $condition = true): static => $this->nestedRecursiveRules(Rule::in($arrayValues), $condition));
 
         Components\Field::macro('isReactive', fn (bool $live): static => $live ? $this->live() : $this);
 
