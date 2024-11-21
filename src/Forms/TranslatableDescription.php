@@ -21,14 +21,20 @@ class TranslatableDescription
                 ->saveAs(fn ($get, $state) => strip_tags($state ?: $get("$column.en")))
                 ->disableToolbarButtons($support ? [] : [
                     'codeBlock',
-                ]),
+                ])
+                ->fileAttachmentsDirectory('public')
+                ->fileAttachmentsDirectory('descriptions')
+                ->fileAttachmentsVisibility('public'),
             MarkdownEditor::make("$column.en")
                 ->label(__("fields.$column") . ' English')->columnSpan($colspan)->nullable()
                 ->requiredIfBlank("$column.sv")
                 ->saveAs(fn ($get, $state) => strip_tags($state ?: $get("$column.sv"))) //or if we want to allow html str($state ?: $get("$column.sv"))->sanitizeHtml() //Filament helper, removes malicious html
                 ->disableToolbarButtons($support ? [] : [
                     'codeBlock',
-                ]),
+                ])
+                ->fileAttachmentsDirectory('public')
+                ->fileAttachmentsDirectory('descriptions')
+                ->fileAttachmentsVisibility('public'),
         ];
     }
 }
