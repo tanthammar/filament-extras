@@ -25,7 +25,6 @@ class TranslatableDescription
                 ->fileAttachmentsDirectory('public')
                 ->fileAttachmentsDirectory('descriptions')
                 ->fileAttachmentsVisibility('public'),
-            userIsBooker() ? null :
             MarkdownEditor::make("$column.en")
                 ->label(__("fields.$column") . ' English')->columnSpan($colspan)->nullable()
                 ->requiredWithout("$column.sv")

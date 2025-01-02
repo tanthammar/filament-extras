@@ -21,7 +21,6 @@ class TranslatableName
                 ->saveAs(fn ($get, $state) => $state ?: $get("$column.en"))
                 ->rules(['bail', 'alpha_dash_space_and'])
                 ->unique(column: $column . '->sv', ignoreRecord: true),
-            userIsBooker() ? null :
             TextInput::make("$column.en")
                 ->label(trans($label) . ' English')
                 ->ucfirst()
