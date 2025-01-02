@@ -17,19 +17,20 @@ class TranslatableName
                 ->ucfirst()
                 ->minLength(2)
                 ->maxLength(125)
-                ->requiredIfBlank("$column.en")
+                ->requiredWithout("$column.en")
                 ->saveAs(fn ($get, $state) => $state ?: $get("$column.en"))
                 ->rules(['bail', 'alpha_dash_space_and'])
-                ->unique(column: $column . '->en', ignoreRecord: true),
+                ->unique(column: $column . '->sv', ignoreRecord: true),
+            userIsBooker() ? null :
             TextInput::make("$column.en")
                 ->label(trans($label) . ' English')
                 ->ucfirst()
                 ->minLength(2)
                 ->maxLength(125)
-                ->requiredIfBlank("$column.sv")
+                ->requiredWithout("$column.sv")
                 ->saveAs(fn ($get, $state) => $state ?: $get("$column.sv"))
                 ->rules(['bail', 'alpha_dash_space_and'])
-                ->unique(column: $column . '->sv', ignoreRecord: true),
+                ->unique(column: $column . '->en', ignoreRecord: true),
         ];
     }
 }

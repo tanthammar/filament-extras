@@ -16,7 +16,7 @@ class TranslatableMarkdown
     ): MarkdownEditor {
         return MarkdownEditor::make($column)
             ->label(__($label))->columnSpan(2)->nullable()->rules('string')
-            ->requiredIfBlank($autoFillFrom)
+            ->requiredWithout($autoFillFrom)
             ->saveAs(fn ($get, $state) => strip_tags($state ?: $get($autoFillFrom)));
     }
 }
