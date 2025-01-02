@@ -9,9 +9,10 @@ class PriceInputColumn
     public static function make(): TextInputColumn
     {
         return TextInputColumn::make('price')
-            ->inputMode('decimal')
-            ->step('0.50')
+            ->label(__('fields.price'))
             ->type('number')
+            ->inputMode('decimal')
+            ->step(0.50)
             ->rules(['nullable', 'numeric']);
     }
 }
