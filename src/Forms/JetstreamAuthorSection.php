@@ -18,7 +18,7 @@ class JetstreamAuthorSection
 
                 TeamBelongsTo::make(),
 
-            ])->columns(2)
+            ])->columnSpanFull()
             ->collapsible()
             ->collapsed();
     }
@@ -36,7 +36,7 @@ class JetstreamAuthorSection
 
                 TeamBelongsToMany::make(),
             ])
-            ->columns(2)
+            ->columnSpanFull()
             ->collapsible()
             ->collapsed();
     }
