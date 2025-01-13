@@ -26,7 +26,7 @@ class PhoneIntlTel
             ->rules([
                 'bail',
                 'sometimes',
-                'min:9',
+                'min:8',
                 new PhoneNumber,
             ])
             ->prefixIcon('heroicon-o-phone');
