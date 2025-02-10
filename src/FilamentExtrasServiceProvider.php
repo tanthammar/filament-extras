@@ -45,8 +45,8 @@ class FilamentExtrasServiceProvider extends PackageServiceProvider
         if ($this->app->runningInConsole()) {
 
             \Filament\Support\Facades\FilamentAsset::register([
-                Css::make('filament-phone-input', __DIR__ . '/../dist/filament-phone/filament-phone.css'),
-                Js::make('filament-phone-input', __DIR__ . '/../dist/filament-phone/filament-phone.js'),
+                Css::make('filament-phone-input', __DIR__ . '/../dist/filament-phone/filament-phone.css')->loadedOnRequest(),
+                Js::make('filament-phone-input', __DIR__ . '/../dist/filament-phone/filament-phone.js')->loadedOnRequest(),
             ], 'tanthammar/filament-extras');
 
         }
