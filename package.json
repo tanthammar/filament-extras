@@ -5,6 +5,7 @@
         "prod:js": "node bin/build.mjs"
     },
     "devDependencies": {
+        "async-alpine": "^2.0",
         "esbuild": "^0.19.5",
         "esbuild-postcss": "^0.0.4",
         "intl-tel-input": "^18.1.5",

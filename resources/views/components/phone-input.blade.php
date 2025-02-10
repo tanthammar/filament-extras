@@ -34,9 +34,8 @@
              x-load-css="[
                 '{{ asset('css/tanthammar/filament-extras/filament-phone-input.css') }}'
             ]"
-             x-ignore
-             ax-load="visible"
-             ax-load-src="{{ asset('js/tanthammar/filament-extras/filament-phone-input.js') }}"
+             x-load="visible"
+             x-load-src="{{ asset('js/tanthammar/filament-extras/filament-phone-input.js') }}"
              x-data="phoneInputFormComponent({
                         options: @js($getJsonPhoneInputConfiguration()),
                         state: $wire.{{ $applyStateBindingModifiers("\$entangle('{$statePath}')") }},
