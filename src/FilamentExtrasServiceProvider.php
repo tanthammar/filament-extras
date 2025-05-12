@@ -124,6 +124,7 @@ class FilamentExtrasServiceProvider extends PackageServiceProvider
 
         /** for single Select */
         Components\Select::macro('ruleInOptions', fn (): static => $this->rule(fn ($component): \Illuminate\Validation\Rules\In => Rule::in(array_keys($component->getOptions()))));
+        Components\Radio::macro('ruleInOptions', fn (): static => $this->rule(fn ($component): \Illuminate\Validation\Rules\In => Rule::in(array_keys($component->getOptions()))));
         Components\Select::macro('ruleInRelatedIds', fn (): static => $this->rule(fn ($component): \Illuminate\Validation\Rules\In => Rule::in(Relation::noConstraints(static fn () => $component->getRelationship())?->pluck('id')->toArray() ?? [])));
 
         /**
