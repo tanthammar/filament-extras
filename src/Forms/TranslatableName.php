@@ -17,7 +17,7 @@ class TranslatableName
             ->minLength(2)
             ->maxLength($max)
             ->requiredWithout("$column.en")
-            ->saveAs(fn ($get, $state) => $state ?: $get("$column.en"))
+            //->saveAs(fn ($get, $state) => $state ?: $get("$column.en"))
             ->rules(['alpha_dash_space_and']);
 
         $enField = TextInput::make("$column.en")
@@ -26,7 +26,7 @@ class TranslatableName
             ->minLength(2)
             ->maxLength($max)
             ->requiredWithout("$column.sv")
-            ->saveAs(fn ($get, $state) => $state ?: $get("$column.sv"))
+            //->saveAs(fn ($get, $state) => $state ?: $get("$column.sv"))
             ->rules(['alpha_dash_space_and']);
 
         if ($unique) {

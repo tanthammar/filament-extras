@@ -18,7 +18,7 @@ class TranslatableDescription
             MarkdownEditor::make("$column.sv")
                 ->label(__("fields.$column") . __('locales.sv'))->columnSpan($colspan)->nullable()
                 ->requiredWithout("$column.en")
-                ->saveAs(fn ($get, $state) => strip_tags($state ?: $get("$column.en")))
+                ->saveAs(fn ($get, $state) => mb_trim(strip_tags($state)))
                 ->disableToolbarButtons($support ? [] : [
                     'codeBlock',
                     'attachFiles',
@@ -26,7 +26,7 @@ class TranslatableDescription
             MarkdownEditor::make("$column.en")
                 ->label(__("fields.$column") . __('locales.en'))->columnSpan($colspan)->nullable()
                 ->requiredWithout("$column.sv")
-                ->saveAs(fn ($get, $state) => strip_tags($state ?: $get("$column.sv"))) //or if we want to allow html str($state ?: $get("$column.sv"))->sanitizeHtml() //Filament helper, removes malicious html
+                ->saveAs(fn ($get, $state) => mb_trim(strip_tags($state))) //or if we want to allow html str($state)->sanitizeHtml() //Filament helper, removes malicious html
                 ->disableToolbarButtons($support ? [] : [
                     'codeBlock',
                     'attachFiles',
