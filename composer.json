@@ -12,7 +12,7 @@
         "brick/phonenumber": "^0.8.0",
         "laravel/framework": "^10.6 | ^11.0 | ^12.0",
         "livewire/livewire": "^3.5",
-        "filament/filament": "^3.2.138",
+        "filament/filament": "^3.2.138 | ^4.0.0",
         "tanthammar/laravel-rules": "dev-main"
     },
     "autoload": {
