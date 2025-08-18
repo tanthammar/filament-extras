@@ -2,8 +2,8 @@
 
 namespace TantHammar\FilamentExtras\Forms;
 
-use Filament\Forms\Components\Component;
-use Filament\Forms\Components\Concerns\HasName;
+use Filament\Schemas\Components\Component;
+use Filament\Schemas\Components\Concerns\HasName;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Str;
 

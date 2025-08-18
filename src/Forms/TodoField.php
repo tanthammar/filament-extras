@@ -2,7 +2,7 @@
 
 namespace TantHammar\FilamentExtras\Forms;
 
-use Filament\Forms\Components\Component;
+use Filament\Schemas\Components\Component;
 
 class TodoField extends Component
 {
@@ -15,7 +15,7 @@ class TodoField extends Component
 
     public static function make(string $task): static
     {
-        if (app()->environment(['prod', 'production'])) {
+        if (app()->isLocal()) {
             throw new \RuntimeException("Incomplete TODO: $task. (Search for 'TodoField::make' in your Filament forms)");
         }
 

@@ -2,7 +2,7 @@
 
 namespace TantHammar\FilamentExtras\Actions;
 
-use Filament\Forms\Components\Actions\Action;
+use Filament\Actions\Action;
 
 /**
  * Pass a view path as $name in make()
