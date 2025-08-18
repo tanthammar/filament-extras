@@ -3,7 +3,7 @@
 namespace TantHammar\FilamentExtras\Forms;
 
 use App\Models\User;
-use Filament\Forms\Components\Section;
+use Filament\Schemas\Components\Section;
 use Filament\Forms\Components\Select;
 
 class JetstreamAuthorSection
