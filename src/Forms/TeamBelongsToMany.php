@@ -4,7 +4,7 @@ namespace TantHammar\FilamentExtras\Forms;
 
 use App\Models\User;
 use Filament\Forms\Components\CheckboxList;
-use Filament\Forms\Get;
+use Filament\Schemas\Components\Utilities\Get;
 use Illuminate\Database\Eloquent\Builder;
 
 class TeamBelongsToMany

@@ -5,7 +5,7 @@ namespace TantHammar\FilamentExtras\Forms;
 use App\Models\Team;
 use App\Models\User;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Get;
+use Filament\Schemas\Components\Utilities\Get;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
@@ -28,7 +28,7 @@ class TeamBelongsTo
             ->relationship(
                 name: 'team',
                 titleAttribute: 'name',
-                modifyQueryUsing: fn(Builder $query, \Filament\Forms\Get $get) => self::ownedTeams($get, $query)
+                modifyQueryUsing: fn(Builder $query, \Filament\Schemas\Components\Utilities\Get $get) => self::ownedTeams($get, $query)
             )
             ->exists('teams', 'id')
             ->ruleInOptions()
