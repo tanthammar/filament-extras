@@ -155,19 +155,19 @@ class FilamentExtrasServiceProvider extends PackageServiceProvider
 
         /** Table features removed from Filament v3 */
         Table::macro('prependActions', function (array $actions): static {
-            $existing = $this->actions;
-            $this->actions = [];
-            $this->actions($actions);
-            $this->actions = array_merge($this->actions, $existing);
+            $existing = $this->recordActions;
+            $this->recordActions = [];
+            $this->recordActions($actions);
+            $this->recordActions = array_merge($this->recordActions, $existing);
 
             return $this;
         });
 
         Table::macro('appendActions', function (array $actions): static {
-            $existing = $this->actions;
-            $this->actions = [];
-            $this->actions($actions);
-            $this->actions = array_merge($existing, $this->actions);
+            $existing = $this->recordActions;
+            $this->recordActions = [];
+            $this->recordActions($actions);
+            $this->recordActions = array_merge($existing, $this->recordActions);
 
             return $this;
         });
