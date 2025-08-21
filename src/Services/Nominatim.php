@@ -2,6 +2,7 @@
 
 namespace TantHammar\FilamentExtras\Services;
 
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Collection;
@@ -15,7 +16,8 @@ class Nominatim
 {
     /**
      * https://nominatim.org/release-docs/latest/api/Search/
-     * @throws RequestException
+     *
+     * @throws RequestException|ConnectionException
      */
     public static function search(string $address): array
     {
@@ -25,11 +27,11 @@ class Nominatim
             return $empty;
         }
 
-        sleep(1); //Nominatim api has a rate limit of 1 second
+        sleep(1); // Nominatim api has a rate limit of 1 second
 
         $response = Http::retry(2, 1500)
             ->withHeaders([
-                'User-Agent' => user()?->email ?: config('app.name'), //might be used in a job, where there is no user
+                'User-Agent' => user()?->email ?: config('app.name'), // might be used in a job, where there is no user
                 'Referer' => config('app.url'),
             ])
             ->get("https://nominatim.openstreetmap.org/search?addressdetails=1&q=$address&format=json")
@@ -59,11 +61,11 @@ class Nominatim
             return [];
         }
 
-        sleep(1); //Nominatim api has a rate limit of 1 second
+        sleep(1); // Nominatim api has a rate limit of 1 second
 
         $response = Http::retry(2, 1500)
             ->withHeaders([
-                'User-Agent' => user()?->email ?: config('app.name'), //might be used in a job, where there is no user
+                'User-Agent' => user()?->email ?: config('app.name'), // might be used in a job, where there is no user
                 'Referer' => config('app.url'),
             ])
             ->get("https://nominatim.openstreetmap.org/lookup?addressdetails=1&osm_ids=W$osm_id,R$osm_id,N$osm_id&limit=1&format=json");
@@ -94,7 +96,7 @@ class Nominatim
     protected static function getCity(array $address): string
     {
         $city = data_get($address, 'city') ?? data_get($address, 'village');
-        //fix for OSM Swedish city/state mixup
+        // fix for OSM Swedish city/state mixup
         if (str_ends_with($city, 's kommun')) {
             return str_replace('s kommun', '', $city);
         }
@@ -105,19 +107,22 @@ class Nominatim
     /**
      * Get first found lat/lon from an address string<br>
      * returns array with format [string|float|null $lat, string|float|null $lon],
+     *
+     * @throws ConnectionException
      */
     public static function getFirstLatLong(string $address): array
     {
         $noResult = [null, null];
 
-        if ($address = '') {
+        if ($address === '') {
             return $noResult;
         }
-        sleep(1); //Nominatim api rate limit
+
+        sleep(1); // Nominatim api rate limit
 
         $response = Http::retry(2, 1500)
             ->withHeaders([
-                'User-Agent' => user()?->email ?? config('app.name'), //might be used in a job, where there is no user
+                'User-Agent' => user()?->email ?? config('app.name'), // might be used in a job, where there is no user
                 'Referer' => config('app.url'),
             ])
             ->get("https://nominatim.openstreetmap.org/search?addressdetails=1&q=$address&format=json");
@@ -131,3 +136,4 @@ class Nominatim
         return $noResult;
     }
 }
+

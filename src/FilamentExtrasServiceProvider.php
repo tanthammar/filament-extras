@@ -77,7 +77,7 @@ class FilamentExtrasServiceProvider extends PackageServiceProvider
         Components\Field::macro('onSave', fn (?Closure $callback): static => $this->dehydrateStateUsing($callback));
         Components\Field::macro('onUpdated', fn (?Closure $callback): static => $this->afterStateUpdated($callback));
 
-        Components\Field::macro('ignored', fn (): static => $this->dehydrated(false));
+        Components\Field::macro('ignored', fn (): static => $this->dehydrated(false)->validatedWhenNotDehydrated(false));
 
         Components\Field::macro('requiredIfBlank', fn (string $field): static => $this->required(fn (\Filament\Schemas\Components\Utilities\Get $get): bool => blank($get($field))));
         Components\Field::macro('requiredIfFilled', fn (string $field): static => $this->required(fn (\Filament\Schemas\Components\Utilities\Get $get): bool => filled($get($field))));
