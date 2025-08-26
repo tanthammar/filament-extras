@@ -3,6 +3,7 @@
 namespace TantHammar\FilamentExtras\Forms;
 
 use Filament\Schemas\Components\Component;
+use Filament\Schemas\Components\Concerns\HasLabel;
 use Filament\Schemas\Components\Concerns\HasName;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Str;
@@ -11,6 +12,7 @@ use Illuminate\Support\Str;
 class Heading extends Component
 {
     use HasName;
+    use HasLabel;
 
     protected string $view = 'filament-extras::components.heading';
 
