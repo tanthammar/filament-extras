@@ -75,7 +75,15 @@ class Heading extends Component
 
     public function getLabel(): string | Htmlable | null
     {
-        return parent::getLabel() ?? (string) Str::of($this->getName())
+        $label = $this->evaluate($this->label);
+
+        if(filled($label)) {
+            return (is_string($label) && $this->shouldTranslateLabel) ?
+                __($label) :
+                $label;
+        }
+
+        return (string) Str::of($this->getName())
             ->kebab()
             ->replace(['-', '_'], ' ')
             ->ucfirst();
