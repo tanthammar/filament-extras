@@ -34,13 +34,13 @@ class TranslatableName
             $svField->unique(
                 column: $column . '->sv',
                 ignoreRecord: ($operation === 'edit'),
-                modifyRuleUsing: function (Unique $rule, string $operation) {
+                modifyRuleUsing: function (Unique $rule) {
                     return $rule->withoutTrashed();
                 });
             $enField->unique(
                 column: $column . '->en',
                 ignoreRecord: ($operation === 'edit'),
-                modifyRuleUsing: function (Unique $rule, string $operation) {
+                modifyRuleUsing: function (Unique $rule) {
                     return $rule->withoutTrashed();
                 });
         }
