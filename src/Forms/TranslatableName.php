@@ -3,7 +3,7 @@
 namespace TantHammar\FilamentExtras\Forms;
 
 use Filament\Forms\Components\TextInput;
-use function Laravel\Prompts\table;
+use Illuminate\Validation\Rules\Unique;
 
 /**
  * Use Spatie translatable on your Models description field
