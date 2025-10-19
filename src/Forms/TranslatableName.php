@@ -3,13 +3,14 @@
 namespace TantHammar\FilamentExtras\Forms;
 
 use Filament\Forms\Components\TextInput;
+use function Laravel\Prompts\table;
 
 /**
  * Use Spatie translatable on your Models description field
  */
 class TranslatableName
 {
-    public static function make(?string $column = 'name', ?string $label = 'fields.name', ?bool $unique = false, ?int $max = 125): array
+    public static function make(?string $column = 'name', ?string $label = 'fields.name', ?bool $unique = false, ?int $max = 125, string $operation = 'edit'): array
     {
         $svField = TextInput::make("$column.sv")
             ->label(trans($label) . ' Svenska')
@@ -30,8 +31,18 @@ class TranslatableName
             ->rules(['alpha_dash_space_and']);
 
         if ($unique) {
-            $svField->unique(column: $column . '->sv', ignoreRecord: true);
-            $enField->unique(column: $column . '->en', ignoreRecord: true);
+            $svField->unique(
+                column: $column . '->sv',
+                ignoreRecord: ($operation === 'edit'),
+                modifyRuleUsing: function (Unique $rule, string $operation) {
+                    return $rule->withoutTrashed();
+                });
+            $enField->unique(
+                column: $column . '->en',
+                ignoreRecord: ($operation === 'edit'),
+                modifyRuleUsing: function (Unique $rule, string $operation) {
+                    return $rule->withoutTrashed();
+                });
         }
 
         return [$svField, $enField];
