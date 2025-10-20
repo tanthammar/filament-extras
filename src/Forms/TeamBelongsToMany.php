@@ -33,7 +33,7 @@ class TeamBelongsToMany
             )
             ->bulkToggleable()
             ->columns(2)
-            ->required()
+//            ->required() //do not make required, the organizer has a team_id, it does not have to belong to multiple teams
             ->rule('array')
             ->ruleEach('exists:teams,id')
             ->ruleEachInOptions();
