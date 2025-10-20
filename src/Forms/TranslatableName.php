@@ -10,7 +10,7 @@ use Illuminate\Validation\Rules\Unique;
  */
 class TranslatableName
 {
-    public static function make(?string $column = 'name', ?string $label = 'fields.name', ?bool $unique = false, ?int $max = 125, ?string $operation = 'edit'): array
+    public static function make(?string $column = 'name', ?string $label = 'fields.name', ?bool $unique = false, ?int $max = 125): array
     {
         $svField = TextInput::make("$column.sv")
             ->label(trans($label) . ' Svenska')
@@ -33,13 +33,13 @@ class TranslatableName
         if ($unique) {
             $svField->unique(
                 column: $column . '->sv',
-                ignoreRecord: ($operation === 'edit'),
+                ignoreRecord: true,
                 modifyRuleUsing: function (Unique $rule) {
                     return $rule->withoutTrashed();
                 });
             $enField->unique(
                 column: $column . '->en',
-                ignoreRecord: ($operation === 'edit'),
+                ignoreRecord: true,
                 modifyRuleUsing: function (Unique $rule) {
                     return $rule->withoutTrashed();
                 });

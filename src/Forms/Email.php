@@ -3,11 +3,13 @@
 namespace TantHammar\FilamentExtras\Forms;
 
 use Filament\Forms\Components\TextInput;
+use Filament\Resources\Pages\EditRecord;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\Rules\Unique;
 
 class Email
 {
-    public static function make(string $column = 'email', bool $unique = true, ?string $operation = 'edit'): TextInput
+    public static function make(?string $column = 'email', ?bool $unique = true): TextInput
     {
         $field = TextInput::make($column)
             ->label(trans('fields.email'))
@@ -19,7 +21,7 @@ class Email
 
         if ($unique) {
             return $field->unique(
-                ignoreRecord: ($operation === 'edit'),
+                ignoreRecord: true,
                 modifyRuleUsing: function (Unique $rule) {
                     return $rule->withoutTrashed();
                 });
