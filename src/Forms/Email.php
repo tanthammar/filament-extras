@@ -3,7 +3,6 @@
 namespace TantHammar\FilamentExtras\Forms;
 
 use Filament\Forms\Components\TextInput;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\Rules\Unique;
 
 class Email
