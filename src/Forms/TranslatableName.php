@@ -5,7 +5,6 @@ namespace TantHammar\FilamentExtras\Forms;
 use App\Rules\UniqueLowercase;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Validation\Rules\Unique;
 
 /**
  * Use Spatie translatable on your Models description field
