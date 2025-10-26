@@ -172,6 +172,15 @@ class FilamentExtrasServiceProvider extends PackageServiceProvider
             return $this;
         });
 
+        Table::macro('appendFilters', function (array $filters): static {
+            $existing = $this->filters;
+            $this->filters = [];
+            $this->filters($filters);
+            $this->filters = array_merge($existing, $this->filters);
+
+            return $this;
+        });
+
         Table::macro('prependBulkActions', function (array $actions): static {
             $existing = $this->groupedBulkActions;
             $this->groupedBulkActions = [];
