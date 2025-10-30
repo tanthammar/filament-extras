@@ -34,6 +34,8 @@ class JetstreamAuthorSection
                 self::author('team_id') //swapping author swaps model->team_id
                 ->disabled(! user()?->isSupport()),
 
+                TeamBelongsTo::make()->label('Owned by team'),
+
                 TeamBelongsToMany::make(),
             ])
             ->columnSpanFull()

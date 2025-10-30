@@ -5,6 +5,7 @@ namespace TantHammar\FilamentExtras\Forms;
 use App\Models\User;
 use Filament\Forms\Components\Select;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
@@ -33,6 +34,8 @@ class Author
                 ->searchable(['name', 'email'])
                 ->rules('exists:users,id')
             : $field
-                ->rule(Rule::in([Auth::id()]));
+                ->rule(Rule::in(
+                    auth()->teamMembers()->pluck("users.id")->toArray()
+                ));
     }
 }

@@ -7,6 +7,7 @@ use App\Models\User;
 use Filament\Forms\Components\Select;
 use Filament\Schemas\Components\Utilities\Get;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
 class TeamBelongsTo
@@ -23,7 +24,12 @@ class TeamBelongsTo
         // The field is disabled if the user doesn't own the current team
 
         return Select::make('team_id')->label(__('fields.team'))
-            ->disabled(!(user()?->isSupport() || user()?->ownsCurrentTeam())) //disabled() must come before relationship(), see Filament docs,
+            ->disabled(function(string $operation, Model $record) {
+                if(userIsSupport()) return false;
+                if($operation === 'create') return !user()->ownsCurrentTeam();
+                if($operation === 'edit') return $record->team_id !== userTeamId();
+
+            }) //must come before relationship(), see Filament docs,
             ->default(userTeamId()) //set to current team because the field is disabled for non-team owners
             ->relationship(
                 name: 'team',
