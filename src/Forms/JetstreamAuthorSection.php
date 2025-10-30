@@ -34,7 +34,7 @@ class JetstreamAuthorSection
 
                 TeamBelongsTo::make()->label('Owned by team'),
 
-                TeamBelongsToMany::make(),
+                TeamBelongsToMany::make()->label('Grant access to other teams'),
             ])
             ->columnSpanFull()
             ->collapsible()
