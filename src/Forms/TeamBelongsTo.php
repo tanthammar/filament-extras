@@ -25,11 +25,13 @@ class TeamBelongsTo
 
         return Select::make('team_id')->label(__('fields.team'))
             ->disabled(function(string $operation, Model $record) {
-                if(userIsSupport()) return false;
+                if(userIsSuperAdmin()) return false;
                 if($operation === 'create') return !user()->ownsCurrentTeam();
-                if($operation === 'edit') return $record->team_id !== userTeamId();
+                if($operation === 'edit') return !(user()->ownsCurrentTeam() && $record->team_id === userTeamId());
+
 
             }) //must come before relationship(), see Filament docs,
+            ->validatedWhenNotDehydrated(false)
             ->default(userTeamId()) //set to current team because the field is disabled for non-team owners
             ->relationship(
                 name: 'team',

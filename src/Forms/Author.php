@@ -18,6 +18,13 @@ class Author
         //users can see members of all teams they belong to, but they are only allowed to select themselves
 
         $field = Select::make('user_id')->label(__('fields.user'))
+            ->disabled(function(string $operation, Model $record) {
+                if(userIsSuperAdmin()) return false;
+                if($operation === 'create') return false;
+                if($operation === 'edit') return !(user()->ownsCurrentTeam() && $record->team_id === userTeamId());
+
+            }) //must come before relationship(), see Filament docs,
+            ->validatedWhenNotDehydrated(false)
             ->relationship(
                 name: 'author',
                 titleAttribute: 'name',

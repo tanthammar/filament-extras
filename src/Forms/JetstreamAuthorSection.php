@@ -13,8 +13,7 @@ class JetstreamAuthorSection
         return Section::make(__('fields.authors'))
             ->schema([
 
-                self::author('team_id') //swapping author swaps model->team_id
-                ->disabled(! user()?->isSupport()),
+                self::author('team_id'), //swapping author swaps model->team_id
 
                 TeamBelongsTo::make(),
 
@@ -31,8 +30,7 @@ class JetstreamAuthorSection
         return Section::make(__('fields.authors'))
             ->schema([
 
-                self::author('team_id') //swapping author swaps model->team_id
-                ->disabled(! user()?->isSupport()),
+                self::author('team_id'),//swapping author swaps model->team_id
 
                 TeamBelongsTo::make()->label('Owned by team'),
 

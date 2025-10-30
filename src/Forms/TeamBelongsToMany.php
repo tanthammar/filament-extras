@@ -6,6 +6,7 @@ use App\Models\User;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Schemas\Components\Utilities\Get;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class TeamBelongsToMany
 {
@@ -24,7 +25,13 @@ class TeamBelongsToMany
          * is not overridden by the call from disabled()
          */
         return CheckboxList::make('teams')->label(__('models.Team.plural'))
-            ->disabled(!(user()?->isSupport() || user()?->ownsCurrentTeam())) //before relationship(), see Filament docs
+            ->disabled(function(string $operation, Model $record) {
+                if(userIsSupport()) return false;
+                if($operation === 'create') return !user()->ownsCurrentTeam();
+                if($operation === 'edit') return !(user()->ownsCurrentTeam() && $record->team_id === userTeamId());
+
+            }) //must come before relationship(), see Filament docs,
+            ->validatedWhenNotDehydrated(false)
             ->default([userTeamId()])//set to current team because the field is disabled for non-team owners
             ->relationship(
                 name: 'teams',
