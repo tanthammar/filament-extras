@@ -42,7 +42,7 @@ class Author
                 ->rules('exists:users,id')
             : $field
                 ->rule(Rule::in(
-                    auth()->teamMembers()->pluck("users.id")->toArray()
+                    user()->teamMembers()->pluck("users.id")->toArray()
                 ));
     }
 }
