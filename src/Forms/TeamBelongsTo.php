@@ -24,10 +24,10 @@ class TeamBelongsTo
         // The field is disabled if the user doesn't own the current team
 
         return Select::make('team_id')->label(__('fields.team'))
-            ->disabled(function(string $operation, Model $record) {
+            ->disabled(function(string $operation, ?Model $record) {
                 if(userIsSuperAdmin()) return false;
                 if($operation === 'create') return !user()->ownsCurrentTeam();
-                if($operation === 'edit') return !(user()->ownsCurrentTeam() && $record->team_id === userTeamId());
+                if($operation === 'edit') return !(user()->ownsCurrentTeam() && $record?->team_id === userTeamId());
 
 
             }) //must come before relationship(), see Filament docs,

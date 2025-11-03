@@ -25,10 +25,10 @@ class TeamBelongsToMany
          * is not overridden by the call from disabled()
          */
         return CheckboxList::make('teams')->label(__('models.Team.plural'))
-            ->disabled(function(string $operation, Model $record) {
+            ->disabled(function(string $operation, ?Model $record) {
                 if(userIsSupport()) return false;
                 if($operation === 'create') return !user()->ownsCurrentTeam();
-                if($operation === 'edit') return !(user()->ownsCurrentTeam() && $record->team_id === userTeamId());
+                if($operation === 'edit') return !(user()->ownsCurrentTeam() && $record?->team_id === userTeamId());
 
             }) //must come before relationship(), see Filament docs,
             ->validatedWhenNotDehydrated(false)
