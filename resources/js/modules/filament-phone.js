@@ -2,7 +2,7 @@ import intlTelInput from 'intl-tel-input'
 import 'intl-tel-input/build/css/intlTelInput.css'
 import '../../css/imported/filament-phone.css'
 
-export default function phoneInputFormComponent({options, state, inputEl}) {
+function phoneInputFormComponent({options, state, inputEl}) {
     return {
         state,
         iti: null,
@@ -87,7 +87,7 @@ export default function phoneInputFormComponent({options, state, inputEl}) {
 
         applyGeoIpLookup() {
             const country = localStorage.getItem('IntlTelInputSelectedCountry')
-            const fallback = country ?? this.options.preferredCountries[0]?.toUpperCase()
+            const fallback = country ?? this.options.countryOrder[0]?.toUpperCase()
 
             if (!this.options.geoIpLookup) {
                 this.options.initialCountry = this.options.initialCountry === 'auto' ? fallback : this.options.initialCountry.toUpperCase()
@@ -112,3 +112,6 @@ export default function phoneInputFormComponent({options, state, inputEl}) {
         },
     }
 }
+
+// Make available globally for x-load-src (async-alpine)
+export default phoneInputFormComponent

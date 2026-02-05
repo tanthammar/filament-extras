@@ -6,8 +6,8 @@ use Closure;
 use Filament\Forms\Components;
 use Filament\Forms\Components\Select;
 use Filament\Schemas\Components\Utilities\Get;
+use Filament\Support\Assets\AlpineComponent;
 use Filament\Support\Assets\Css;
-use Filament\Support\Assets\Js;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Blade;
@@ -31,26 +31,18 @@ class FilamentExtrasServiceProvider extends PackageServiceProvider
         Blade::directive('FilamentAlpineComponent', static function (...$expression) {
             return "<?php echo \Filament\Support\Facades\FilamentAsset::getAlpineComponentSrc($expression[0]); ?>";
         });
+
+        // Asset Registration
+        // npm run prod:js && php artisan filament:assets
+        \Filament\Support\Facades\FilamentAsset::register([
+            Css::make('filament-phone-input', __DIR__ . '/../dist/filament-phone/filament-phone.css')->loadedOnRequest(),
+            AlpineComponent::make('filament-phone-input', __DIR__ . '/../dist/filament-phone/filament-phone.js'),
+        ], 'tanthammar/filament-extras');
     }
 
     public function packageRegistered(): void
     {
-        /** commands
-         * first compile the js and css, then publish the assets with Filament uppgrade cmd
-         * npm run prod:js
-         * php artisan filament:upgrade
-         */
         $this->registerMacros();
-
-        if ($this->app->runningInConsole()) {
-
-            \Filament\Support\Facades\FilamentAsset::register([
-                Css::make('filament-phone-input', __DIR__ . '/../dist/filament-phone/filament-phone.css')->loadedOnRequest(),
-                Js::make('filament-phone-input', __DIR__ . '/../dist/filament-phone/filament-phone.js')->loadedOnRequest(),
-            ], 'tanthammar/filament-extras');
-
-        }
-
     }
 
     protected function registerMacros(): void

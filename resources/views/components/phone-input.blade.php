@@ -32,10 +32,9 @@
             ])
              x-cloak
              wire:ignore
-             x-load-css="[
-                '{{ asset('css/tanthammar/filament-extras/filament-phone-input.css') }}'
-            ]"
-             x-load-src="{{ asset('js/tanthammar/filament-extras/filament-phone-input.js') }}"
+             x-load
+             x-load-css="[@js(\Filament\Support\Facades\FilamentAsset::getStyleHref('filament-phone-input', package: 'tanthammar/filament-extras'))]"
+             x-load-src="{{ \Filament\Support\Facades\FilamentAsset::getAlpineComponentSrc('filament-phone-input', 'tanthammar/filament-extras') }}"
              x-data="phoneInputFormComponent({
                         options: @js($getJsonPhoneInputConfiguration()),
                         state: $wire.{{ $applyStateBindingModifiers("\$entangle('{$statePath}')") }},
