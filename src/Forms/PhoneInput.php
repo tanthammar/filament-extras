@@ -26,6 +26,13 @@ class PhoneInput extends Field
 
     protected string $view = 'filament-extras::components.phone-input';
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->useLocale();
+    }
+
     protected string $displayNumberFormat = 'NATIONAL';
 
     protected string $inputNumberFormat = 'E164';
