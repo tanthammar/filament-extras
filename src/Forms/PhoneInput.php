@@ -60,7 +60,7 @@ class PhoneInput extends Field
 
     protected bool $separateDialCode = false;
 
-    protected ?string $dropdownContainer = null;
+    protected ?string $dropdownContainer = 'body';
 
     /**
      * Default: 'NATIONAL'
