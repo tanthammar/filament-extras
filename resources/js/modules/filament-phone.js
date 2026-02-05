@@ -1,78 +1,65 @@
 import intlTelInput from 'intl-tel-input'
-import "intl-tel-input/build/js/utils"
 import 'intl-tel-input/build/css/intlTelInput.css'
 import '../../css/imported/filament-phone.css'
 
 export default function phoneInputFormComponent({options, state, inputEl}) {
     return {
         state,
-
-        intlTelInput: null,
-
+        iti: null,
         options,
+        isInitialized: false,
 
-        async init() {
+        async initWhenVisible() {
+            if (this.isInitialized || !inputEl) return
+            this.isInitialized = true
+
             this.applyGeoIpLookup()
 
-            // Waits for until intlTelInput to be fully loaded
-            // Loads the component after a certain time because it
-            // causes problems with the elements added to the DOM later. e.g. Repeater
-            await this.isLoaded()
+            // Add loadUtils - shared across all instances (cached after first load)
+            this.options.loadUtils = () => import('intl-tel-input/utils')
 
-            this.intlTelInput = intlTelInput(inputEl, this.options)
+            // dropdownContainer: append to body for nested components
+            if (this.options.dropdownContainer === 'body') {
+                this.options.dropdownContainer = document.body
+            }
 
-            console.info('init')
+            this.iti = intlTelInput(inputEl, this.options)
 
+            // Wait for utils to load (returns same promise for all instances)
+            await this.iti.promise
 
             if (this.state?.length > 0) {
-                this.intlTelInput.setNumber(this.state?.valueOf())
+                this.iti.setNumber(this.state)
             }
 
             this.$watch("state", (value) => {
                 this.$nextTick(() => {
-                    if (this.intlTelInput && value !== this.getInputFormattedValue()) {
-                        if (value?.length < 1 || value === 'undefined') {
-                            this.intlTelInput.setNumber("")
-                        } else {
-                            console.info('setNumber', value)
-                            this.intlTelInput.setNumber(value);
-                        }
+                    if (this.iti && value !== this.getInputFormattedValue()) {
+                        this.iti.setNumber(value?.length > 0 ? value : "")
                     }
                 })
             })
-
-
         },
 
         destroy() {
-            console.info('destroy')
-            this.intlTelInput.destroy()
-            this.intlTelInput = null
-        },
-
-        async isLoaded() {
-            if (window.intlTelInputUtils) {
-                console.info('intlTelInputUtils loaded')
-                return true
-            } else {
-                setTimeout(async () => {
-                    console.info('intlTelInputUtils not loaded')
-                    await this.isLoaded()
-                }, 100)
+            if (this.iti) {
+                this.iti.destroy()
+                this.iti = null
+                this.isInitialized = false
             }
         },
 
-
         focusInput() {
-            if (this.options.focusNumberFormat) {
-                inputEl.value = this.intlTelInput.getNumber(
-                    window.intlTelInputUtils.numberFormat[this.options.focusNumberFormat]
+            if (this.options.focusNumberFormat && this.iti) {
+                inputEl.value = this.iti.getNumber(
+                    intlTelInput.utils.numberFormat[this.options.focusNumberFormat]
                 )
             }
         },
 
         countryChange() {
-            let countryData = this.intlTelInput.getSelectedCountryData()
+            if (!this.iti) return
+            let countryData = this.iti.getSelectedCountryData()
 
             if (countryData.iso2) {
                 localStorage.setItem('IntlTelInputSelectedCountry', countryData.iso2?.toUpperCase())
@@ -81,14 +68,16 @@ export default function phoneInputFormComponent({options, state, inputEl}) {
         },
 
         getInputFormattedValue() {
-            return this.intlTelInput.getNumber(
-                window.intlTelInputUtils.numberFormat[this.options.inputNumberFormat]
+            if (!this.iti) return ''
+            return this.iti.getNumber(
+                intlTelInput.utils.numberFormat[this.options.inputNumberFormat]
             )
         },
 
         updateState() {
-            inputEl.value = this.intlTelInput.getNumber(
-                window.intlTelInputUtils.numberFormat[this.options.displayNumberFormat]
+            if (!this.iti) return
+            inputEl.value = this.iti.getNumber(
+                intlTelInput.utils.numberFormat[this.options.displayNumberFormat]
             )
 
             if (this.state !== this.getInputFormattedValue()) {
@@ -101,16 +90,13 @@ export default function phoneInputFormComponent({options, state, inputEl}) {
             const fallback = country ?? this.options.preferredCountries[0]?.toUpperCase()
 
             if (!this.options.geoIpLookup) {
-                console.info('no geoIpLookup, fallback = ', fallback)
                 this.options.initialCountry = this.options.initialCountry === 'auto' ? fallback : this.options.initialCountry.toUpperCase()
                 this.options.geoIpLookup = null
             } else {
                 if (country) {
-                    console.info('country from localStorage', country)
                     this.options.initialCountry = country
                     this.options.geoIpLookup = null
                 } else {
-                    console.info('country from geoIpLookup')
                     this.options.initialCountry = 'auto' // triggers geoIpLookup callback
                     this.options.geoIpLookup = callback => {
                         fetch('/get-country-code')
@@ -119,11 +105,10 @@ export default function phoneInputFormComponent({options, state, inputEl}) {
                                 localStorage.setItem('IntlTelInputSelectedCountry', data)
                                 callback(data)
                             })
-                            .catch((error) => callback(fallback))
+                            .catch(() => callback(fallback))
                     }
                 }
             }
         },
     }
-};
-
+}

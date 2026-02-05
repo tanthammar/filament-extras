@@ -30,18 +30,18 @@
             'flex-1 filament-phone-input-field',
             'rtl' => $isRtl(),
             ])
+             x-cloak
              wire:ignore
              x-load-css="[
                 '{{ asset('css/tanthammar/filament-extras/filament-phone-input.css') }}'
             ]"
-             x-load="visible"
              x-load-src="{{ asset('js/tanthammar/filament-extras/filament-phone-input.js') }}"
              x-data="phoneInputFormComponent({
                         options: @js($getJsonPhoneInputConfiguration()),
                         state: $wire.{{ $applyStateBindingModifiers("\$entangle('{$statePath}')") }},
                         inputEl: $refs.phoneInput,
                     })"
-
+             x-intersect.once="initWhenVisible()"
         >
                 <input {{ $getExtraInputAttributeBag()
                             ->merge([
@@ -67,10 +67,6 @@
                                 'rounded-r-lg' => ! ($suffixLabel || $suffixIcon),
                             ])
                     }}
-                    {{--x-bind:class="{
-                        'border-gray-300 dark:border-gray-600': ! (@js($statePath) in $wire.__instance.serverMemo.errors),
-                        'border-danger-600 ring-danger-600': (@js($statePath) in $wire.__instance.serverMemo.errors),
-                    }"--}}
                 >
         </div>
     </x-filament::input.wrapper>

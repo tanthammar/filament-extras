@@ -59,6 +59,8 @@ class PhoneInput extends Field
 
     protected bool $separateDialCode = false;
 
+    protected ?string $dropdownContainer = null;
+
     /**
      * Default: 'NATIONAL'
      * formats frontend
@@ -215,6 +217,17 @@ class PhoneInput extends Field
         return $this;
     }
 
+    /**
+     * Append the dropdown to a specific element (e.g., 'body').
+     * Useful for modals/slide-overs to prevent clipping.
+     */
+    public function dropdownContainer(string $value = 'body'): static
+    {
+        $this->dropdownContainer = $value;
+
+        return $this;
+    }
+
     public function isRtl(): bool
     {
         $direction = __('filament::layout.direction') ?? 'ltr';
@@ -229,7 +242,8 @@ class PhoneInput extends Field
 
             'autoPlaceholder' => $this->autoPlaceholder,
 
-            'customContainer' => $this->customContainer,
+            // v26: renamed from customContainer
+            'containerClass' => $this->customContainer,
 
             'excludeCountries' => $this->excludeCountries,
 
@@ -239,7 +253,8 @@ class PhoneInput extends Field
 
             'initialCountry' => $this->initialCountry,
 
-            'localizedCountries' => $this->localizedCountries,
+            // v26: renamed from localizedCountries
+            'i18n' => $this->localizedCountries,
 
             'nationalMode' => $this->nationalMode,
 
@@ -247,7 +262,8 @@ class PhoneInput extends Field
 
             'placeholderNumberType' => $this->placeholderNumberType,
 
-            'preferredCountries' => $this->preferredCountries,
+            // v26: renamed from preferredCountries
+            'countryOrder' => $this->preferredCountries,
 
             'separateDialCode' => $this->separateDialCode,
 
@@ -256,6 +272,8 @@ class PhoneInput extends Field
             'inputNumberFormat' => $this->inputNumberFormat,
 
             'focusNumberFormat' => $this->focusNumberFormat,
+
+            'dropdownContainer' => $this->dropdownContainer,
         ];
     }
 }

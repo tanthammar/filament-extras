@@ -38,6 +38,7 @@ const esm = {
         '.png': 'dataurl',
         '.svg': 'text',
         '.gif': 'dataurl',
+        '.webp': 'dataurl',
         '.woff': 'file',
         '.woff2': 'file',
         '.data': 'base64',
