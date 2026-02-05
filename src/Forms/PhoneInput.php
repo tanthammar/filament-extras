@@ -11,6 +11,7 @@ use Filament\Forms\Components\Field;
 use TantHammar\FilamentExtras\Enums\PhoneInputNumberFormat;
 use TantHammar\FilamentExtras\Enums\PhoneInputNumberType;
 use TantHammar\FilamentExtras\Enums\PlaceholderMethod;
+use TantHammar\FilamentExtras\Helpers\IntlTelCountries;
 
 /** Docs: https://github.com/ysfkaya/filament-phone-input
  *  I made a lot of changes to the @src https://github.com/ysfkaya/filament-phone-input/pull/12
@@ -176,7 +177,33 @@ class PhoneInput extends Field
      */
     public function localizedCountries(array $value): static
     {
-        $this->localizedCountries = $value;
+        $this->localizedCountries = array_merge($this->localizedCountries, $value);
+
+        return $this;
+    }
+
+    /**
+     * Localize country names and UI strings based on locale.
+     * Uses PHP's Intl extension for country names.
+     * UI strings can be customized via lang/vendor/filament-extras/xx/phone-input.php
+     *
+     * @param  string|null  $locale  e.g. 'sv', 'de', 'fr'. Defaults to app()->getLocale()
+     */
+    public function useLocale(?string $locale = null): static
+    {
+        $locale = $locale ?? app()->getLocale();
+
+        // Add translatable UI strings
+        $uiStrings = [
+            'searchPlaceholder' => __('filament-extras::phone-input.searchPlaceholder'),
+            'noCountrySelected' => __('filament-extras::phone-input.noCountrySelected'),
+            'countryListAriaLabel' => __('filament-extras::phone-input.countryListAriaLabel'),
+            'zeroSearchResults' => __('filament-extras::phone-input.zeroSearchResults'),
+            'oneSearchResult' => __('filament-extras::phone-input.oneSearchResult'),
+            'multipleSearchResults' => __('filament-extras::phone-input.multipleSearchResults'),
+        ];
+
+        $this->localizedCountries = array_merge(IntlTelCountries::localized($locale), $uiStrings);
 
         return $this;
     }
