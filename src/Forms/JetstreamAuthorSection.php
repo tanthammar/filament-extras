@@ -45,7 +45,6 @@ class JetstreamAuthorSection
     {
         return Author::make()
             ->lazy()
-            ->required()
             ->onUpdated(fn ($set, $state) => $set($updatesField, [
                 $state ? User::find($state)?->current_team_id : null,
             ]));
