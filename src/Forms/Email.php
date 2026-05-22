@@ -2,12 +2,10 @@
 
 namespace TantHammar\FilamentExtras\Forms;
 
-use App\Models\Organizer;
 use App\Rules\UniqueLowercase;
 use Filament\Forms\Components\TextInput;
-use Filament\Resources\Pages\EditRecord;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Validation\Rules\Unique;
+use TantHammar\FilamentExtras\Rules\EmailDomainResolvable;
 
 class Email
 {
@@ -18,7 +16,7 @@ class Email
             ->email()
             ->smallcaps()
             ->required()
-            ->rules(['email:strict,dns,spoof'])
+            ->rules(['email:strict,spoof', new EmailDomainResolvable])
             ->prefixIcon('heroicon-o-at-symbol');
 
         if ($unique) {
