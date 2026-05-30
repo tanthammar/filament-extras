@@ -10,7 +10,7 @@ use TantHammar\LaravelRules\Rules\Longitude;
 
 class AddressFields
 {
-    public static function make(string $jsonColumnName = null): array
+    public static function make(?string $jsonColumnName = null): array
     {
         $jsonColumnName = $jsonColumnName && ! str_ends_with($jsonColumnName, '.') ? "$jsonColumnName." : $jsonColumnName;
 
