@@ -8,7 +8,6 @@ use Filament\Forms\Components\Select;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Support\Assets\AlpineComponent;
 use Filament\Support\Assets\Css;
-use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Validation\Rule;
@@ -138,75 +137,11 @@ class FilamentExtrasServiceProvider extends PackageServiceProvider
          *
          * In other words, this macro selects the first option from the list derived from the component's options or relationship query (if defined).
          */
-        Components\Select::macro('autoSelectFirstOption', fn (): static => $this->default(fn (Select $component): null|int|string => collect(array_keys($component->getOptions()))?->first()));
+        Components\Select::macro('autoSelectFirstOption', fn (): static => $this->default(fn (Select $component): null|int|string => collect(array_keys($component->getOptions()))->first()));
 
         /**
          * @deprecated accepted to core
          */
         //Components\TextInput::macro('lazyEntangled', fn (): static => $this->extraAlpineAttributes(['x-on:blur' => '$wire.$refresh'])); //fake entangled.lazy on TextInputs with Masks
-
-        /** Table features removed from Filament v3 */
-        Table::macro('prependActions', function (array $actions): static {
-            $existing = $this->recordActions;
-            $this->recordActions = [];
-            $this->recordActions($actions);
-            $this->recordActions = array_merge($this->recordActions, $existing);
-
-            return $this;
-        });
-
-        Table::macro('appendActions', function (array $actions): static {
-            $existing = $this->recordActions;
-            $this->recordActions = [];
-            $this->recordActions($actions);
-            $this->recordActions = array_merge($existing, $this->recordActions);
-
-            return $this;
-        });
-
-        Table::macro('appendFilters', function (array $filters): static {
-            $existing = $this->filters;
-            $this->filters = [];
-            $this->filters($filters);
-            $this->filters = array_merge($existing, $this->filters);
-
-            return $this;
-        });
-
-        Table::macro('prependBulkActions', function (array $actions): static {
-            $existing = $this->groupedBulkActions;
-            $this->groupedBulkActions = [];
-            $this->bulkActions($actions);
-            $this->groupedBulkActions = array_merge($this->groupedBulkActions, $existing);
-
-            return $this;
-        });
-
-        Table::macro('appendBulkActions', function (array $actions): static {
-            $existing = $this->groupedBulkActions;
-            $this->groupedBulkActions = [];
-            $this->bulkActions($actions);
-            $this->groupedBulkActions = array_merge($existing, $this->groupedBulkActions);
-
-            return $this;
-        });
-
-        Table::macro('prependHeaderActions', function (array $actions): static {
-            $existing = $this->headerActions;
-            $this->headerActions = [];
-            $this->headerActions($actions);
-            $this->headerActions = array_merge($this->headerActions, $existing);
-
-            return $this;
-        });
-
-        Table::macro('appendHeaderActions', function (array $actions): static {
-            $existing = $this->headerActions;
-            $this->headerActions = [];
-            $this->headerActions($actions);
-            $this->headerActions = array_merge($existing, $this->headerActions);
-
-            return $this;
-        });
     }
 }
